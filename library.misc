@@ -1,0 +1,130 @@
+Through the wonder of Wander, you are going to explore the remains
+of a world after Chaos has had its way with it. There are treasures
+to be had here, but there are also undreamed of dangers. The ghosts
+of the people who once ruled this world are there still, and the
+products of their godlike meddling have survived them. Be cautious,
+daring, and sneaky.
+
+
+   words (verbs)
+attack   0   0
+kill   1   0
+fight   2   0
+stab   3   0
+press   0   0
+push   1   0
+poke   2   0
+pet   0   0
+stroke   1   0
+scratch   2   0
+take   0   0
+get   1   0
+out   0   0
+leave   1   0
+
+
+   words (objects)
+guidebook   0   0
+guide   1
+plastic\ vomit\ bag   0   33
+bag   1   0
+left\ shoe\ of\ a\ gnome   0   0
+shoe   1   0
+plastic\ comb   0   0
+comb  1   0
+gravedigger's\ shovel   0   43
+shovel   1
+first\ edition\ Gutenberg\ Bible\ (signed!)   0   15
+bible   1
+book   2
+set\ of\ odd\ looking\ keys   0   17
+keys   1   0
+wicked\ looking\ inscribed\ knife   0   17
+knife   1
+still-smoking\ gun   0   43
+gun   1
+crushed\ pocketwatch   0   43
+pocketwatch   1
+watch   2
+Zygopetalum\ crinitum  0    43
+orchid                1
+flower                2
+Vulcan\ Ears   0   22
+ears   1
+pointy\ white\ feather.   0   24
+feather   1   0
+large\ black\ runesword   0   23
+runesword   1
+stormbringer   2
+sword   3
+shiny\ quarter   0   8
+quarter   1   0
+coin   2
+diamond\ studded\ vibrator   0   34
+vibrator   1   0
+miraculously\ preserved\ Captain\ America\ number\ 1    0   54
+comic   1   0
+leather\ sack    0  1
+sack    1   0
+nasty\ little\ dwarf\ bristling\ at\ you    0   0
+dwarf   1   0
+dead\ dwarf 0   0
+
+
+     pre
+   n|s|e|w|ne|se|nw|sw|u|d  o?dwarf c?70  m="You can't just leave!"
+
+   post actions
+   kill\ *  o~%INP_W2%  m="I don't see any %INP_W2% here"
+   kill\ dwarf\ with\ sword     t?sword  c?50  o-dwarf  m="The sword neatly stop-thrusts the dwarf, who vanishes."
+   kill\ dwarf\ with\ sack  o?sack o-dwarf o+dead\ dwarf@127 m="You push the sack over the dwarf's head and he suffocates."
+   shoot\ gun|kill\ *\ with\ gun   o?%INP_W2%  o?gun   m="click!"
+   read\ knife   o?knife   m="Acme Knife, Made by Acme knife & throttle Co, Framingham."
+   wear\ ears   0   t~ears   m="What ears?"
+   wear\ ears   0   t?ears   m="They don't stick too well on your ears."
+   drop\ sword   0   t?sword   m="You try, but as soon as your hand opens, something makes it snap convulsively\nclosed around the sword again!"
+   read\ guidebook   t?guidebook   m="'Guide to H.E.W. M. L.'\n       by\n       Ted Rothspangle.\n.......The rest of the guide is illegible except for a reference to 'secret passage in back of rest-room vending machine'\n\n"
+   version           m="This is version 1.7 (4/9/80) of the library"
+   enter\ sack|in\ sack|enter\ sack     o?sack  127    m="You struggle into the sack and then fall in!"
+   open\ sack       o?sack  m="The sack is already open"
+   close\ sack      o?sack  m="You have nothing to close it with."
+   put              o?sack o?%INP_W2% o+%INP_W2%@127
+   put              m="You cannot put the %INP_W2% in the sack"
+   score    v=1.0   ,,,
+   score    v+1.2   ,,,
+   score    v+1.3   ,,,
+   score    t?orchid   v+1.5   ,,,
+   score    t?comic    v+1.5   ,,,
+   score    t?bible   v+1.5    ,,,
+   score    m="Your score is %1% points"
+   help     m=\
+"You are playing library, a game by in which you explore the ruins of
+an ancient library.  The game is a script which is interpreted by
+a program letting you interact with it.  The script was written by Nat
+Howard.  The program (called \"wander\") was written by Peter
+Langston.
+
+In this game you move around, looking for the treasures left by the
+users of the library, but trying to avoid the hazards, and solve the
+puzzles.  To move north, say \"north\" or \"n\".
+
+When you find a treasure, take it to the chapel and put it there.
+When you find a puzzle, you might try to solve it.  In general, there
+are rewards for the solution of puzzles.
+
+To examine something, (e.g., a blurfo) say \"examine blurfo\"
+
+One of the objects you'll find is a leather sack. You can put things
+in the sack by saying:
+	put blurfo
+where blurfo is the object.  Some things do not fit in the sack.
+"
+    *   o?dwarf c?30  -1 m="The dwarf slips under your guard and kills you"
+
+
+
+	vars
+1       0       temp variable   used in computing score
+2       0       0 if not found Capt America #1, 5 otherwise
+3       0       0 if not found Bible    5 otherwise
+4       0       0 if not found orchid   5 otherwise

@@ -1,0 +1,112 @@
+: (c) P. Langston, 1978
+#1      What would the binary number for six be?
+"Logical bit operations use binary numbers -- that's numbers with only
+ones and zeroes.  The numbers that we usually use are called \"decimal\"
+and use the digits 0, 1, 2, 3, 4, 5, 6, 7, 8, and 9.
+You can see that binary stuff should be easier than decimal -- and it is!
+
+    Decimal  Binary
+       1        1     These columns of numbers are the same,
+       2       10     just expressed in two different ways.
+       3       11
+       4      100
+       5      101
+The next DECIMAL number is \"6\", what would the next BINARY number be?"
+	6          v+1.1   m="No, that's the DECIMAL number for six."
+	110     2  m="Right on!\n"
+	hint       m=\
+"If you add 1 + 2 you get 3, in binary that's 1 + 10 = 11
+Try 2 + 4 = 6 in binary..."
+	uncle   2  v+2.1   m=\
+"The answer is 110 -- Notice that 100 (4) + 10 (2) = 110 (6) !\n"
+
+#2      What does 1 & 1 equal?
+"Now you're going to learn about the AND operation.
+The symbol used for AND is \"&\".  The logical AND is usually diagrammed as:
+\           0   |   1   |        This means that
+\        +------+-------+        0 & 0 = 0
+\     0  |  0   |   0   |        0 & 1 = 0,
+\   -----+------+-------+        1 & 0 = 0,
+\     1  |  0   |   1   |        etc.
+\   -----+------+-------+
+What would 1 & 1 be?"
+	0          v+1.1   m="No, but you're close..."
+	1       3  m="You got it!\n"
+	2          v+1.1   m=\
+"No, that's the answer for 1 + 1.
+Notice that the AND operation is very similar to multiplication,
+except there are no \"carries\"."
+	hint       m=\
+"ANDing binary digits together is just like multiplying them..."
+	uncle   3  v+2.1   m=\
+"The answer is 1.  If you look in the square that's under the 1 on top
+and to the right of the 1 on the left you'll see a 1.
+That means that 1 & 1 = 1.\n"
+
+#3      What does 110 & 101 equal?
+Okay, now you're ready to learn about ANDing bigger numbers.
+\ \ \ 01 & 11 = 01
+If you ANDed together 01 and 11 you would get 01 because
+the first bit of 01 is ANDed with the first bit of 11, (0 & 1 = 0);
+and the second bit of 01 is ANDed with the second bit of 11, (1 & 1 = 1).
+What would you get if you ANDed together 110 and 101?
+	100     4  m="Great!  You got it.\n"
+	110        v+1.1   m="No, the second bit is wrong."
+	101        v+1.1   m="Nope, the third bit is wrong."
+	hint       m=\
+"Think of it as three little problems. 1 & 1 = ?  1 & 0 = ?  and 0 & 1 = ?
+Then take the three answers and run them together."
+	uncle   4  v+2.1   m=\
+"The answer is 100.  Think of it as:
+  1 1 0
+& 1 0 1
+-------
+  1 0 0"
+
+#4      What does 1 | 0 equal?
+"Now let's look at logical OR (symbol is \"|\").
+Here's the diagram for logical OR:
+\           0   |   1   |
+\        +------+-------+
+\    0   |  0   |   1   |
+\  ------+------+-------+
+\     1  |  1   |   1   |
+\  ------+------+-------+
+What does 1 | 0 = ? "
+	1       5  m="Nice going!\n"
+	0          v+1.1   m="You had a 50/50 chance and you blew it!"
+	hint       m=\
+"Look at the square under the 1 and on the line with the 0 at the left."
+	uncle   5  v+2.1   m=\
+"The answer is 1.  When you're ORing two 1 bit numbers together the answer
+will be 1 unless the two bits are BOTH 0 (upper left corner of the diagram)."
+
+#5      What does 1010 | 1100 equal?
+Let's try ORing some bigger numbers.  Remember that you treat each bit position
+separately to get the answer.
+What does 1010 | 1100 equal?
+	1010       v+1.1   m="No, the second bit should be = 0 | 1"
+	1100       v+1.1   m="The third bit should be = 1 | 0"
+	1110    6  m="Yup, that's it!"
+	hint       m=\
+"Think of it as:
+  1 0 1 0
+| 1 1 0 0
+---------
+  ? ? ? ?"
+	uncle   6  v+1.2   m="The answer is 1110\n"
+
+#6      Do you want to know how well you did?
+You're all done for today.  That was easy, huh?  (and FUN, too!)
+Do you want to know how well you did?
+	yes  -2  v>2.3   m="You did terrible!  You gave up on %2% questions."
+	yes  -2  v>2.1   m="You did so-so, but you gave up on %2% questions."
+	yes  -2  v>2.0   m="You gave up on one and got %1% wrong."
+	yes  -2  v<1.1   m="You got a perfect score!"
+	yes  -2  v<1.5   m=\
+"You got only %1% wrong -- that means you probably learned something!"
+	yes  -2  m=\
+"You got %1% wrong; you probably ought to try this again sometime..."
+	no   -2  m="Okay, be that way..."
+	hint     m="Type yes (of course)."
+	*        ...   m="Please answer the question."

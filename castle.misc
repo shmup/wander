@@ -1,0 +1,194 @@
+"
+Seated late one evening in front of the television, you're startled to  notice
+that  instead  of  the  fuzzy,  distorted  picture of cowboys and indians that
+you're used to seeing on your beat-up set, your television screen is  display-
+ing an unusual picture of a crossroads with crystal clarity.
+
+\"If only life were that clear-cut\", you mutter as you heave  yourself  out  of
+your armchair -- only to discover that your room has become very hazy and dim.
+A sudden fit of vertigo seizes you and as you struggle to regain your  balance
+you find yourself falling forward ... tumbling blindly ...
+
+Clutching frantically for support, your hand grasps the channel selector  knob
+which  spins  wildly  and  then  snaps  off  with a twang as you fall into and
+through the television screen ...
+"
+
+   words (objects)
+channel\ selector\ knob 0    -1
+knob            1
+Wander\ instruction\ guide 0    -1
+guide           1
+red\ apple      0     3
+apple           1
+purple\ pear
+pear            1
+boat            0     8
+rope            0    14
+keys            0    16
+ladder          0    12
+huge\ balloon   0    27
+balloon         1
+cow\ (dead)     0    26
+butcher\ knife  0    29
+knife           1
+shovel          0    11
+jewels          0    22
+mace            0
+dragon          0     0
+winebottle      0    50
+sacks\ of\ potatoes 0    64
+potatoes        1
+gideon\ bible   0    63
+bible           1
+signet\ ring    0    66
+ring            1
+gossamer\ gown  0    67
+gown            1
+30\ foot\ long\ wig 0    71
+wig             1
+distressed\ damsel 0    69
+damsel          1
+wooden\ match   0    29
+match           1
+ugly\ frog      0    21
+frog            1
+wild\ strawberries 0    18
+strawberries    1
+berries         2
+
+   words (verbs)
+break
+smash       1
+hit         2
+attack      3
+eat
+taste       1
+enter
+in          1
+leave
+out         1
+row
+float       1
+navigate    2
+sail        3
+board       4
+ride        5
+fuck
+lay         1
+screw       2
+go
+move        1
+travel      2
+walk        3
+tie
+attach      1
+
+
+   pre actions
+   *       v-2.1   ,,,
+   up|climb|down   t?boat  m="Carrying a boat?  Get serious!"
+   dig     t~shovel  m=\
+"Digging without a shovel is quite impractical.  Even with a shovel, ...
+Well, who knows?"
+   lock|unlock   t~keys  m="With no keys?  No way!"
+   *       t?damsel   o?frog   ,,,   t+frog   o+damsel  m="Flirt..."
+   n|s|e|w|u|d|ne|se|nw|sw   v-1.1   ,,,
+   *       v?1.15   v-1.1   ,,,  m=\
+"You're getting awfully hungry; if you don't eat soon you'll starve!
+"
+   *       v?1.6   v-1.1   ,,,  m="You are near starvation ...
+"
+   *        77   v?1.1  m="You have starved!"
+
+   post actions
+   take\ all   o?damsel   t~damsel  m=\
+"I'm not sure I know which things you mean -- be specific"
+   drop\ all   t?damsel  m=\
+"I'm not sure I know which things you mean -- be specific"
+   drop\ all   t?balloon  m=\
+"I'm not sure I know which things you mean -- be specific"
+   back v=CUR_LOC.%PREV_LOC%  m="Hmmm, as I remember ... we came this way ..."
+   out    m="I don't know which direction to go ..."
+   help|instructions  m=\
+"Read the Wander Instruction Guide for help. (say \"read guide\")"
+   read\ guide   o~guide  m="I don't see any guide here."
+   read\ guide  m=\
+"In general Wander can understand commands consisting of one or two words.
+The first is almost always a verb of some kind (`take', `drop', `lock', etc)
+and the second, (if needed), is usually an object.
+
+The following verbs are particularly useful:
+inventory\tList objects you are carrying.
+look\t\tGive the long description of your surroundings
+quit\t\tEnd the wander
+save\t\tSave your current environment so that you can continue later.
+
+Typically, motion is requested by specifying a compass direction
+e.g. north, southeast, etc.  These can be abbreviated as n, se, etc.
+
+If you have trouble being understood try rephrasing your commands so that
+they use the simplest words possible without being too vague and remember
+that only the first TWO WORDS in each command are used by the program."
+   go     m=\
+"Words like 'go', 'move', 'travel' or 'walk' are unnecessary;
+if you want to go north simply say 'north'.  Most directions in this world
+are compass directions, (north, south, northeast, etc),
+which may be abbreviated.  Also 'up' and 'down' appear fairly frequently."
+   dig     t?shovel  m="You poke around, but the shovel doesn't dig in anywhere"
+   take    c?5   ,,,  m="Pretty greedy, aren't you?"
+   drop\ cow   c?20   t?cow   ,,,  m="Thump!"
+   drop\ damsel   t?damsel   t-damsel  m="Pretty unchivalrous!  (Puce smoke)"
+   xyzzy  m="Nice try, but that's an old, worn-out magic word."
+   eat\ cow  m="'scuse me while I throw up..."
+   eat\ leeches  m="I think I'm gonna puke over that one..."
+   eat\ piranhas  m="No, it works the other way around."
+   eat\ pears    77  m=\
+"YUM! ... URP! ... groan ... gurgle ... aaaaaaaack!  Poison!"
+   eat     v>1.25  m="No thanks, you're not really hungry, (yet)."
+   eat\ berries   o?berries   o-berries   v+1.15  m=\
+"Those berries ought to stave off starvation for a few minutes."
+   eat\ apple   o?apple   o-apple   v+1.25  m=\
+"That apple was small but tasty; it should hold you for a while."
+   eat\ potatoes   o?potatoes   o-potatoes   v+1.60  m=\
+"Burp!  Those spuds sure hit the spot."
+   drop\ balloon   t?balloon   o-balloon  m=\
+"Being helium-filled it doesn't exactly drop... (wave bye-bye)"
+   make\ love  m="Why beat around the bush?  What do you really mean?"
+   make   m="Only God can make that!"
+   yes|no  m="Really?  How interesting..."
+   why?   m="Because (natch)"
+   define  m="Just tell me what you want defined."
+   qwert?  m=\
+"Quoting from the Webster's Middle World Dictionary, 4th ed.
+
+  QWERT (kwirt) n. [MW < OW qwertyuiop, a thirteenth]   1. a unit
+  of  weight equal to 13 poiuyt  avoirdupois  (or 1.69 kiloliks),
+  commonly used in structural engineering  2. [Colloq.] one thir-
+  teenth the load that a fully grown sligo can carry.  3. [Anat.]
+  a painful  irritation  of  the dermis in the region of the anus
+  4. [Slang] person who excites in others the symptoms of a qwert 
+"
+   poiuyt?|kiloliks?|sligo?  m=\
+"Quoting from the Webster's Middle World Dictionary, 4th ed.
+
+  See \"qwert\".
+"
+   fuck\ you   c?25  m="Fuck you, too."
+   fuck\ you   c?33  m="Yaaaa, your mother wears combat boots!"
+   fuck\ you   c?50  m="I'm not THAT hard up!"
+   fuck\ you  m="You can't fuck me here.  (Try as you might)"
+   score  m="Keeping score is an outdated, materialistic concept, don't you think?"
+   inventory   v?3.1   ...  m="You are wearing a flower."
+   inventory   v>3.1   ...  m="You are wearing %3% flowers."
+   drop\ flowers   v?3.0  m="You're not carrying any flowers!"
+   drop\ flowers   v=3.0  m="The flowers wilt & rot into dust as you drop them."
+   find   m="I don't know where to look"
+   *       v+2.2   ,,,
+   *       v>2.12   v<2.15   v=2.120  m="If you're confused type `help' for aid"
+
+   variables
+1       50  energy, used up by moving, replenished by eating
+2       3   confusion count, -1 by recognized actions, +1 by unrecognized
+3       0   number of flowers being carried
+4       11  hint count for forest

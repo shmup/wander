@@ -1,0 +1,401 @@
+: (c) P. Langston & N. Howard   %W%  last mod %G% -- P.S.L. games
+"                        Just Imagine ...
+
+You are travelling as First Under-secretary to the Ambassador for
+the   Corps   Diplomatique  Terrestrienne,  (CDT).   Your  direct
+superior, Mr. Magnan, has managed to duck out of the  action  and
+leave   you   as  sole  assistant  to  his  superior,  Ambassador
+Pouncetrifle.  (The Ambassador is a classic bungler and would, if
+left on his own, mess things up badly.)
+
+You have been sent to Aldebaran III where you  are  to  avert  an
+uprising against Terran nationals expected at the end of April.
+
+During your trip you  were  able  to  peruse  the  ship's  meager
+library  and  make  a  few  notes  on the history, life-forms and
+society of Aldebaran III, but much of Aldebaran culture is  still
+a mystery.
+
+It is the middle of the night; the ship  on which you arrived has
+just departed from the small spaceport which you find to be windy
+and deserted."
+
+	words (verbs)
+ask
+question  1
+attack
+hit       1
+beat      2
+kick      3
+kill      4
+buy
+purchase  1
+steal
+borrow    1
+purloin   2
+read
+examine   1
+in
+enter     1
+exit
+out       1
+leave     2
+push
+press     1
+drop
+throw     1
+
+	words (objects)
+i
+me
+you
+official\ identity\ papers  0   -1
+papers          1
+notes           0   -1
+credit\ card    0    1
+card            1
+electronic\ all-dialect\ dictionary
+dictionary      1
+cigarette\ pack
+pack            1
+cigarettes      2
+drink
+beer            1
+liquor          2
+subwalk\ tokens
+tokens          1
+half-empty\ wine\ bottle   0   101
+bottle          1
+shovel          0   12
+pale\ xyller
+xyller          1
+alabaster\ yangst
+yangst          1
+green\ zwerf
+zwerf           1
+keys            0   5
+money
+peace
+directions
+information     1
+drunken\ ruffians
+ruffians        1
+transylvanian\ count
+vampire         1
+count           2
+
+     pre actions
+     *      v+9.%7%   ,,,
+     *      v=7.1     ,,,
+     *      v>8.27  v?9.24   m="Tensions seem at the breaking point as" ,,,
+     *      v?9.24   v=9.0  v+8.1   m="Another day passes..." ,,,
+     take\ xyller  o?xyller  t?yangst  ,,, m="\
+The yangst seems to twitch and roll slightly in your grip."
+     take\ yangst  o?yangst  t?zwerf  ,,,  m="\
+The zwerf seems to twitch and soften in your hand for a moment."
+     *      o?yangst  t~yangst  o?zwerf  t~zwerf  ,,,  o-zwerf  m="\
+As you watch, amazed, the yangst turns a muddy, opaque brown and
+starts to spin, rolling toward the zwerf which, in turn,
+melts into a green, viscous fluid and starts seeping into the ground!
+
+The yangst is now spinning madly and rolls over traces of the zwerf
+which seem to boil away on contact!
+
+After the last trace of the zwerf has been vaporized the spinning
+yangst slows to a stop and resumes its alabaster translucency.
+"
+     *      o?xyller  t~xyller  o?yangst  t~yangst  ,,,  o-yangst  m="\
+Before your startled eyes the pale xyller turns a deep crimson and,
+emitting a piercing wail, slides toward the yangst!
+
+The yangst frantically tries to roll away but is overtaken, engulfed
+and consumed by the flushed xyller!
+
+The xyller burps once and returns to its previous pale color, its wail
+dying down to silence.
+
+You realize that you've been holding your breath the whole time.
+"
+     *         t?tokens  v?2.0  t-tokens  ,,,
+     *         o~tokens  v>2.0  v=2.0  o+tokens@0  ,,,  m="\
+I understand that theft is not uncommon on Aldebaran III."
+     *      v?13.1 c?33 o?vampire@%PREV_LOC% v~PREV_LOC.42 ,,, o+vampire m="\
+FLAP FLAP FLAP POOF!.... Suddenly, you are not alone."
+     *      v?13.1  c?33  v>9.19  o~vampire  o+vampire@%PREV_LOC%  ,,,  m="\
+You hear the flap of wings nearby ..."
+     *      v?13.1  c?50  v<9.6  o~vampire  o+vampire@%PREV_LOC%  ,,,  m="\
+You hear the flap of wings ..."
+     *      o?vampire  v~CUR_LOC.42  v?13.1  v?9.6  o-vampire  v=13.2  m="
+At that moment, (6:00 A.S.T) the sun rises, and the
+embarassed Vampire crumbles into dust, (lucky you)."
+     *      v?13.1  v>9.6  v<9.19  o~vampire@42  ,,,  o+vampire@42
+     *      o?vampire  v?13.1  c?33  ,,,  m="\
+The Count launches himself at you, but you dodge out of the way!
+"
+     *      o?vampire  v?13.1  c?33  ,,,  m="\
+The Vampire makes a dive for your neck, but misses!
+"
+     *      o?vampire  v?13.1  v>NUM_CARRY.1  c?33  ,,,  c=drop\ all  m="\
+The Vampire make a sweeping grab for you which you frantically fend off,
+dropping everything in the process!
+"
+     insert\ token  t~tokens  m="You don't have any tokens!"
+     insert\ card   o~card  m="You don't have one!"
+     dig    o~shovel    m="Digging without a shovel is quite ... impractical."
+     translate  t~dictionary  m="You'd need a dictionary to do that!"
+     note:      m=Noted
+
+     post actions
+     brief      v=BREVITY.-1  m="Long descriptions only once"
+     superbrief v=BREVITY.0   m="No long description"
+     verbose    v=BREVITY.1   m="All long descriptions"
+     date|time  v?9.0  m="12:01 a.m., April %8%, 2148"
+     date|time  v<9.12  m="%9% a.m., April %8%, 2148"
+     date|time  v?9.12  m="Noon, April %8%, 2148"
+     date|time  v=10.%9%  v-10.12  m="%10% p.m., April %8%, 2148"
+     axolotyl|rub\ ring   c?66  m="Nothing happens."
+     axolotyl|rub\ ring   m="Nothing happens, naturally."
+     read\ bottle   o?bottle    o?dictionary    m="
+	:                                             :
+	:     . . . . . . . . . . . . . . . . . .     :
+	:     : Bezel & Dung Fruit Blended Wine :     :
+	:     :    +-----------------------+    :     :
+	:     :  U |           o           | F  :     :
+	:     :  N |     o  @  |  O  o     | I  :     :
+	:     :  C |      \\  \\_|_/  /      | N  :     :
+	:     :  L |o      \\/  w  \\/      o| E  :     :
+	:     :  E |oo     { \\___/ }     OO| S  :     :
+	:=--..:    |ooo    {=======}    OOO| T  :     :
+	:=====:  F |oooo    \\_____/    oOOO|    :     :
+	:=====:  R |ooooo   /// \\\\\\   OOOOO| W  :     :
+	:=====:  E + - - - - - - - - - - - + I  :=--..:
+	:=====:  L   -=[ OUR FOUNDER ]=-     N  :=====:
+	:=====:  K Bottled  under his strict E  :=====:
+	:=====:  ' supervisions at the North R  :=====:
+	:=====:  S Groaci  Bottling  Company Y  :=====:
+	:=====:.................................:=====:
+	:=============================================:
+	:=============================================:
+"
+     read\ bottle  o?bottle  m="\
+	:                                             :
+	:     . . . . . . . . . . . . . . . . . .     :
+	:     : Cgzgn & Fwuj Gtwky Cnguigi Xkug :     :
+	:     :    +-----------------------+    :     :
+	:     :  Y |           o           | G  :     :
+	:     :  P |     o  @  |  O  o     | O        :
+	:     :  D |      \\  \\_|_/  /      | P  :     :
+	:     :  M |o      \\/  w  \\/      o| I  :     :
+	:     :  I |oo     { \\___/ }     OO| T  :     :
+	:=--..:    |ooo    {===:===}    OOO| V  :     :
+	:=====:  G |oooo    \\_____/    oOOO|    :     :
+	:=====:  S |ooooo   /// \\\\\\   OOOOO| X :     :
+	:=====:  I + - - - - - - - - - - - + O  :=--..:
+	:=====:  M       UYS GUYPFIS         P  :=====:
+	:=====:  L Cqyyngi  wuigt okv vytkfy I  :=====:
+	:=====:  ' vwrgtxkvkquv cy yog Pqtyo S  :=====:
+	:=====:  T Htqcfk  Cqyynkuj  Dqprcub A  :=====:
+	:=====:.................................:=====:
+	:=============================================:
+	:=============================================:
+"
+ read\ ring\ bottle  o?ring  o?bottle  o?dictionary  m="\
+The tiny characters on the ring translate as follows:
+
+	Handcrafted Entirely from Native Materials
+			   by
+	     the Magic Artisan's Collective
+		  Crystal City, A III
+
+	    inscription I. I. Surr
+	    materials   M. X. Pensif
+	    process     P. Dequeue
+	    engraving   E. Wonts-Tunno
+	    rubies      R. Redd
+	    idea        I. M. Gonnapuke
+	    usage test  U. Thant Dothatherenow
+	    message     M. Ryeteer
+
+	Friction activation guaranteed on clean, dry surface only
+"
+ read\ ring\ bottle  o?ring  o?bottle  m="\
+The tiny characters on the ring are as follows:
+
+	Gepfbtedyaf Apyotamx dtil Peyova Leyatoems
+			   cx
+	     yga Lehob Etyosep's Bimmabyova
+		  Btxsyem Boyx, E OOO
+
+	    opsbtoryoip O. O. Swtt
+	    leyatoems   L. U. Rapsod
+	    rtibass     R. Faqwawa
+	    aphtevoph   A. Zipys-Ywppi
+	    twcoas      T. Taff
+	    ofae        O. L. Hipperwja
+	    wseha yasy  W. Ygepy Fiygeygatapiz
+	    lasseha     L. Txayaat
+
+	Dtobyoip ebyoveyoip hwetepyaaf ip bmaep, ftx swtdeba ipmx
+"
+ read\ ring o?ring  m="\
+Inside the band you find some writing in tiny letters, too small to read."
+ read\ dictionary t?dictionary    m=\
+"The dictionary is not in itself readable like a book,
+it is a machine that allows you to read documents
+written in Aldebaranese dialects."
+ read\ card  v=10.%8%  ...
+ read\ card  v+10.1  m="\
+
+	Galactic Credit Bureau Card #547596.6347501
+
+
+      Issued to:      J. Retief
+		  --------------------------
+
+      Expires:       04-%10%-048
+		  --------------------------
+
+      Current Balance:     %6%.00 G.Credits
+			--------------------
+
+"
+ smoke\ cigarette t?pack  v?3.1  v=3.0  m=\
+"That last butt always tastes so awful!"
+ smoke\ cigarette t?pack  v>3.1   v-3.1   m="\
+Your head spins slightly as you light up."
+ smoke\ cigarette m="You're all out of smokes."
+ balance o?card  v?6.1   m="Your account holds %6% credit."
+ balance o?card  m="Your account holds %6% credits."
+ balance m="You need a card to find out your balance."
+ count\ cigarettes   t?pack  m="You have %3%."
+ count\ cigarettes   m="You have no cigarettes."
+ count\ tokens    t?tokens        m="You have %2%."
+ count\ tokens    m="You have no tokens."
+ *       o~tokens  v>2.0  c?50  v=2.0  ,,,  m="\
+I understand that theft is not uncommon on Aldebaran III."
+ help|info   m="\
+I will carry out any actions that you ask me to (assuming I understand what
+you ask).  In general, you should type commands of one or two words; like
+`take card', `count cigarettes' or `quit'.  To move around type the direction
+you want to go; e.g. `north', `up', etc.  The following commands are handy:
+take, inventory, drop, quit, shell.\n"
+ read\ notes    o~notes  m="I don't see any notes here ... "
+ read\ notes    v?17.6  v=17.0    ,,,   m=\
+"At this point the notes trail off into meaningless scribbles and, thinking
+back, you vaguely remember an interesting interlude with some rather illicit
+drugs and two stewardesses on the trip here ... Ahhh ... Anyway, going back
+to the beginning of the notes ...
+"
+ read\ notes    v?17.0  v+17.1  m="\
+							Page %17%
+  Aldebaran III is an eighty-four percent earth normal planet which
+  revolves around a brilliant red star, (Aldebaran, or Alpha Tauri).
+  A III has an atmosphere consisting of 52%% nitrogen, 26%% helium,
+  20%% oxygen and 2%% other gases, (by volume).  The period of revo-
+  lution of A III is 18.628 Earth Standard hours which is expressed
+  in local time as 24 hours.  The axis of A III tilts less than a
+  degree with respect to the ecliptic, (47.6'), providinig virtually
+  no variation in season and length of daylight, (sunrise is at 6:00
+  Aldebaran Standard Time, sunset at 7:00 p.m. A.S.T.).
+... (the notes continue, but your interest wanes)
+"
+ read\ notes    v?17.1  v+17.1  m="\
+							Page %17%
+  The ruling species on Aldebaran III is a large, six \"legged\", (actually
+  \"pseudopoded\"), mammal with a roughly Humanoid torso and a perfectly
+  spherical \"brain-case\" containing, in most cases, a brain the size of
+  a filbert.  (In a few, exceptional cases the brain is believed to be quite
+  large.  This increased \"brain-power\" has no effect on intelligence but
+  is believed to provide the ability to alter body appearance at will.)
+"
+ read\ notes    v?17.2 v+17.1 m="\
+							Page %17%
+  The natives of Aldebaran compensate for lack of intellect with sensitive
+  organs for sight and smell located on five stalk-like extremities which
+  radiate from the \"brain-case\".
+
+  Aldebaranites are deeply religious.  They display fierce devotion to
+  causes which they espouse without apparent rhyme or reason and which
+  they may suddenly disavow for no apparent reason.  Much importance is
+  said to be attached to symbolic acts and objects.
+"
+ read\ notes    v?17.3 v+17.1 m="\
+							Page %17%
+  Until the first Aldebaran-Terran trade treaty was negotiated in 2078
+  by Adm. Kurasawa Perry the concepts of private property and monetary
+  currency were unknown.  Since that time every sentient race in the
+  galaxy has established trade with A III but, in compliance with the
+  Galactic Accords of 2018,  no military bases have been built on A III.
+  The currency in use is the Galactic Credit but \"magic\" artifacts are
+  still highly valued although very little is known about these artifacts.
+"
+ read\ notes    v?17.4 v+17.1 m="\
+							Page %17%
+  Government is a representative democracy with all laws being made by the
+  elected governmental representative, (called \"the Rep\"), whose term of
+  office is 3 years unless that would cause and election to be held in a
+  year divisible by fourteen in which case the term of office is 6 years.
+
+  Aldebaran law, being the manifestation of the Rep, is held in great
+  reverence by the populace and the punishments for infractions are
+  extremely severe.  Because each new Rep must, during his first five
+  months in office, repeal all laws enacted by the previous Rep and may
+  not recreate any laws that a prior Rep had created no attempt will be
+  made here to provide do's and dont's for A III.
+"
+ read\ notes    v?17.5 v+17.1 m="\
+							Page %17%
+  The official diplomatic language on Aldebarran is Glottus but very few,
+  (if any), natives are believed to speak it.  Instead, approximately
+  213 varieties of local dialect are used.  The dialectic differences
+  between neighboring regions are small enough that most natives can under-
+  stand the dialects of all neighboring regions but rarely the dialects
+  of further regions.  The single, underlying factor in understanding
+  any dialect of Aldebaran ...
+"
+ read\ papers  t?papers m=\
+"Your identity papers have a picture of you, (not flattering), and say:
+
+
+
+	OFFICIAL IDENTITY PAPERS
+    Corps Diplomatique Terrestrienne
+
+NAME:    Jaime Retief
+       -------------------------------------
+TITLE:  1st Under-Sec'y to the Amb. to the Aldebarran System
+       -------------------------------------
+CDT ID: # 5375865346a547
+
+Affiliations: C.I.B., Hero's Guild, A.S.P.C.T., Unix User's Group, Est
+
+
+"
+ drink  o~bottle    m="I suppose if you had a bottle you could drink"
+ drink  m="\
+FAAAGHHH!  That wine is AWFUL!  It tastes like cardboard squeezings!"
+ why?   m="Because, (natch)"
+ check\ pockets  ,,,  c=inventory  m=Okay
+ take\ vampire  o?vampire  c?50   m="Now that IS a stupid idea"
+ take\ vampire  o?vampire   m="You have the strangest sex drive..."
+ xyzzy|sesame|abracadabra   m="\
+Nice try, but that's an old worn-out magic word."
+ take\ ash   m="The ash slips through your fingers and scatters."
+ *      v=7.0   ,,,
+
+	variables
+1           0   temp variable (used for customs)
+2           0   number of tokens
+3           0   number of cigarettes
+4           0   temp variable used for barkeep/map
+5           0   temp for left/right hint
+6           50  credits left
+7           0   used to gauge activity on each command
+8           1   day of the month, (April)
+9           0   hour of the day
+10          0   temp variable used for calculations
+11          0   local variable; used in Rep's reception room & church
+12          0   local variable; used in church
+13          0   0: initial, 3: count, 1: vampire following you, 2: dead
+17          0   the current page of notes
+MAX_CARRY   6   we can only carry 6 things at once

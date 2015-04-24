@@ -1,0 +1,914 @@
+#1        You're at the crossroads
+"You're at a crossroads in a shallow valley with fields of wild flowers
+on all sides.  A large road goes north-south while a smaller road goes
+east-west.  The gently rolling hills that surround you make it hard to
+see very far in any direction."
+   take\ flowers|pick\ flowers   v<3.1   v+3.1  m=\
+"You tear a flower from the ground."
+   take\ flowers|pick\ flowers   v<3.127   v+3.1  m=\
+"You tear another flower from the ground."
+   n         2
+   s         3
+   e         4
+   w         5
+   follow\ road|climb|cross  m="In what direction?"
+   valley   m="You are already in the valley; try following one of the roads."
+   *        76   t?frog   t-frog   t+prince   s=76.0  m="POOF! (mauve smoke)"
+   *        76   t?damsel   s=76.1  m="POOF! (magenta smoke)"
+
+#1.1
+"You're at a crossroads in a shallow valley with fields of wild flowers on all
+sides.  A large road goes north-south and a smaller road goes east-west.
+Although the gently rolling hills that surround you make it hard to see very
+far in any direction you can see a small, round hatch in the ground standing
+open nearby."
+   down|climb    36  m="You climb down the iron ladder."
+
+#2	  Sandy beach south of Swan Lake
+"You're on a sandy beach bordering a large lake in the shape of a swan.
+Across the lake to the north some sort of building is just visible.  To the
+south lies a valley full of wildflowers."
+   cross|n|row     6   o?boat   o+boat@6  m="Your boat appears to float."
+   cross|n|swim  m="You swim out a little ways, get tired, and swim back."
+   s|valley  1
+   e         7
+   w         8
+   building  m="The building is acroos the lake.  How do you propose to get there?"
+   take\ sand  m=\
+"The sand runs through your fingers before you can do anything with it."
+
+#3	  Northeast edge of the woods
+"You're at the edge of a dense wood stretching out to the south and west.
+A shallow valley is visible to the north along a road that dwindles down
+to an overgrown path leading south."
+   n|valley  1
+   s|follow\ path|woods     9
+   e        10
+   w         9
+
+#4	  West side of stone wall
+"You're at the base of a massive, twenty foot high wall built from smooth
+field stones expertly fitted together.  A large road bends here, going
+north along the wall and west toward a shallow valley."
+   n         7
+   s        10
+   e      m="You can't walk through walls"
+   w|valley  1
+   up|climb    12   o?ladder  m="You climb up the ladder and over"
+   up|climb  m="The wall is too high to climb"
+   throw\ rope  m="The rope doesn't catch on anything and falls back down."
+
+#5      bridge
+   n|downstream|downriver     8
+   s|upstream|upriver     9
+   e|valley  1
+   read   m=\
+"The sign says,
+
+\t   DANGER!
+       CONDEMNED BRIDGE
+  Load limit : 18 qwerts (max)
+    cross at your own risk
+
+"
+   row     o?boat  m=\
+"Boats aren't very useful for crossing bridges, and the river flows too
+swiftly for your boat to make it"
+
+#5.0	  East end of Deep River Bridge
+"You're at the east end of a rickety wooden bridge crossing over a deep river.
+A road leads east toward a shallow valley filled with wildflowers.  There is
+a large, official-looking sign here."
+   cross|west   t?boat   s=5.1   o-boat  m=\
+"As you start to cross the bridge you hear a loud groan and feel the bridge
+sag.  You drop the boat and rush back just in time to see the boat and the
+bridge collapse into the river and get washed away."
+   cross|west    13   t?balloon  m=\
+"It must be helium in that balloon
+because you now weigh only 17.9 qwerts"
+   cross|west  m="The bridge won't quite support your weight"
+
+#5.1	  East bank of river where a bridge once was.
+"You're on the east bank of a deep river where the end of a rickety, wooden
+bridge sticks out into mid-air.  There is a large, official-looking sign here."
+   cross|west|swim  m="That would get you very wet and dead!"
+
+#6	  Swan Lake
+"You're floating on Swan Lake.  From the west come sounds of splashing water
+while a dark cliff looms up at the east end of the lake."
+   swim   m="Just before you start to drown you climb back into the boat."
+   n        14   o+boat@14
+   s         2   o+boat@2
+   take\ note  m="The note has already floated out of reach"
+   take\ boat  m=\
+"Carrying the boat while it is carrying you might be a bit tricky..."
+   row    m="Which direction?"
+   e      m="The cliffs overhanging the lake are too high to climb!"
+   w      m="You would be killed if you tried to float over this waterfall!.."
+
+#7	  West side of gate
+"You're at a small, locked gate in a massive stone wall.  To the north a tall
+cliff looms, and to the northwest a lake is dimly visible"
+   n      m="A sheer cliff blocks your way"
+   s         4
+   e      m="The gate is locked"
+   w         2
+   open|unlock   t~keys  m="You have no keys..."
+   open|unlock   s=7.1  m="The keys fit and the gate creaks open..."
+   climb   o?ladder  m=\
+"The wall is too high and smooth to be climbed, even with a ladder."
+   climb  m="The wall is too high and smooth to be climbed."
+   break\ gate  m="The gate resists your futile attempts..."
+   pick\ lock   c?70  m="You fiddle around for a while ... but no luck"
+   pick\ lock   s=7.1  m="You fiddle around for a while ... and the lock opens!"
+
+#7.1	  West side of open gate
+"You're standing on the west side of a small gate through which you can
+see lawn and some water to the east.  To the north a tall cliff looms,
+and to the northwest a lake is dimly visible"
+   e       t?boat  m="The boat is too big to pass through"
+   e        15
+   lock    t?keys   s=7.0
+
+#8	  East bank of river above fork
+"You're on the bank of a raging river flowing north.  A short distance
+downstream it is joined by another rapidly flowing stream from the east."
+   n|downstream|downriver  m="The E-W stream blocks your way."
+   s|upstream|upriver     5
+   e         2
+   enter\ boat|west|row   o?boat  m=\
+"The current is too fast for your boat to make it!"
+   w      m="The stream is much too swift to be crossed."
+
+#9	  Woods
+"You're in the woods where the trees are so dense that only a few rays
+of sunlight penetrate and it's VERY easy to get lost."
+   *     v-4.1   ,,,
+   *     v?4.0   v=4.12  ,,, m=\
+"FLASH! Was that the glint of a ray of sunlight penetrating from the east?"
+   n|sw   m="You have wandered around in the woods"
+   s       c?50  m="Fallen trees block your way"
+   s        18  m="Fallen trees block your way"
+   e|se    c?50  v~4.11  m="You're still lost in the woods"
+   e|ne     10  m=\
+"You're still lost in the ... wait! .................................
+The bushes part and ..."
+   w|nw   m="You have wandered in a circle in the woods"
+   take\ tree  m="Sorry, they're attached (securely) to the ground."
+
+#10	  You're at the top of the well
+"You're at an abandoned, apparently dry, well.  It's quite deep, you can't
+even see the other end of the old well rope hanging down.  To the east a
+roadway is visible beyond a fence made out of wire and a forest lies to the
+south."
+   n         4
+   s|woods|bushes     9
+   e      m="Barbed wire blocks your way... Ouch! It's electrified, too!"
+   w         3
+   cut\ wire|hit\ wire  m="OUCH!  There seems to be no way around the wire!"
+   make\ wish  m="Okay, but it won't come true..."
+   down|climb|well|bottom   s=10.2  m=\
+"The well rope has rotted and falls apart in your hands,
+you'll need to tie a newer rope to the well to get down."
+   take\ rope   o~rope   s=10.2  m=\
+"The rope turns out to be rotten and turns to moldy dust in your hands."
+   tie\ rope   t?rope   t-rope   s=10.1  m=\
+"You deftly tie a clove hitch and dangle the end of the rope into the well."
+   jump|fall   c?66  m="It's an awfully deep well...  Better think twice."
+   jump|fall    77   c?50  m="Geronimo! ... ... ... ... ... SPLAT!"
+   jump|fall    16  m="Geronimo! ... ... ... ... ... THUD!"
+
+#10.1
+"You're at an abandoned, apparently dry, well.  It's quite deep, you can't even
+see the other end of the new well rope hanging down.  To the east a roadway
+is visible beyond a fence made out of wire and a forest lies to the south."
+   down|climb   t?boat  m=\
+"No way, the boat you're carrying is bigger than the well!"
+   down|climb    16
+   take\ rope  m="The rope is tied to the well."
+   untie\ rope   s=10.2   o+rope  m="Okay"
+
+#10.2
+"You're at an abandoned, apparently dry, well.  It's quite deep, you can't see
+the bottom.  To the east a roadway is visible beyond a fence made out of wire
+and a forest lies to the south."
+   down|climb  m=\
+"You need something to hold onto ... e.g. a rope tied to the well."
+   tie   t?rope   t-rope   s=10.1  m=\
+"You deftly tie a clove hitch and dangle the end of the rope into the well."
+
+#11	  Woods
+"You're in a dark and dreary woods with dense foliage in all directions.
+Splashing sounds and bird calls seem to come from the east."
+   n|nw    c?70  m="You must be lost; you've wandered in a circle"
+   n|upriver    13
+   s|sw   m="This spot looks awful familiar."
+   e|row   o?boat  m="The boat is too fragile for the river."
+   e|se|ne  m="The way is blocked by a deep river."
+   w      m="You've made a circle."
+
+#12	  East side of wall
+"You're at the base of a massive stone wall.
+A vague spire can be seen in the distance to the north-east"
+   n        15
+   e        23
+   w      m="There's a wall in your way, bimbo"
+   up|climb     4   o?ladder  m="You climb up the ladder and over"
+   up|climb  m="The wall is too high to climb"
+   ne       19
+
+#13	  West end of bridge
+"You're at the west end of a rickety bridge crossing a raging river.
+A sign posted here reads, Load Limit : 17.9 qwerts."
+   n|downstream|downriver    17
+   s|upstream|upriver    11
+   e|cross   t?boat  m="The boat is much too heavy for the bridge."
+   e|cross     5   t?balloon  m=\
+"The bridge sags a little but the balloon makes you enough lighter to cross."
+   e|cross  m="The bridge won't support your weight."
+
+#14	  Cottage on Swan Lake
+"You're at a honeymoon cottage on the north beach of Swan Lake.
+No one is around, it must be the off season..."
+   s|row     6   o?boat   o+boat@6  m=\
+"As you row out you see an old, worn-out slip of paper float by.
+It says \"Magic word : xyzzy\""
+   s|swim  m="Take swimming lessons first"
+   unlock   t?keys  m="Your keys don't seem to fit these locks"
+   unlock  m="No keys..."
+   building|cottage|enter  m="The cottage is all locked up"
+
+#15	  East side of gate
+"You're just inside a gate in a massive stone wall.  A small building lies
+to the north and an impressive spire is dimly visible to the east."
+   s        12
+   n        27
+   e        19
+   w         7   s?7.1
+   w      m="The gate is locked"
+   lock    s?7.1   s=7.0  m="The gate is now locked"
+   lock    s?7.0  m="It's already locked"
+   unlock   s?7.0   s=7.1  m="The gate creaks open"
+   unlock   s?7.1  m="It's already open"
+
+#16	  Bottom of well
+"You're at the slimy bottom of an abandoned well.  Someone has scratched
+Can you dig it? on one of the walls."
+   dig      16   t?shovel   s=16.1   s=31.1  m=\
+"Your shovel breaks through into a dark passage"
+   up|climb   s?10.0   s=10.2  m=\
+"You grab the well rope and it falls apart in your hands!"
+   up|climb    10   s?10.1  m="You shinny up the well rope."
+   up|climb   s?10.2  m=\
+"The walls are much too slick to climb and there's no rope with which to
+pull yourself up -- you're in trouble!"
+   *       s?10.2   t~shovel   v-1.2   ,,,
+
+#16.1	  Bottom of well
+"You're at the bottom of an abandoned well with a hole into a dark passage."
+   dig    m="All the other walls seem to be bedrock"
+   enter  m="Which way?  The passage goes north aod northeast."
+   n        30
+   ne       31
+
+#17	  West bank of river
+"You're on the west bank of a swiftly-moving north-south river."
+   n|downstream|downriver  m="Your way is blocked by dense foliage."
+   s|upstream|upriver    13
+   e|row   o?boat   c?30  m=\
+"The current grabs your boat and you frantically row back to the shore"
+   e|row     8   o?boat   t+boat  m=\
+"You strain against the current and barely make it."
+   e      m="The river is too deep and fast to be crossed"
+
+#18	  Woods
+"You're in the woods where the trees are so dense that only a few rays
+of sunlight penetrate and it's hard not to get lost."
+   n|s|e|w     9  m="You're still wandering in the woods"
+   ne|nw|se|sw     9  m="You're getting more lost..."
+
+#19	  Western moat
+"You're at the western edge of a shallow moat teeming with piranhas.
+To the northwest a small building is visible and to the west of you is
+a high stone wall with a gate in it while across the moat a large,
+dark castle almost seems to be watching you..."
+   n        24
+   s        23
+   e      m="Those piranhas wouldn't let you take two steps (using what for feet?)"
+   w        15
+   nw       27
+   sw       12
+
+#20	  Tree-lined drive
+"You're on a gorgeous tree-lined drive running north toward a high wall"
+   n        22
+   s        21
+   w        10
+
+#21	  Garden entrance
+"You're at the entrance to a traditional English garden.  A tree-lined drive
+proceeds north from here."
+   n        20
+   in|s   m="Garden under construction."
+
+#22	  Portcullis
+"You're just south of the blasted remains of a large portcullis set in a massive
+stone wall, through which a moat can be seen indistinctly.  A broad road
+winds away to the north."
+   n        23
+   s        20
+   w      m="Electrified barbed wire makes that impossible."
+
+#23	  Southern moat
+"You're between a portcullis set in a massive stone wall and
+the southern edge of a shallow moat filled with hungry alligators"
+   n        51   s?51.1  m="You cross the moat on the open drawbridge."
+   n        25   t?cow  m="The alligators get one sniff of the dead cow and vanish"
+   n      m="These alligators would love that!"
+   s      m="The portcullis blocks your way"
+   w        12
+
+#23.1
+"You're between the blasted remains of a portcullis set in a massive stone wall
+and the southern edge of a shallow moat filled with hungry alligators"
+   s        22  m="The remains of the portcullis are very warm as you pass..."
+
+#24	  Northern moat
+"You're north of the castle moat, at the southern edge of some kind of
+pear orchard.  A small building is visible to the west and a gateway in
+a high stone way lies slightly to the west of southwest."
+   n        26
+   s      m="Oops! The moat here is filled with gigantic leeches!"
+   w        27
+   sw       19
+
+#25	  South lawn
+"You're on the south lawn between the castle to the north and the alligator
+moat curving from the west to the east on the south side of you.  Ten feet
+above you is a massive drawbridge."
+   n      m="There is no opening in the castle wall at this height."
+   s        23   t?cow  m=\
+"The 'gators won't come near you with that stinking cow carcass"
+   s|e|w   m="The 'gators are still drooling..."
+   ne|nw   28  m="You circle around to the other side of the castle"
+   climb   m="You find nothing to grab onto."
+   up      s?51.0  m="You can't reach the raised drawbridge."
+   up      s?51.1  m="You can't quite reach the lowered drawbridge."
+
+#26	  Pear orchard
+"You're standing next to a sign in an pear orchard that has almost been
+picked clean of purplish pears."
+   s        24
+   w        27
+   read   m=\
+"The sign reads\"DANGER!  POISON PURPLE PEARS being grown for Halloween\"."
+   take\ pear|pick\ pear   t+pear   s=26.1  m="Done"
+   eat    m="Eat what?"
+
+#26.1
+"You're standing next to a sign in an pear orchard that has been
+picked clean of purplish pears."
+   take\ pears  m="There are no more pears"
+
+#27	  Outhouses
+"You're seated on one of several thrones in the castle outhouses."
+   *       t?keys   c?33   s=7.0   t-keys  m=\
+"Ooops! The sound of a gate clanging startled you and you dropped your keys,
+you know where..."
+   s        15
+   e        24
+   w      m="The castle wall here extends quite high; you can't climb it"
+   out|leave  m="You can go south or east..."
+   down|dig   t?keys   s~7.0  m="Are you kidding?  Not without a good reason!"
+   down|dig  m="You are now covered with shit and flies (but, alas, no keys)"
+
+#28	  North lawn
+"You're on the north castle lawn, between the service entrance and the moat."
+   n      m="The leeches look much to thirsty, forget it"
+   s       c?70  m=\
+"Just as you are about to sneak in you think you hear someone coming,
+and run back out."
+   s       t?cow  m=\
+"That rotting cow carcass is much too large to fit through the door"
+   s        29  m=\
+"Just as you are about to sneak in you think you hear someone coming,
+ but decide to chance it..."
+   e|west    25  m="You circle around to the front of the castle"
+
+#29	  Castle Kitchen
+"You're in a large, rectangular kitchen with ovens covering most of
+the south wall.  There are four doors leading from the kitchen, each has a
+sign.  The signs read coming, going, servants and out."
+   n|out   t?damsel  m=\
+"When the aristocratic damsel sees that you intend leaving by that back door
+she turns up her nose and refuses to leave \"by the tradesmen's entrance\"!"
+   n|out    28  m="The out door leads outside."
+   e|coming  m="The coming door doesn't open this way."
+   s|going    38  m="The going door swings aside."
+   nw|servants   t?damsel  m=\
+"When the aristocratic damsel sees that you intend leaving by that door
+she turns up her nose and refuses to leave \"by the servant's door\"!"
+   nw|servants    41  m="The servants door swings aside."
+   light\ match   t?match   o-match  m=\
+"The match flares up, burns briefly, and goes out."
+
+#30	  Glass tunnel
+"You're in a cylindrical tunnel whose shiny black walls are as smooth as glass.
+Sunlight coming through a hole at the south end reflects a few times and then
+is soaked up by the walls."
+   s        16   s?16.1
+   n        33
+
+#31	  Loose steps
+"You're at the top of a staircase made up of loose rock steps leading northeast
+and down.  A translucent section of wall has ?ti gid uoy naC written on it."
+   ne|down    32
+   dig     t?shovel   s=31.1   s=16.1  m=\
+"Your shovel breaks through the translucent wall."
+
+#31.1
+"You're at the top of a staircase made up of loose rock steps leading northeast
+and down.  Light shines in through a hole to the southwest."
+   sw       16
+   dig    m="The rest of these walls seem to be bedrock."
+
+#32	  Secret tunnel
+"You're in the king's secret escape tunnel.  The light is dim here but you can
+see that it comes from both the east and southwest."
+   e        57   s?57.0
+   e      m="A heavy gate blocks this passage."
+   sw       31
+
+#33	  Vertical Shaft
+"You're at a junction with a ten-foot diameter vertical shaft, made of some
+glassy substance, going down and up, and a horizontal tunnel. The Horizontal
+tunnel ends here, but a set of rusty rungs are set into the shaft walls."
+   s        30
+   up       34  m=\
+"You climb up the rungs into the darkness.  These rungs don't feel as rusty
+as the lower ones."
+   tie\ rope   t?rope   s=33.1   t-rope  m=\
+"You tie your rope to the top, secure rung."
+   down   m=\
+"The second rung you try breaks off and you almost fall to your death!
+If you want to go lower you'll have to find something else to climb on."
+   climb  m="Up or down?"
+
+#33.1	  Vertical Shaft
+"You're at a junction of a ten-foot diameter vertical shaft going down and up
+with a Horizontal tunnel which ends here.  A set of rusty rungs are set into
+the smooth shaft walls and a rope dangles down from one of them."
+   untie|take\ rope   s=33.0   t+rope  m="Done"
+   down     37  m="You climb down the rope."
+
+#34	  Top of Shaft
+"You're hanging onto some smooth metal rungs in the wall of a vertical shaft
+with a metal plate or something right above your head.  Something that feels
+like paper is glued to the ceiling, but the light is so dim that you can
+only make out the letters  ...ILO.  To la...open doo...uck!."
+   light\ match   t?match   s=34.1  m="Your match flares up and you discover..."
+   open    door   s=34.2  m="The missile silo doors swing open with a clang!"
+   down     33
+   read   m="Without more light you can't read the rest"
+
+#34.1	  Top of Missile Silo
+"You're hanging a few inches below a sign posted on two immense metal doors.
+The sign reads:
+    MISSILE SILO.  To launch missile manually, open door and duck!"
+   open    s=34.2  m="The silo doors swing open with a clang!"
+   down     33   s=34.0  m="Your match has burned out."
+   read   m="That's all it says."
+   duck   m="Okay, now would you like to quack?  (Don't answer that)"
+
+#34.2	  Top of Missile Silo
+"You're in a missile silo with the doors wide open.
+The hum of active machinery wells up from below you."
+   duck     35   s=34.0  m=\
+"You duck back into a small chamber as a huge missile flashes by."
+   *        77   s=77.0  m=\
+"Before you have a chance a huge missile comes screaming up the shaft and
+smears you all over its warhead."
+
+#35	  Missile Control
+"You're in a small chamber where a control console display is flashing a message:
+CHOOSE TARGET.  There is an active keyboard awaiting input of target name."
+   choose|target  m="Choose target?  Which one?"
+   type   m="Type what?"
+   portcullis   o+button  m="The display flashes 'Press button to detonate.'"
+   press\ button    36   o?button   s=23.1   o-button  m="A distant boom is heard."
+   take\ button   o?button  m="You can't; it's attached."
+   *        36   o-button  m=\
+"The display resonds \"Premature detonation\" and a loud BOOM! is heard."
+
+#36	  Missile Control
+"You're in a small chamber with a large control console and a display that has
+a single illuminated indicator with a sign that reads standby.  A metal
+ladder leads through a hole in the ceiling."
+   up        1   s=1.2  m=\
+"Sunlight streams in as you open the small hatch and climb out."
+
+#37	  End of rope
+"You're at the end of your rope, swinging freely.  You could take a chance
+by going further down, but who knows how far you'd fall..."
+   down     77  m=\
+"You fall for a full 12 seconds before being smashed to death."
+   drop\ penny  m="12 seconds later ... tink"
+   drop   m=\
+"Rather than drop anything substantial, you drop a penny.
+12 seconds later you hear it hit metal -- a LONG way down!"
+   up|climb    33  m="It's a hard climb, but you make it."
+
+#38	  Banquet Hall
+"You're in a long banquet hall with windows on the east, several arched
+doors on the west, two swinging doors going nw & ne, and a wooden panel
+at the south end."
+   s      m="You bang your head into the wooden panel (it sounds hollow)"
+   e      m="The windows are barred and you can't fit through"
+   w        40
+   nw     m="This door doesn't swing that way."
+   ne       39
+   cut\ panel   t?knife   s=38.1  m="The soft wood cuts like butter."
+
+#38.1
+"You're in a long banquet hall with windows on the east, several arched
+doors on the west, two swinging doors going nw & ne, and a wooden panel
+with a hole in it at the south end."
+   s        43   s=38.0  m="As you go through, a new panel slides into place."
+
+#39	  Dirty dish room
+"You're in a room with a small basin full of murky water and hundreds of dirty
+dishes stacked all over on the floor.  There are swinging doors to the
+west and south."
+   s      m="Another, damn one-way door!"
+   w        29
+
+#40	  Grand Ballroom
+"You're in the Grand Ballroom.  There is a massive throne set against the
+north wall.  The floor is an exquisite wood parquet design.  A broad,
+curved staircase goes up to a balcony, a large barred door leads south
+and a long hall can be seen through several arches to the east."
+   s      m="The bars are made of 3\" thick metal"
+   e        38
+   up       53
+
+#41	  Servant's Hallway
+"You're in a short hallway with doors leading south and east and a spiral
+staircase going up and down."
+   s        45
+   e        29
+   up       49
+   down     50
+
+#42	  Courtyard
+"You're in an open courtyard."
+   n      m="This door is barred on the inside."
+   s        51
+   w        46
+
+#43	  Guard's Quarters
+"You're in an L-shaped room with sleeping mats, piles of clothing and
+Playboy center-folds adorning the walls.  The guards sleep here.
+The north and west walls have doors set into them."
+   n      m="The door opens but there is a wood panel blocking further progress."
+   w        51
+   cut\ panel    38   t?knife   s=38.1  m=\
+"The soft wood cuts like butter and you step through."
+
+#44	  Armory
+"You're in the castle armory.  There are suits of chain mail, maces, lances,
+swords, suits of armor, axes, etc, etc here.  Most seem to be made of either
+crude metal, perhaps iron, or a smooth grey substance; all of them, even the
+wooden lances, appear to be held to the wall by some magnetic, (or is it
+magic?) force.  A small black and yellow sign is posted on the wall.
+A small doorway leads to some stone steps going up and down."
+   e        51
+   up       52
+   down     58
+   read\ sign   m="The sign says: \"Danger -- Shock Hazard\""
+
+#44.0
+   take   m="You can't budge anything, the strange force is stronger than you are."
+   drop   t?%INP_OBJ%   s=44.1   o+mace  o+%INP_OBJ%  m=\
+"clank ... ... K A B O O M ! !
+The slight shock seems to have detonated some plastic explosive!
+"
+#44.1	  Armory
+"You're still in the castle armory but most of the armament is scrap now
+and the rubble blocks a small doorway.  Only the hardiest weapons, (and
+yourself, of course) could survive that blast; even the mysterious force
+seems to have been disrupted."
+   up|down  m="Too much rubble."
+
+#45	  Servant's Quarters
+"You're in a dim room filled with grass mats and drunken servants.
+There is one door."
+   n        41
+
+#46	  Antechamber
+"You're in a small antechamber with a sign that says:
+      Leave ALL Weapons Here
+above a door leading south."
+   e        42
+   s       t?knife   t-knife  m="The sign blinks twice, and your knife disappears"
+   s       t?mace   t-mace  m="The sign blinks twice, and your mace disappears"
+   s        47
+
+#47	  Small Throne Room
+"You're in the Throne Room!  The throne is set on a high dais with small steps
+leading up to it."
+   n        46
+   up       48
+   take\ throne  m=\
+"You didn't happen to bring along an elephant to carry it, by any chance?"
+
+#48	  The Throne
+"You're standing on the dais by the throne.  From here you can see how a king
+would look impressive to his supplicants as he sits regally on this throne."
+   down     47   s=48.0
+   take\ throne  m="It weighs 350 qwerts!"
+   sit     s=48.1  m=\
+"As you lean back you feel the curtain behind you move slightly."
+
+#48.1
+"You're sitting on the throne.  A small draft seems to be blowing from
+the south through the room."
+   stand   s=48.0
+   s        54   s=48.0  m=\
+"As you step through the curtain a door slides silently closed behind you."
+
+#49	  Guard Hall
+"You're at the north end of the guard's passage where a spiral stair leads
+up and down and doors lead east, se and south."
+   s        52
+   e        64
+   se       53
+   down     41
+   up       70
+
+#50	  Mead Cellar
+"You're in the castle mead cellar.  Row upon row of casks fill the musty
+chamber."
+   up       41
+   take\ casks  m="The casks are huge and heavy.  Forget it."
+   drink   c?50  m="URP!"
+   drink  m=\
+"Eeeech!  That cask has gone bad ... and something's swimming in it!"
+
+#51	  Sallyport
+"You're in the entryway to the castle, known as the Sallyport because
+it is from this portal that the knights sally forth.  To the north a
+courtyard is visible; to the south is a drawbridge held up by an iron chain.
+Doors also lead east and west."
+   n        42
+   s      m="The drawbridge is up."
+   e        43
+   w        44
+   lower\ drawbridge  m="The chain seems to be rusted solid and won't budge!"
+   break\ chain   t?mace   s=51.1  m=\
+"The mace smashes the chain and the drawbridge slams down."
+
+#51.1
+"You're in the Sallyport.  To the north a courtyard is visible;
+to the south is an open drawbridge leading over a moat full of alligators.
+Doors also lead east and west."
+   s        23
+
+#52	  Parapet
+"You're on a parapet overlooking the entrance to the castle and moat on the
+south and the courtyard on the south.  At the west end a set of steps
+leads downward."
+   down|west   s?44.1  m="The steps are blocked by rubble."
+   down|west    44
+   nw       49
+
+#53	  Balcony
+"You're on a balcony with several interesting doors in strange locations."
+   e        66
+   w        63
+   ne       65
+   se       67
+   sw       62
+   down     40
+   nw       49
+
+#54	  Secret Stairs
+"You're in a secret stairway.  Steps lead up and down.
+There is a blue button mounted on the wall."
+   up      s?55.1  m="The steps seem to be blocked by rubble."
+   up       55
+   down     57
+   press\ button   c?50   s?56.0   s=56.1  m="Nothing seems to happen."
+   press\ button  m="Nothing happens."
+   take\ button  m="No way, its built into the wall."
+
+#55	  Secret Stairs
+"You're in a secret stairway.  Steps lead up and down.
+There is a green button mounted on the wall."
+   up       56
+   down     54
+   press\ button    62  m="A tapestry is revealed; it parts as you brush past."
+   take\ button  m="No way, its built into the wall."
+
+#55.1
+"You're in a secret stairway.  Steps lead up and down but rubble blocks the latter.
+There is a green button mounted on the wall."
+   down   m="You are blocked by rubble."
+
+#56	  Secret Stairs
+"You're in a secret stairway.  Steps lead down.
+There is a red button mounted on the wall."
+   down     55
+   press\ button   s?55.0   s=55.1  m="   BOOM!"
+   press\ button  m="Nothing happens."
+   take\ button  m="No way, its built into the wall."
+
+#56.1	  Secret Stairs
+"You're in a secret stairway.  Steps lead down and a small door is open
+to the south.  There is a red button mounted on the wall."
+   s        73
+
+#57	  Secret Stairs
+"You're in a secret stairway.  Steps lead up.
+There is a black button mounted on the wall."
+   n        58
+   w        32
+   up       54
+   press\ button   s=57.1  m="Heavy gates descend along the north and west walls."
+   take\ button  m="The button is too well attached."
+
+#57.1	  Secret Stairs
+   n|w    m="The gate won't budge."
+   press\ button  m="Nothing happens."
+
+#58	  You're in a little cell in the dungeon.
+"You're in a dimly-lit little cell in the dungeon with doors to the
+north, south, east and west."
+   n        59
+   s        61
+   e       c?33  m="Cobwebs"
+   e        60
+   w    
+
+#59	  You're in a little cell in the dungeon.
+"You're in a dimly-lit little cell in the dungeon with doors to the
+north, south, east and west."
+   n        58
+   s        60
+   e        59
+   w       c?33  m="Cobwebs"
+   w        61
+
+#60	  You're in a little cell in the dungeon.
+"You're in a dimly-lit little cell in the dungeon with doors to the
+north, south, east and west."
+   n        61
+   s        59
+   e       c?33  m="Cobwebs"
+   e        58
+   w        57
+
+#61	  You're in a little cell in the dungeon.
+"You're in a dimly-lit little cell in the dungeon with doors to the
+north, south, east and west."
+   n        60
+   s        58
+   e        61
+   w       c?33  m="Cobwebs"
+   w        59
+
+#62	  King's bedchamber
+"You're in the king's bedchamber.  There is a magnificent four-poster
+bed against the east wall and a beautiful tapestry on the south wall
+(well attached to it).  The only door is to the north."
+   n        53
+   s        55  m="The tapestry slides aside as you pass."
+   take\ tapestry  m="It's too well attached."
+
+#63	  Guest chamber
+"You're in the guest chamber.  The furnishings in here are nice, but
+nothing special.  There is a door in the east wall."
+   e       t?bible  m=\
+"Now, that's not very nice; these bibles are put here for weary travelers
+to use to renew their faith and find their way through life's puzzles...
+You really shouldn't swipe it!"
+   e        53
+   read\ bible   t?bible  m=\
+"The Good Book falls open to the first chapter of Revelations, where a note
+in the margin says: 'light a match before opening any doors in the dark!'"
+
+#64	  Storeroom
+"You're in the castle storeroom.  The only door leads west."
+   w        49
+
+#65	  East tower stairs
+"You're at the bottom of a long spiral staircase.  There is a door leading sw."
+   up       68
+   sw       53
+
+#66	  Sanctum
+"You're in the sanctum.  The walls are lined with bookshelves and
+doors lead south and west."
+   s        67
+   w        53
+
+#67	  Queen's boudoir
+"You're in the queen's chambers.  There are many barred windows and a door
+leading north west."
+   nw       53
+
+#68	  East tower stairs
+"You're at a landing in a long spiral staircase.  Doors lead south and west."
+   s        72
+   w        75
+   up      s?69.1  m="A blank wall blocks the stairs."
+   up       69
+   down     65
+
+#69	  Rapunzel tower
+"You're high above the castle in the east tower; in fact, you are so high up
+that you can see clouds outside the window.  A spiral staircase leads down."
+   down     68
+   take\ damsel  m="Don't be lewd! (This is neither the time nor the place)"
+   carry\ damsel|lift\ damsel   s=69.1   t+damsel  m=\
+"The damsel gratefully climbs into your arms and whispers
+\"take me to the cross-roads and I'll repay your kindness!\"
+You hear a sound like stone grating on stone."
+   climb\ rope   t?damsel  m=\
+"The rope is strong, but not strong enough to carry you and the damsel..."
+   climb\ rope    68   t?rope  m=\
+"You climb to the end of the rope and slip in through a window."
+   climb\ wig    68   o?wig   o-wig  m=\
+"You get 9 feet down and find a little tag that says
+\"Made in Hong-Kong, Inspcted by no 1\" --  the wig starts to shred!!
+You frantically scramble ...
+and just manage to get into a window as the wig falls apart."
+   jump     77  m="Geronimo! .......... SPLAT!"
+
+#69.1	  Rapunzel Tower
+"You're high above the castle in the east tower.  A spiral staircase leads
+downward into a blank wall!"
+   down   m="The blank wall won't budge"
+   drop\ damsel   t-damsel   s=69.0  m=\
+"Not very cavalier of you, but there's that grating sound again along with
+a puff of oily, ochre smoke."
+
+#70	  West tower stairs
+"You're at a landing in a long spiral staircase.  Doors lead south and east."
+   s        74
+   e        75
+   up       71
+   down     49
+
+#71	  West tower
+"You're high above the castle in the west tower.  A spiral staircase
+leads downward."
+   down     70
+   jump|climb\ wig  m="Nice try, but there are no windows..."
+
+#72	  East ramparts
+"You're on a long rampart that follows the east wall of the castle."
+   n        68
+   s        73
+
+#73	  South ramparts
+"You're on a long rampart that follows the south wall of the castle."
+   n        56   s?56.1
+   e        72
+   w        74
+
+#74	  West ramparts
+"You're on a long rampart that follows the west wall of the castle."
+   n        70
+   s        73
+
+#75	  North rampart
+"You're on a long rampart that follows the north wall of the castle."
+   e        68
+   w        70
+
+#76	  Nirvana
+   fuck    -1  m=\
+"Oooooooh!  Aaaaaaaaah!  Congratulations, you are an Expert Wanderer!"
+   *      m="You're wasting time!"
+
+#76.0
+"You're in Nirvana with the handsome prince, no longer a frog,
+who turns out to be the world's best lay!"
+   *       t?damsel   s=76.2  m="POOF! (cyan smoke)"
+
+#76.1
+"You're in Nirvana with the beautiful damsel, no longer in distress,
+who turns out to be the world's best lay!"
+   undress  m="You're already naked!"
+
+#76.2
+"You're in Nirvana with the handsome prince, no longer a frog, AND the
+beautiful damsel, no longer in distress, who are tied for the title of
+world's best lay!"
+   fuck    -1  m=\
+"OOOOOOOH!!!  AAAAAAAAAH!!  Congratulations, you are a Master Wanderer!"
+
+#77	  You Are Dead.
+"You Are Dead.
+"
+

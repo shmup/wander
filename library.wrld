@@ -1,0 +1,661 @@
+#1    Building Steps
+You're at the foot of the stairs of a huge pillored building.  There is a faint
+inscription on the stone crosspiece above the pillars.  Walkways go to the
+south, east and west.
+	east    44
+	west    m="Jagged rubble blocks your way"
+	up|north    2    m="You climb up the steps and into the building."
+	read    1    m="The inscription is much weathered by age and fallout, but you can just make out\nthe words: \'Harry Elkins Widener Memorial Library\'"
+	south    28    t?sword    m="The black sword tugs a bit to the north as you move."
+	south    28
+
+#2    Lobby
+You're inside a large vaulted lobby. There is a doorway to the south with light
+showing through. There is a door to the east and a desk to the west. The desk 
+has a sign on it. There are some stairs to the north.
+     read    2    m="The sign on the desk says \'You MUST show ALL books to the attendant\'"
+     south    2    t?bible    m="Bars fall down across the doorway"    s=2.1
+     south    1
+     north    3
+     west    17
+     show\ book    2    o?book    s=2.3    m="The guard arouses from his drunken stupor long enough to mutter 'O.K.'"
+     show\ book    2    m="Book? I don't see any book...."
+     east    18    s?18.0
+     east    0    m="Closed elevator doors block your way."
+     take\ sign     m="The sign is lacquered onto the desk and can\'t be removed."
+
+#2.1 Lobby
+You're inside a large vaulted lobby.  There is a barred doorway to the south
+with light showing through. There is a door to the east and a desk to the west.
+The desk  has a sign on it.  There are some stairs to the north.
+     read    2    m="The sign on the desk says \'You MUST show ALL books to the attendant\'"
+     south    2    m="Those bars have the weight of moral rectitude (and are three inches thick!)"
+     show\ bible    2    s=2.2    m="The guard wakes up long enough to look at your book, pushes a button,\ncausing the south door to open, and dozes off."
+     north    3
+     west    17
+     east    18
+
+#2.2 Lobby
+You're inside a large vaulted lobby. There is a doorway to the south with light
+showing through. There is a door to the east and a desk to the west. The desk 
+has a sign on it. There are some stairs to the north.
+     show\ bible    2    o?bible    m="The guard grumbles, looks at you with bleary eyes, and waves you on, not"     bothering to look at your book.
+     south    1    s=2.0
+     north    3
+     read    2    m="The sign reads \'THANK YOU for showing your books to the attendant\'"
+     west    17
+     east    18
+
+#2.3 Lobby
+You're inside a large vaulted lobby. There is a doorway to the south with light
+showing through. There is a door to the east and a desk to the west. The desk 
+has a sign on it. There are some stairs to the north.
+     east    18
+     read    2    m="The sign on the desk says \'You MUST show ALL books to the attendant\'"
+     south    1
+     north    3
+     west    17
+     show\ book    2    m="The guard mumbles: \'Leave an ol\' soljer alone, willya?"
+
+#3    Foot of stairs
+You're at the foot of the library stairs. To the west is a small door,
+to the east is the entrance to a gloomy hallway. There is some light
+from the south.
+     south    2
+     up|climb|stairs    4
+     east    5
+     west    16
+
+#4    Top of stairs
+You're at the top of some stairs. There are passages to the east and west.
+     east    6    c?20    m="Uh oh...."
+     east    6
+     west    9
+     down|south    3
+
+#5    gloomy hallway
+You're in a gloomy hallway. There is broken glass on the
+floor and some ruined models in display cases mounted on 
+the walls. There is an opening to the west, and darkness
+to the east and north.
+     take\ models   m="It\'s just ruined plastic that turns to dust in your hands."
+     west    3
+     east    30    v=1.1
+     north    36
+
+#6    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    11
+     south    13
+     east    10
+     west    7
+     down    4
+
+#7    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    13
+     south    6
+     east    12
+     west    8
+
+#8    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    9
+     west    7
+     east    34
+
+#9    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    11
+     south    12
+     east    9
+     west    8
+     southeast    4
+
+#10    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    10
+     south    8
+     east    11
+     west    8
+     down    11
+     northwest    6
+
+#11    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    9
+     south    10
+     east    15
+     up    10
+
+#12    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    9
+     down    7
+
+#13    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    7
+     south    8
+     east    14
+     up    13
+
+#14    You're in the notoriously confusing Folklore & Mythology stacks.
+You're in the notoriously confusing Folklore & Mythology stacks.
+     north    10
+     south    7
+
+#15    Rare Books Room
+You're in the rare books room of the F & M section. On one wall, in a secured
+casing, are the four tons of epic on aluminium records that A.B. Lord brought
+back from Serbo-Croatia. There are fabulous old books everywhere here, but
+most have become so fragile with age that it would be foolish to touch them.
+There is an exit to the east with a sign saying 'REMEMBER STACK PASS',
+and another exit to the south.
+	*    v=3.5  ...
+     east    12
+     south    16    m="(an automatic door quietly closes behind you)"
+
+#16    Union Catalogue
+You're in a large room full of card catalogues. There is an exit to the east.
+     east    3
+     read    m="The catalogue drawers are fused shut by age."
+
+#17    behind desk
+You're behind the library guard's desk. From here you can see that he is an
+audio-animitronic creation. The words 'Walt Disney World, INC' are written on
+his back.
+     east    2
+     kill    17    m="You can't kill something that's not alive to begin with."
+
+#18    library elevator
+You're in an elevator used by the building staff at one time. The elevator was
+controlled by buttons. The buttons are labeled 'up' and 'down'
+There is also an oddly-shaped keyhole on the panel with the buttons.
+     
+
+#18.0       library elevator
+     up|down    18    m="Nothing Happens, though the elevator is clearly functional."
+     lock    18    m="The elevator keyboard is already locked."
+     unlock    18    o?keys    o-keys    m="Your keys stick in the lock, and the doors close"    s=18.1
+     west|leave    2
+
+#18.1       library elevator
+You're in an elevator used by the building staff at one time. The elevator was
+controlled by buttons. The buttons are labeled 'up' and 'down'
+There are some keys stuck into an oddly shaped keyhole on the button panel.
+     lock    18    m="You turn the keys, there is a click, and the doors open.\nThe keys come loose in your hands"    t+keys    s=18.0
+     west|leave    18    m="The door is closed, and prevents your exit."
+     up    18    m="under construction"
+     down    18    s=18.2    m="The elevator plummets with a squeal of old machinery."
+
+#18.2       library elevator
+You're in an elevator used by the building staff at one time. The elevator was
+controlled by buttons. The buttons are labeled 'up' and 'down'
+There are some keys sticking out of an oddly shaped keyhole on the button panel.
+     up    18    s=18.1    m="The elevator jumps up with a jerk, then stops."
+     down    18    m="Nothing happens."
+      out    m="You can't leave, the doors are locked."
+     lock    18    s=18.3    m="The doors open, and the keys fall into your hands."    t+keys
+
+#18.3  Elevator
+You're in an elevator used by the building staff at one time. The elevator was
+controlled by buttons. The buttons are labeled 'up' and 'down'
+There is also an oddly-shaped keyhole on the panel with the buttons.
+      out      19
+     west     19
+     down    18    m="Nothing happens. The buttons seem to be locked."
+     up    18    m="Nothing happens. The buttons seem to be locked."
+     unlock    18    t?keys    s=18.2
+
+#19    Elevator anteroom.
+You're in a little anteroom just to the west of an elevator.  There are signs
+over doors to the west and south. The signs read, respectively
+'Science fiction section' and 'Raymond Chandler Room'
+     west     20
+     south     43   v+2.2
+     east  18  s?18.3  
+     east  19  m="The elevator doors are closed."
+
+#20    Science Fiction antechamber.
+You're in the outer chamber of a once-famous collection of science fiction.
+There are doors in all directions, and of all different shapes.
+     east    19
+     west    22
+     north    23    m="The doorway closes behind you like a certain orifice."
+     south    25
+
+
+#22    star-trek room.
+You're in the Star-Trek room. This was quite a tourist draw in its time. 
+Its a mock-up of the Enterprise bridge. Nothing works, of course.
+The weapons control board is lit, and a button marked
+'Photon Torpedo FIRE' is blinking.
+     out|east    20    m="[Shtoonk!] The doors open as you pass."
+     push\ button    22    c?1    m="The screen breaks open and the ziegfield follies girls rush by you and out."
+     push\ button    22    c?20    m="[ZAAAAP!!!]"
+     push\ button    22    c?25    m="[BZZZZZZZZTTT!]"
+     push\ button    22    c?33    m="[beep!]"
+     push\ button    22    c?50    m="Nothing happens."
+     push\ button    22    m="[Pow!]"
+     warp    22    m="HmmmmmMMMMMMM......"
+
+#23    Moorcock section
+You're in the Michael Moorcock room of the sci-fi section. The books are long
+dust, but the mirrors on all sides of the room are amazingly clean.
+The wall on the south is made of some sort of flesh. It has puckered
+closed. There is a door to the north.
+     south    0    m="The fleshy wall is tougher than flesh, and won't open."
+     cut\ wall    0    t?sword    m="The sword bounces off the wall; the wall has no soul."
+     cut\ wall    0    t?knife    m="The knife is not strong enough to cut the wall"
+     cut\ wall    0    m="With what?"
+     tickle\ wall|tickle\ flesh    0    t?feather    s=23.1    m="The Wall shudders, and dialates (how moritfying!)"
+     tickle\ wall|tickle\ flesh    0    m="With what?"
+     take\ sword    0    t?sword    m="You already have it!"
+     take\ sword    0    o?sword    m="There is a faint chuckle from somewhere when you lift the sword.\nIt seems as if you have held it before, and there isin your soul a terrible\nambivalence. Shockingly, the sword seems to settle into your hand of its own\naccord, and a faint hum, something like a dirge and something like a spell\nbeing cast comes from the weapon."    t+sword
+     north    24    s=23.0
+
+#23.1       Moorcock section
+You're in the Michael Moorcock room of the sci-fi section. The books are long
+dust, but the mirrors on all sides of the room are amazingly clean.
+The wall on the south is made of some sort of flesh. It has sagged
+open. There is a door to the north.
+     south    20    s=23.0
+     cut\ wall    0    m="Not much point in that.... It's open."
+     tickle\ wall    0    t?feather    m="The wall is already exhausted, but some giggling is heard"
+     take\ sword    0    t?sword    m="You're already carrying it!"
+     take\ sword    0    o?sword    m="There is a faint chuckle from somewhere when you lift the sword.\nIt seems as if you have held it before, and there isin your soul a terrible\nambivilence. Shockingly, the sword seems to settle into your hand of its own\naccord, and a faint hum, something like a dirge and something like a spell\nbeing cast comes from the weapon."
+     north    24    s=23.0
+
+#24    closet of Moorcock room.
+You're in the closet next to the Michael Moorcock room.
+     south    23
+
+#25    Andre Norton room
+You're in the Andre Norton room. The place is filled with vicious-looking
+sleeping mutant cats! The slightest sound might wake them, so be very careful!
+     drop    c?50    s=25.1    m="Ooops! Shifting your weight to drop that made some noise. You still\nhave it, but one of the cats has awakened!"
+     north    20
+     south    c?50    s=25.1    m="Ooops! The cats mutant sense of hearing makes an ordinary footstep sound to\nthem like a doorbell (odd!). Anyway, one cat has awakened."
+     south    26    v=26.4
+
+#25.1    Andre Norton room
+You're in the Andre Norton room. The place is filled with vicious-looking
+sleeping mutant cats! A cat the size of a small horse has awakened and
+is staring intently at you.
+     north    0    m="I wouldn't, if I were you. The cat seems to be very sensitive to movement"
+     kill\ cat    t?sword    m="As you draw your sword, the cat seems to recognize it, and, hissing with\nfear, backs away into the shadows. The sword snickers, and begins...to...sing."
+     kill    t?knife    m="With only that knife? Her teeth are bigger than that knife!"
+     kill    0    m="Oh sure."
+     south     ,,,  v=26.4
+     south    26    t?sword    m="The sword moans slightly, and seems to dip of its own accord towards\none of the still-sleeping cats. You restrain it with some effort."    v=26.4
+     south    m="Not a chance of slipping by that impassive looking cat."
+     pet\ cat    m="The cat begins to purr, and falls blissfully asleep."    s=25.0
+
+#26    Dune room
+You're inside an odd room filled with sand. Mounds of lightly buried,
+(and quite mummified), cat dung make it clear why the cats choose to live
+next door.  There is a sign with the name 'Frank Herbert' here.  There is
+a door to the north, and part of a door is above the sand to the east.
+The air is so dry that it is dangerous to be here for any length of
+time; one's skin dries out and.... well.
+     *    ,,,    v-26.1
+     *    ,,,    v<26.2    m="Gasp! Skin's going...."
+     *    -1    v?26.0    m="Cough.... (sweat"!)
+     north    25
+     east    m="That door is covered with Dung. You would have to dig it out."
+     dig    t?shovel    m="Phew! But with a little effort, you doo it [sic]."    s=26.1
+     dig    m="With no shovel? Through all that cat-doo? No Way!"
+
+#26.1 Dune room
+You're inside an odd room filled with sand. Mounds of lightly buried,
+(and quite mummified), cat dung make it clear why the cats choose to live
+next door.  There is a sign with the name 'Frank Herbert' here.
+There is a door to the north, and a recently dug-out door to the east.
+     *    ,,,    v-26
+     *    ,,,    v<26.2    m="Gasp! Skin's going...."
+     *    -1    v?26.0    m="Cough.... (sweat"!)
+     north    25
+     dig    t?shovel    m="Phew! Unrewarding!"
+     dig    m="With no shovel? Through all that cat-doo? No Way!"
+     east    27
+
+#27    computer-game room
+You're in a room used to give demonstrations of computer games. There is
+a dessiccated corpse still seated at a console, which still displays
+the words 'How? With your bare hands?'  There is a bright red button here
+marked 'off.' There are exits to the west, north, and south.
+     push\ red|push\ button    -1    m="That'll teach ya...."
+     north    19    m="You slip though some one-way doors."
+     south    25    m="As you step through, you notice the smell of cats."
+     west    26    v=26.4
+     yes    2    m="The panel glows, and the familiar 'beam-me-up' sound is heard."
+     no    0    m="nothing happens."
+
+#28    chapel stairs.
+You're at the foot of some stairs which lead into a chapel.
+A path leads north, and some stairs lead south and up.
+     up|south    29    t?sword    m="The sword seems to moan and shudder in your hand."
+     up|south    29
+     north    1
+
+#29    inside chapel.
+You're inside what was once a very, very, socially prominent church. 
+Murals on the wall show the 'prophet of WWXII', called 'Bo Diddley' by some,
+performing the Miracle of the Unclasped Hand.  Which happened on
+the very ground on which you now stand!!!!!!
+There is a door to the north.
+     out|north    28
+     drop\ sword    0    m="A sort of gulping, sucking sound comes from the sword as it drops from your\nhand at last."    t-sword    o+sword
+     take\ murals   m="The murals are stuck onto the walls."
+
+#30    dark stairs
+You're at the top of some dark stairs. A passage goes west towards some
+faint light.
+     down    31
+     west    5
+
+#31    You're at the fork in passage.
+You're at a fork in a gloomy passage. Sub-passages lead north and south.
+There are stairs leading up.
+     up    30
+     north    32
+     south    33
+
+#32    projection room.
+You're in a projection room of some sort. There are many old style
+fork switches here. Most have oxidized solidly in place, but one looks
+like it was recently installed. It is open. There is one door to the south.
+     throw|switch|close    s=33.1    s=32.1    s=40.1
+     south    31
+
+#32.1
+You're in a projection room of some sort. There are many old style
+fork switches here. Most have oxidized solidly in place, but one looks
+like it was recently installed. It is closed. There is one door to the south.
+     south    31
+     open    m="[pfft"!]    s=33.0    s=32.0    s=40.1
+
+#33    Movie Room.
+You're in a medium-sized screening room. The screen is dark right now.
+There's an open door to the north, and out-only doors to the
+southwest and southeast.
+     north    31
+     southwest    37
+     southeast    40
+
+#33.1    Movie Room.
+You're in a medium sized screening room. There is a film being played
+over and over again. The film is titled:\n\n\t
+'U.S. Army -- Training film #356412864 -- Veneral Disease.\n\n
+There's an open door to the north, and out-only doors to the
+southwest and southeast.
+The film is pretty grotesque, except for the beginning part.
+     north    31
+     southwest    37
+     southeast    40
+
+#34    Sex book room.
+You're in the Blaster's & Swanson collection of erotic books. This place
+was clearly looted, but perhaps something of value remains. To the north
+are some unclean looking movie booths. To the west is a low hallway with
+the a sign on it. There is a hole in the floor, but if you went down, you
+probably couldn't get back up again.
+     west    8
+     read\ sign    m="The sign says 'Remember Stack Pass'"
+     read\ book    m="Unfortunately, almost all the books are sealed shut with age and, well."
+     down    36
+     north    35
+     take\ vibrator    o~vibrator    m="Maybe you had better just think about it, or take a shower."
+     take\ vibrator    c?50    o?vibrator    m="Are you sure you want to do that? Nobody's watching?"
+
+#35    Movie booth
+You're in one of those little movie booths. There is a coinbox with a
+sign on it. You are sitting on a little bench facing a plastic
+rear-projection screen.
+     read    m="The sign says: Insert one quarter for thrills!"
+     insert\ coin    o~coin    m="No coin here fella."
+     insert\ coin    o?coin    m="There is a click, a whir, and then a flash from the screen as the light\nburns out."    o+coin@36
+     out|south    34
+
+#36    bookie shop.
+You're in what was once a bookie operation run out of the library.
+To the north is a basket which caught the coins from the coinslots 
+in the movies above. To the south is a dark doorway.
+     south    5
+
+#37    Men's room.
+You're in a musty-smelling men's room. The urinals are filled with some sort
+of softly-glowing fungus. The doors have all fallen off of the stalls. There
+is a vending machine here. There are three knobs lettered 'a', 'b', and
+'c' sticking out of it.  A sign on it says: 'Insert $0.25 and pull knob 
+for merchandise.' There is a door to the northeast.
+     ne    33
+     pull\ a|pull\ b|pull\ c    m="A sign on the machine lights up 'Pay' -- Then Pull'\n"
+     push\ a    m="Coin first, idiot!"
+     insert\ $0.25    m="The machine does accept quarters, if you have one."
+     insert\ quarter    t~quarter    m="You don't seem to have one on you."
+     insert\ quarter    c?30    s=37.2    m="Ka-CHUNK"!    o-quarter
+     insert\ quarter    s=37.1    m="KA-chin... Ooops! It seems to have stuck!"    o-quarter
+
+#37.1    Men's room.
+You're in a musty-smelling men's room. The urinals are filled with some sort
+of softly-glowing fungus. The doors have all fallen off of the stalls. There
+is a vending machine here. There are three knobs lettered 'a', 'b', and
+'c' sticking out of it.  A sign on it says: 'Insert $0.25 and pull knob 
+for merchandise.' There is a door to the northeast.
+     ne    33
+     hit\ machine    c?50    m="...CHUNK! That seems to have freed it up."    s=37.2
+     hit\ machine   m="That didn't quite do the trick..."
+     pull\ a|pull\ b|pull\ c    m="A sign on the machine lights up 'Pay' -- Then Pull'\n"
+     push\ a    m="Coin first, idiot!"
+
+#37.2    Men's room.
+You're in a musty-smelling men's room. The urinals are filled with some sort
+of softly-glowing fungus. The doors have all fallen off of the stalls. There
+is a vending machine here. There are three knobs lettered 'a', 'b', and
+'c' sticking out of it.  A sign on it says: 'Insert $0.25 and pull knob 
+for merchandise.' There is a door to the northeast.
+     ne    33
+     pull\ a s=37.0    o+comb    m="[clatter"!]
+     pull\ b    s=37.0    o+guidebook    m="[plop"!]
+     pull\ c    m="Button 'c' doesn't pull out. Maybe it is empty."
+     push\ c    m="The vending machine slides into a wall."    s=37.3
+
+#37.3    Men's room.
+You're in a musty-smelling men's room. The urinals are filled with some sort
+of softly-glowing fungus. The doors have all fallen off of the stalls. There
+is a vending machine here which has slid out of the way to reveal a
+secret passage going south.
+     pull\ c    m="The vending machine slides back out of the wall, closing off the passage."    s=37.0
+     pull\ a|pull\ b    m="It won't budge while the machine is in the wall."
+     south    38
+     ne    33
+
+#38    Plagarism archives.
+You're in a room reserved for examples of plagarism. There are doors to 
+the north, south, and east. There is also a large pit in the center
+of the room. It's too dark to see the bottom.
+     north    37
+     south    39    m="As you go through the door you see a sign that says: K. Laumer/P. Langston&NH\nYou have 50 credits."    v=6.50
+     east    40
+
+#39    Spaceport Bar
+You are in the Spaceport Bar on Aldebaran III, which is now deserted
+except for you and the burly bartender whose eyestalks keep twitching
+suspiciously in your direction.  A large sign hangs over the bar.
+     read\ sign    t~guidebook    m="The sign says 'Jsu Snarret POTE kirs meawed jokero quakonk!'\n(obviously some local dialect)."
+     read\ sign    m="The sign says 'All Terrans MUST show papers before leaving"!'
+     show\ papers    m="The bartender checks your papers and grunts in amazement."
+     buy\ drink    v>6.4    v-6.5    m="It cost 5 credits but it's good and you slurp it down!"
+     buy\ drink    m="A drink costs 5 credits and you ain't got it."
+     bribe\ bartender    v-6.10    m="The bartender solemnly folds your 10 credit offering into his apron."
+     hit\ bartender    m="No way!  With those six meatcleavers for manipulative members you wouldn't even\nbe good for a bloody mary!"
+     ask    m="The bartender doesn't seem too friendly towards you at the moment."
+     out|north    38
+
+#40    Behind projection room.
+You're behind a projection room. The screen is dark. It's pretty dusty back
+here. There are spiral stair leading up, but they look pretty shaky. There
+are doors to the north and west.
+     north    33
+     west    m="It's a one-way door (the other way.)"
+     up    41 m="Those stairs are almost too weak to hold your weight."
+
+#40.1  Behind projection room.
+You're behind a projection room. The screen is lit with blurry figures.
+It's pretty dusty back here. There are spiral stairs leading up, but they
+look pretty shaky. There are doors to the north and west.
+     north    33
+     west    m="It's a one-way door (the other way)."
+     up    41 m="Those stairs are almost too weak to hold your weight."
+
+#41    Spiral Staircase Chamber.
+You're in a square chamber 5 cubits by 7 cubits by 8 cubits high.
+The top of a spiral staircase pokes out of the floor here.
+There is an evil gnome here, bristling at you!
+     kill\ gnome    -1    t~knife    t~sword    c?85    m="The gnome whips his knife up and kills you."
+     kill\ gnome    t?sword    m="The black sword pulses in your hand and begins to hum evilly at the\nunfortunate gnome. The gnome pales, and leaps at you, hoping to score\nwith the knife. The sword snarls, and forces your arm up, spitting him.\n\nHis body vanishes."    s=41.1
+     kill\ gnome    t?knife    s=41.1    m="Startled that you have a knife, the gnome jumps back."
+     *    c?20    m="'Sure, kid' says the gnome, pulling out a nasty looking barbed knife"
+     *    c?20    m="'Up your nose with a rubber hose.' screams the monster."
+     *    m="The gnome is armed and will not let you pass without a fight!"
+
+#41.1    Spiral Staircase Chamber.
+You're in a square chamber 5 cubits by 7 cubits by 8 cubits high.
+The top of a spiral staircase pokes out of the floor here.
+There is an evil gnome here, waving a knife at you!
+     kill\ gnome     c?20    m="The gnome dances back from your attack (watch out for a stop thrust)."
+     kill\ gnome    o~shoe    c?20    m="The gnome mutters a Spanish curse and kicks off a shoe at you.\n\nThat misses."    o+shoe
+     kill\ gnome    c?20    m="'CARAMBA!' yells the gnome as you knick him in the fleshy part of his arm."
+     kill\ gnome    c?20    m="'!MADRE DE DIOS!' hollers the gnome as you slice off one of his fingers."
+     kill\ gnome    c?20    m="'ELECTRIC DONKEY BOTTOM WIPER!' snarls the gnome as your knife cuts his cheek.\nThe gnome seems to have a French accent."
+     kill\ gnome    c?70    s=41.2   m="It's hearts & flowers time for the gnome as your knife guts his spleen"
+     kill\ gnome    -1    c?10    m="The gnome unexpectedly pulls an old Mexican trick on you and neatly\nexcises your liver"
+     *    -1    c?40    m="The gnome seizes the opportunity and slices you all the way from Moose\nCreek to Otter Valley."
+     *    m="Better keep you eye on that gnome, buddy!"
+     kill\ gnome    -1    c?10    m="The gnome unexpectedly pulls an old Mexican trick on you and neatly\nexcises your liver
+
+#41.2
+You're in a square chamber 5 cubits by 7 cubits by 8 cubits high.
+The top of a spiral staircase pokes out of the floor here."
+     out|leave|east    40
+     down    42
+
+#42    Vault.
+Your're in an anteroom facing a large bank vault door. Rather than
+a combination lock, the door has a small sign saying 'Door opens when
+other ____ falls.'
+There is a spiral stair going up.
+     up    41
+     drop\ shoe    t?shoe    m=\
+"The shoe falls, and the door opens to reveal a solid brick wall
+with the words 'under construction' splashed in spray paint on the wall."
+
+#43    Mystery Section
+You're in the famous Raymond Chandler Memorialmystery collection.
+There are thousands of mystery books here, all of them decayed by
+the years and by too-critical readers into pulp.
+	*   v=4.5  ...
+     north    19
+
+
+#44     Entrance to Pusey
+You're at the entrance to the subsidiary Pusey library. It was
+called the "Pusey Pit" in its day because it is entirely underground.
+except, of course, for this entrance.
+A passage enters the library, and another leads north
+	east|enter|in   m="The entrance is blocked"
+	north   46
+	west    1
+
+#46     West side of library.
+You're on the west side of the main library, in a passage between
+it and Pusey.
+	north   47
+	south   44
+
+#47     Dexter Gate
+You're on a well beaten path that ends here at an old iron gate. The
+path was beaten by computer fanatics on their way to the computer
+center from the so-called "river houses."
+	south   46
+	north   m="The old iron has some strength in it yet. You can't pass"
+	west    48
+
+#48     Back Door
+You're at the back door of the main library.  There is a lot of ivy
+clinging to the walls here, and ivy tendrils hang over most of the door,
+waving as if in a breeze.... but there is no breeze.
+	in|south|enter  m="you move forward, but the ivy grabs at you and you must leap back!"
+	under|crawl\ in|crawl\ south|crawl\ under   49   m="The ivy cannot reach you and so you get in."
+
+#49     Rear anteroom
+You're inside an anteroom at the back of the library. There is an exit
+to the north that looks partly blocked by ivy. The main chamber is
+to the south.
+	south   50
+	north   m="The ivy, which prefers grabbing foes from the inside, wraps around your throat." ...
+	north   t~sword     -1  m="... and chokes you death"
+	north   t?sword  48    m="The sword snarls, as if angry at doing menial work, and hacks off some of the ivy. the rest spreads itself out of your way and lets you pass."
+
+#50     Pit room
+"You're in a large circular room with a pit in the middle. A faded sign over
+the pit says:
+
+		   Throw Literary Critics
+
+			   HERE!
+			     |
+			     |
+			     V
+
+
+Bubbling sounds come from the pit."
+	north|jump    -1  m="Geronimooooooooooooo........"
+	throw\ critic   o?critic    o-critic  m="Noooooo! Agh! AAAAAaaaaahhhhh...."
+	throw\ critic   o~critic    m="You seem to be out of critics."
+	ne|east 51
+	west    m="steel bars block your way"
+	south   49
+
+#51     East side of pit.
+You're on the east side of a very deep pit from which come bubbling sounds.
+There's a door to your east.
+	sw|west 50
+	east    52
+	jump    -1  m="Geronimooooooooooooo........"
+
+#52     stairwell
+You're in a stairwell. Stairs go up and down, and an exit leads west.
+	west    51
+	down    53
+	up      m="under construction"
+
+#53     stairwell
+You're in a stairwell. Stairs go up and down, and an exit leads west.
+	west    54
+	up      52
+	down    55
+
+#54     Krazy Komix Kollection
+You're in a shelf lined room with comfortable, leather lined chairs,
+the bottoms of which are lined with fossilized chewing gum.
+A brass plate set in the wall says 'Krazy Komix Kollection'
+	*   v=2.5   ...
+	east|out    53
+
+#55     stairwell
+You're in a stairwell. Stairs go up and down, and an exit to the west
+is locked.
+	up  53
+	west|out    56
+
+#56     spike room
+You're in a medium size room the walls of which are lined with
+inward-pointing spikes.  There's one exit to the east.
+	east|out    55
+
+#127    inside sack
+You are inside a leather sack. There is some light above you.
+	out|up|remove\ bag  %101%

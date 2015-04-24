@@ -1,0 +1,969 @@
+: (c) P. Langston & N. Howard   %W%  last mod %G% -- P.S.L. games
+#1      Aldebaran III Spaceport
+You're in the Aldebaran III spaceport.  An electrified chain link fence
+surrounds the area with gates leading west and south.
+     south   2
+     west    100
+     north|east|ne|nw|se|sw  m="ZZZAAAAPPPP!       OUCH!"
+     take\ card  o?card  t+card  m="\
+Done
+Your account has 50 credits left.
+(You can type "balance" any time to find current status)."
+     drop\ card  t?card  o+card@101  m="\
+Done
+A southeast wind blows your credit card over the fence."
+     drop\ papers  t?papers  o+papers@2  m="\
+Done
+A brisk north wind blows your identity papers away."
+
+#2	Waiting Room
+"You are in the tiny waiting room for the spaceport.  No one is around.
+There is a large vending machine here with a dark window, several buttons,
+and a large slot marked \"insert credit card here\"."
+     north|out    1
+     insert\ card  v<6.10  o+card  m=\
+"The machine lights up,
+A light blinks \"Insufficient Credit\",
+and your card is spit out onto the floor."
+     insert\ card  o+card  s=2.1  m="The machine lights up"
+     attack\ machine  m=\
+"That would only help if the machine was broken, and it's not!"
+     press\ button  v?INP_W3.button  m="Nothing happens"
+     press\ button  m="I'm not sure which button you mean."
+     condoms  v?INP_W1.condoms  m="Let's keep this on a high, moral plane, buddy."
+     take\ coins  o?tokens  ,,,  c="take tokens"
+
+#2.1 You're in front of the vending machine in the Spaceport waiting room.
+"You are in front of the vending machine in the waiting room for the spaceport.
+A credit card protrudes from a large slot and four buttons are lit:
+       blue button --- \"Cigarettes   10 CR\"
+       puce button --- \"Mystery Grab Bag   10 CR\"
+       red  button --- \"Biorhythms   25 CR\"
+       grey button --- \"Exotic Coins   25 CR\""
+ push         v<6.10  m="-=[Insufficient Credit]=- flashes."
+ push\ blue\ button o~pack v-6.10 v+3.10 o+pack m="Rattle, rattle,... thunk!"
+ push\ blue\ button  m="-=[Sold Out]=- flashes."
+ push\ puce\ button  o~condoms   v-6.10  o+condoms   m="KaChunk ... Plop"
+ push\ puce\ button  o~dictionary  v-6.10 o+dictionary m="KaChunk ... CRASH!"
+ push\ puce\ button  m="-=[Sold Out]=- flashes."
+ push         v<6.25  m="-=[Insufficient Credit]=- flashes."
+ push\ red\ button  v-6.25  m="KaChunk!
+Your biorhythm reads:
+Intellectual-medium\nPhysical-medium\nEmotional-medium\nFinancial-low"
+     push\ grey\ button   o~tokens v-6.25 v+2.2 o+tokens m="\
+Two small, blue metal discs labelled `A S S' on one side and
+`Aldebarran Subwalk Systems' on the other bounce out of the machine
+and clatter onto the floor at your feet."
+ push\ grey\ button   m="-=[Sold Out]=- flashes."
+ push\ button    m="Push which button?"
+ push      v?INP_WC.2  m="Push %INP_W2% what?"
+ push      m="Push what?"
+ insert\ card  m="Your credit card is already in the machine..."
+ take\ card  s=2.0   t+card  m="The card slips out into your hand."
+
+#100  Customs
+"You are in a low-roofed customs building with long tables stretching between
+a door at the east and a door at the west.  A large sign reads
+   +---------------------------------+
+   |    --> SHOW PAPERS HERE <--     |
+   |     --> PAY DUTY HERE <--       |
+   |  HAVE YOU ANYTHING TO DECLARE?  |
+   +---------------------------------+
+in a dozen languages.  A serious-looking customs official is eyeing you."
+     declare    m=\
+"\"You can't declare anything until I know your identity!\" says the official."
+     attack\ official   m="\
+\"Relax, Terry.  Violence will get you nowhere, here.\""
+     *  o?papers@5 s=100.2 m=\
+"\"Oh sure; you lost your papers.  Well, you had better find them or
+there will be a stiff fine!\"  The official doesn't seem too convinced."
+     *  1  o~papers  m=\
+"\"What?  No papers?  You're in trouble, Terry!
+Deportation is too good for your kind, but...\"\n"
+
+#100.0  East End of Customs Building
+      e    1    m="\
+The official looks a little non-plussed as you back through the door."
+     show\ papers  o?papers  s=100.2 m="\"Hmm, a Terry\" mumbles the official"
+      *    c?50  m="\"Your papers, pleese\", lisps the official"
+
+#100.1  West End of Customs Building
+      w    3    m="\
+The official makes a little circle by his ear with his finger
+while watching you leave."
+     show\ papers  o?papers  s=100.2 m="\"Ugh, a Terry\" mumbles the official"
+      *    c?50  m="\"Your papers, pleese\", lisps the official"
+
+#100.2
+"\"Have you anything to declare?\" snaps the customs official"
+     sorry  m=\
+"\"No reason to apologize, we're used to the ways of Terries...\""
+     thanks m="\"No thanks necessary... I'm paid to do this.\""
+     east  1  s=100.0  m=\
+"\"...and don't come back, Terry...\", mutters the official as you leave."
+     west  t?card  m=\
+"\"I don't believe you've declared that credit card\", admonishes the official."
+     west  t?condoms  m=\
+"\"You wouldn't try to slip a package of contraceptive devices through
+customs, would you?\" smirks the official."
+     west  t?dictionary  m=\
+"The customs official stops you, saying,
+\"That looks like a rather new book you're carrying!\""
+     west  t?cigarettes  m=\
+"\"Too bad those aren't Terry cigarettes, but you'll have to declare
+them anyway\", you are reminded."
+     west  3  s=100.1  m=\
+"\"Welcome to Aldebaran III, I suppose\",
+intones the official as you pass through."
+     bribe  m="You haven't got anything that the official wants."
+     out    m="Which way out? East or west?  (the spaceport is east)"
+     no     m="\"If you really have nothing to declare you may go.\""
+     *      t?papers  t?notes  v?NUM_CARRY.2  ...  m=\
+"I don't believe you have anything left to declare, you may go..."
+     declare\ papers|declare\ notes|declare\ tokens|show\ papers     m=\
+"\"There is no duty on those\", barks the exasperated official."
+     declare\ card  t?card  v-6.5  o+card@3  m=\
+"\"Yes\", says the official and then mutters to himself,
+\"credit card -- five credits\"."
+     declare\ condoms  t?condoms  v-6.1  o+condoms@3  m=\
+"The guard smiles discreetly and scribbles a \"1\" on his pad."
+     declare\ dictionary  t?dict  v-6.3 t?dict  o+dict@3  m=\
+"\"Hmm, looks pretty valuable\", he says as he scribbles a \"3\"."
+     declare\ cigarettes  v-6.1  t?cigarettes  o+cigarettes@3  m=\
+"\"Filthy habit\", the official mutters, writing a \"1\" on his pad."
+     declare\ innocence     m="Oh sure; we're all innocent of something, eh?"
+     declare  m="Declare what?  Never heard of it..."
+
+#3	Paved Road Outside Door
+"You're on a broad, paved road which dead ends before a door into a wide,
+low customs building to the east with a chain link fence attached to it.
+You are right outside a large corner door with a dilapidated electic sign:
+
+	     * * * * * * * * * + * * * * *
+	      * * + *  CLUB  407  * * + *
+	     * * * * * * * + * * * * + * *
+
+To the north an alley winds between this building and another small building
+to the northwest."
+     in|ne  4
+     *  t?map  t-map  ,,,  m=\
+"The map in your hand glows briefly.  You catch a glimpse of a confusing
+maze of roads leading west toward an urban area and the scrawled words:
+
+
+\"Find Ignarp in Crystal City
+	   --
+secret password is 'Axolotyl'.\"
+
+
+Then the map turns into sooty ash."
+     north  5  v>6.30  t?card  o+ruffians@4  o+card@4  v-6.20  m=\
+"As you step into the alley two ruffians bump into you & make profuse
+apologies... (better check your pockets)."
+     north  5
+     east  100
+     west  6
+     nw  18
+
+#4	Spaceport Bar
+     buy   o?%INP_W2%  m="The %INP_W2%'s not for sale."
+     buy   m="\"I'm all out of %INP_W2%\", the bartender insists."
+     read\ sign  ...  m=\
+"The sign says \"Jsu Snarret POTE kirs meawed jokero quakonk!\"
+(obviously some local dialect)."
+     read\ sign|translate\ sign  t?dictionary  m=\
+"Checking your dictionary you discover that the sign says:
+ \"Due to new liquour law all Terrans MUST show papers before leaving!\""
+     show\ papers  t~papers  m="You don't have any..."
+     take\ card  o?ruffians  o?card  t~card m="\
+As you reach for the card the smaller of the two ruffians quickly steps on
+it, winking at his buddy and feigning nonchalance."
+     attack\ ruffians  o-ruffians t+card t+tokens v+2.2 m="\
+\"My!  What lovely sandals!\" You exclaim as you pick up the small thug by all
+six pseudopods and dangle him over the pitcher of foul smelling brew at their
+table.  \"B..But I thought you Terries were pacifists!  Let go of me!\" he
+squeals.  \"Oh, you're quite right; I beg your pardon\", you agree, dropping
+him into the pitcher eyestalks first.  As the other ruffian starts to get up
+from the booth to attack, you flick the pitcher containing his cohort into
+his lap and the two of them disappear under the table in a mass of writhing
+pseudopods and eyestalks.  Finally extricating themselves the two ruffians
+escape out the door as you pocket their valuables."
+
+#4.0
+"You are in the dimly-lit Spaceport Bar on Aldebaran III, which appears to
+be nearly deserted except for you and the burly bartender whose eyestalks
+keep twitching suspiciously in your direction.  A large sign hangs over
+the door to the south."
+     show\ papers  s=4.1  m=\
+"The bartender checks your papers and grunts in amazement."
+     buy\ drink  v<6.5  m="A drink costs 5 credits and you ain't got it."
+     buy\ drink  v-6.5  m=\
+"It cost 5 credits and tastes like kerosene but you slurp it down!"
+     bribe\ bartender  o~dictionary  v-6.25  o+dictionary  m=\
+"The bartender solemnly folds your offering into his apron and leaves
+something sitting on the bar."
+     bribe\ bartender  v-6.10  m=\
+"The bartender solemnly folds your offering into his apron."
+     hit\ bartender  m=\
+"No way!  You may be big and strong, but with those six huge manipulative
+members he could turn you into a bloody mary!"
+     ask  m=\
+"The bartender doesn't seem too friendly towards you at the moment."
+     south|out  m=\
+"With an amazingly graceful movement for someone his size,
+the bartender leaps over the bar and blocks your exit
+while pointing at the sign!"
+
+#4.1
+"You are in the dimly-lit Spaceport Bar on Aldebaran III, which appears to be
+nearly deserted except for you and the burly bartender who has brought you a
+drink, (on the house), after learning that you are a user of UNIX software."
+     out  3  m="The bartender waves a pseudopod in farewell."
+     ask  v?4.0  v=4.1  o+map  m=\
+"The barkeep feigns ignorance, but leaves something lying on the bar."
+     ask  v>4.0  m=\
+"The bartender gives you a worried look,
+probably thinking that you ask too many questions."
+     read\ map  o?map  m="It's too dark in here to decipher it."
+     drink  m="Guzzling these free drinks isn't a bad life."
+     hit\ bartender  m="\
+The barkeep is so BIG that your hardest blow strikes him as a brotherly pat
+which he returns with great enthusiasm.  When the birds stop chirping and
+the stars dim a little you grope your way back to a barstool."
+
+#5	Dark Alley
+"You're in a dark alley between buildings.  To the south you can see a paved
+road that passes in front of the buildings; to the north the alley becomes
+even darker."
+     north  101
+     south  3
+
+#101    Bum's hangout
+"You're in a small cul-de-sac at the end of a dark alley.  Even your Terran
+nose can clearly detect the overwhelming smell of old urine here and under
+your feet you feel damp cardboard.  You should probably add the observation
+that Aldebaran society includes derelicts to your notes."
+     north  m="Ouch!  An electrified chain-link fence blocks your way."
+     south  5
+     east|west  m="The wall of a building blocks your way."
+     take\ cardboard|move\ cardboard    m=\
+"The cardboard is so soggy with urine that it falls apart in your hands."
+     add\ observation   o?notes  m="\
+Since you have no pen or pencil perhaps you should just remember that..."
+
+#6	Paved Road
+"You're on a paved road that leads east toward the Spaceport and west over a
+hill toward some glinting towers in the distance."
+     east  3
+     up|over\ hill|west|towers  7
+
+#7	Lumbaga Lane
+"You're on Lumbaga Lane, which is on the periphery of a very confusing traffic
+interchange completely surrounded by trees.  It's impossible to tell north
+from south here, you can only tell left from right."
+     *  v?5.112  v=5.0  m="Do you want a hint?"
+     yes  v?5.0  v=5.1  m=\
+"Although the consonants are not wrong, only the vowels are right.
+(When choosing street names.)"
+     left  v+5.16  8
+     right  v+5.16  7
+     n|s|e|w  m=\
+"Compass directions have no meaning here, BUT going up and over the hill
+will get you back toward the spaceport."
+     up|over  6
+
+#8	Anchor Avenue
+You are Ambling along Anchor Avenue
+     left  7
+     right  9
+
+#9	Retief Road
+You are Rambling 'Round Retief Road
+     left  10
+     right  7
+
+#10	Ptaav Place
+You are Passing Ptaav Place
+     left  11
+     right  7
+
+#11	Endore Expressway
+You are Enjoying Endore Expressway
+     left  7
+     right  12
+
+#12	Ytterbium Yard
+Yes! Yt's Ytterbium Yard
+     left  7  m="Not always..."
+     right  7  m="Not always..."
+     sometimes|maybe|both  13  m="Right!!! er, Correct, that is...\n"
+
+#13     Crystal City Tourist Information (Hoople St.)
+"You're in a City fabricated almost entirely from beautiful crystal.
+Directly in front of you is a booth marked:
+  \"Hoople St. Tourist Information 2 CR\"
+with a microphone and speaker set into its wall above a large slot."
+     insert\ card  v<6.2  o+card  m=\
+"A mechanical voice drones:
+\"Insufficient credit\"
+and your card pops out."
+     insert\ card  o-card  s=13.1  m=\
+"A mechanical voice drones
+\"Name the place or person you seek\"."
+     down  14
+
+#13.1
+"Directly in front of you is a booth marked:
+  \"Hoople St. Tourist Information 2 CR\"
+with a microphone and speaker set into its wall above a large slot containing
+your credit card.  A hum is audible through the speaker."
+     balance  m="Your account now holds %6% credits."
+     insert\ card  m="Your card is already in the machine"
+     *  v<6.2  o+card  s=13.2  m=\
+"*** Insufficient Credit Remaining *** (your card pops out)"
+     ignarp  v-6.2  m=\
+"*** Ignarp is where you find Him. ***"
+     church|temple  v-6.2  m=\
+"*** Subwalk to Imperium Worlds Station, rub ring and ask directions. ***"
+     pouncetrifle  v-6.2  m=\
+"*** Amb. Pouncetrifle is usually at the Terran Embassy. ***"
+     terran\ embassy  v-6.2  m=\
+"*** Take the subwalk to Boardwalk Station and walk two blocks east. ***"
+     subwalk    v-6.2 m=\
+"*** If it were a snake it would bite you. ***"
+     spaceport  v-6.2  m=\
+"*** Take the subwalk to Spaceport Station. ***"
+     rep    v-6.2   m=\
+"*** The Rep lives at the end of the line. ***"
+     take\ card  s=13.2  t+card  m=\
+"*** Have A Nice Day *** drones the machine."
+     *  c?30  o+card  s=13.2 m=\
+"*** Bad Question Syntax ***
+(the machine assumes that you are talking to it and spits out your card)"
+
+#13.2
+"Directly in front of you is a booth marked:
+    \"Hoople St. Tourist Information 2 CR\"
+There is a stairway leading down."
+
+#14	Change Booth
+"You're at the foot of a broad flight of stairs in front of a small,
+armored booth with a sign on it.  Weird, fat lettering decorates the
+entire chamber in faded polychrome.  To the south is an iron gate with
+a small slot in it."
+     south  15
+     up  13   s=13.2
+     read\ sign  m="
+	     )-------------------(
+	    <     V U L I P T     >
+	    <  Jux nepa, qmieti?  >
+	     )-------------------(\n"
+     translate\ sign  m="
+	     )-------------------(
+	    <     T O K E N S     >
+	    <  How many, please?  >
+	     )-------------------(\n"
+     read\ lettering   m="\
+Although badly faded, it seems to say:\n
+JOdH 83     \%   G       #\"!            &#!      !ZZZZZZ!
+     \"!#         U6  TRG127  X    @@@@   PRNDL 103    G    AB   \"$
+  H     OiSaC    6L9        Y     @   @   @ @  @      A   RAC     \"#
+  U          @!&  9T       Z  !   @@@ @   @ @@@  #$&! L    ADA      &$
+  U    Dollo88      I     Z   #   @   @   @ @  @      K   BRA         !
+  N23                    Y    POP92    @@@  @   @    119   213
+"
+ translate\ lettering   o+dictionary  m="\
+The all-dialect dictionary hums softly for a moment,
+then hums much louder,
+then starts to smoke and gets VERY hot, so you drop it."
+ how\ much|price  m="\"Tokens cost a credit each, of course!\""
+ buy      t~card  m="You can't buy anything without your credit card!"
+ buy\ N1\ tokens  v<6.%INP_N1%  m="You haven't got enough credit for that many!"
+ buy\ N1\ tokens  v-6.%INP_N1%  v+2.%INP_N1%  t+tokens m="You now have %2% tokens"
+ buy\ N1  m="Buy %INP_N1% what?"
+ buy\ tokens   m="\"Buy how many PLEASE! buy 1 token? buy 2 tokens?\""
+ buy      m="You have to tell me what you want to buy ..."
+
+#15	Turnstile
+You're standing at an iron gate with a small slot in it.
+To the north is a small armored booth and a flight of stairs leads upward.
+     north  14
+     up  13
+     through|gate|in    m="The gate is securely closed and bars your way."
+     attack\ gate   m="Ouch! (It doesn't budge)"
+     drop\ token|insert\ token  16  v>2.0  v-2.1  m=\
+"The gate lets you through."
+
+#16     Hoople St. Station
+"You're on the platform of the Hoople St. subwalk station.  There is a moving
+walkway going east and a walkway going west from here."
+     east  17
+     west  19
+     out  14  m="The one-way door clangs closed behind you."
+
+#17	Spaceport Station
+"You're at the Spaceport subwalk station.  A moving walkway goes west.
+This is the end of the line going east."
+     west  16
+     out  18  m="You pass through a heavy metal gate."
+
+#18     Heavy Metal Gate Building
+"You're inside a small building.  There is a heavy metal gate with a small
+slot in it to the north and a door to the southeast."
+     insert\ token  17  v>2.0  v-2.1  m="The gate swings open and you enter."
+     out|se  3
+     insert\ card  m="The slot is too small for your credit card."
+     n      m="The gate won't let you through."
+     attack\ gate   m="You'll only hurt yourself that way."
+
+#19	Boardwalk Station
+You're at the Boardwalk subwalk station.  Moving walkways go east and west.
+     east  16
+     west  30
+     out  20  m="The iron gate clangs shut behind you."
+
+#20	Boardwalk Toll Gate
+You're standing between a heavy iron gate with a small slot in it and stairs
+leading upward.
+     up  21
+     insert\ token  19  v>2.0  v-2.1  m="The gate lets you through."
+
+#21	Boardwalk
+"You're on a north-south street named \"Boardwalk\" which seems strange
+since the street is made of shiny white paper.  An intersecting street
+runs east-west.  Sounds of shouting come from the east and vertical bars
+can be seen to the west."
+     north  27
+     south  m="under construction"
+     east   22
+     west   t~keys   m=\
+"You spend a little while \"Just Visiting\" but since you don't have any
+keys to open the jail, you get bored and go back."
+     west   99  o-keys  m=\
+"You slip your key into the lock and step into the cell."
+     down   20
+
+#99     In Jail
+You're in jail, the warden has taken your keys away, (natch), so you can't
+get out...
+     help   m=Nope
+     bribe  v<6.1   m="You don't have any credits to bribe anyone with..."
+     bribe  21  v-6.1   t+keys m="\
+Fortunately you're a slick talker and get away with a very small bribe,
+(and your keys)."
+
+#22	Park Place Riot
+"You're in a lovely tree-lined square with a sign \"Park Place\".  The
+square is filled with angry Aldebarrans shouting and waving signs.
+You had better not tarry here since you're not sure at whom their
+anger is directed!"
+     read\ signs  m=\
+"The signs are in the same dialect in which all new signs seem to be written."
+     translate\ signs  m=\
+"The signs say things like \"End the Terran Terror!\", \"Death to TerrySymps\",
+and \"Send Them Back Where They Came From!\""
+     east  23
+     west  21
+     tarry  23  t-token  t-ring  t-pack  t-dictionary  m=\
+"\"You're asking for it Terry\", says a voice behind you.
+You are beaten unconscious.  Finally you are rescued by a
+disguised TerrySymp and dragged out of harm's way."
+     *  c?33  23  t-token  t-ring  t-pack  t-dictionary  m=\
+"Someone in the mob sees you and shouts `Kony Ick!' (`There's one!')
+In a rush of animal anger the mob beats and robs you.
+Finally you are rescued by a Disguised TerrySymp and dragged away."
+
+#23	Terran Embassy
+"You're standing in the ruins of what used to be the Terran Embassy.  Marble
+and alabaster rubble is everywhere.  From beneath a large block of polished
+granite a bloody hand is sticking out, wearing a ruby ring that you've seen
+hundreds of times as you sat listening to Amb. Pouncetrifle pompously drone
+on about \"How-Diplomacy-Ought-To-Be-Carried-Out\" while he fidgets with his
+ring."
+ weep  m="Boo Hoo"
+ save\ pouncetrifle  m="I'm afraid he's very dead."
+ take\ ring  t+ring  s=23.1  m="\
+The ring slips off easily, being greased as it is with blood."
+ take\ hand|take\ body  m="\
+You tug, but it's stuck under that block, which is too heavy to move."
+ west  22
+ dig  c?66  m="You dig through some part of the rubble and find nothing."
+ dig  s=23.2  m="As you dig you find a small stairway leading down."
+ take\ rubble|take\ alabaster|take\ granite  m="The pieces are too big"
+
+#23.1
+"You're standing in the ruins of what used to be the Terran Embassy.  Marble
+and alabaster rubble is everywhere.  From beneath a large block of polished
+granite a bloody hand is sticking out."
+ *  ,,,
+
+#23.2
+"You're standing in the ruins of what used to be the Terran Embassy.  Marble
+and alabaster rubble is everywhere.  At your feet an opening reveals a
+narrow stairway leading into darkness."
+ dig  m="You dig through more of the rubble but find nothing."
+ down  24
+
+#24	Dark Tunnel
+"You're in a dark tunnel with light shining in at the head of a small
+set of steps leading up and a marble block with a crack running all the
+way around it blocking the passage to the east."
+     up  23
+     east  m="The marble block fills the passage."
+     press|push  16  m=\
+"You strain against the block and it suddenly pivots.  You're caught
+off balance and rush headlong by it only to find thin air under your feet.
+You drop 12 feet as you hear the block pivot back with a thud."
+
+#27	GO
+     south  21
+     pass  s=27.5  v+6.50  m="Collect 200 dollars (50 credits)."
+     move\ stones   m="That would be cheating!"
+
+#27.0
+"You're on another paper covered street named \"GO\".  The paper is marked
+with a gridwork and some black and white stones are on it in a pattern:
+	  a b c d e f g
+	1 + + + + + + +
+	2 + @ @ @ @ @ +
+	3 + @ O O O @ +
+	4 + @ + + + @ +
+	5 + + + O + + +
+	6 + + + + + + + <-- this one is called g6
+You can collect some credits here if you can figure the right move for @."
+     d4  s=27.1
+     c4|e4|b5|c5|e5|f5  s=27.3  m="And O responds with d4 -- you've blown it."
+
+#27.1
+"
+	  a b c d e f g
+	1 + + + + + + +
+	2 + @ @ @ @ @ +
+	3 + @ O O O @ +
+	4 + @ O @ + @ +         And O responds with c4.
+	5 + + + O + + +
+	6 + + + + + + +         Now where?"
+     c5  s=27.2
+     e4|e5  s=27.3  m="And O responds with b5 or c5 and you've blown it."
+     d6  s=27.3  m="And O responds with c5 and you've blown it."
+
+#27.2
+"
+	  a b c d e f g
+	1 + + + + + + +
+	2 + @ @ @ @ @ +
+	3 + @ O O O @ +
+	4 + @ O + O @ +      And O responds with e4 taking your stone from d4.
+	5 + + @ O + + +
+	6 + + + + + + +         Now where?"
+     e5  s=27.4  v+6.10  m=\
+"Nice going! O is in atari and can't get away.
+You win the 10 credit first prize!"
+     d4  m="Illegal play."
+     d6  s=27.3  m="Then O plays e6 and you've blown it."
+
+#27.3
+"You're on a paper covered street named \"GO\".  The paper is marked
+with a gridwork and black and white stones are jumbled on it in a pattern
+that looks like someone got mad and threw them all around.
+	  a b c d e f g
+	1 @ O O @ @ @ O
+	2 O @ @ @ @ @ @
+	3 @ @ O O O @ O
+	4 @ @ @ O @ @ @
+	5 O @ O O @ O O
+	6 @ O @ O @ O @ "
+     south  21  s=27.0
+
+#27.4
+"You're on a paper covered street named \"GO\".  The paper is marked
+with a gridwork and some black and white stones are on it in a pattern:
+	  a b c d e f g
+	1 + + + + + + +
+	2 + @ @ @ @ @ +
+	3 + @ O O O @ +
+	4 + @ O + O @ +
+	5 + + @ O @ + +
+	6 + + + + + + + "
+ b5|f5|d4|d6  m="You don't seem to know when to give up..."
+
+#27.5
+"You're on a paper covered street named \"GO\".  The paper is marked
+with a gridwork and some black and white stones are on it in a pattern:
+	  a b c d e f g
+	1 G O + G G G O
+	2 O G G G G + +
+	3 G G O + O G O
+	4 + + G O G + G
+	5 O G O + G O O
+	6 G O G O G O G "
+     pass  v-6.10  m=\
+"Collect 200 dollars, OOOPS! you landed on Chance!  Pay poor tax $240..."
+
+#30	Imperium Worlds Station
+"You're on the platform of the Imperium Worlds subwalk station.  This
+station is built entirely from bright white plasmeld and has a spotless,
+almost antiseptic cleanliness."
+     out  m="I don't think you're quite clean enough for this neighborhood..."
+     ask  o~native  m="Ask who?  You're the only person here..."
+     rub\ ring  o?ring  o~native  o+native  m=\
+"  P O O F !         A very surprised native appears,
+in the act of drying his back with a large bath towel."
+     ask  o?native  o-native  m=\
+"The native replies,
+\"Cleanliness is next to godliness\",
+then notices your general grubbiness, grimaces and disappears again."
+     clean|wash|bathe  31  m=\
+"You step into the cleverly disguised autobath and
+as the sonic scrub begins ...
+the bath starts to spin...\n...
+You are tingling all over (and dizzy) by the time the bath dumps you out
+on the street."
+     take\ native  m=\
+"I'm not sure how you mean that but in any case it won't work."
+     east  19
+     west  98
+     drop\ dirt|shit|piss  m=\
+"An alarm sounds and mechanical hands roughly grab you while they swiftly
+clean up the mess and then drop you back on the subwalk platform."
+
+#31	Cleanliness Way
+"You're on a street of gleaming white plasmeld.  There is not a spot of dirt
+anywhere.  A lovely building of slightly alien design is visible to the west
+and a bridge is visible to the east.  There is a gate set in the wall with
+a small slot next to it."
+     insert\ token  30  v>2.0  v-2.1  m="The gate lets you through."
+     drop\ dirt|shit|piss  30  m=\
+"An alarm sounds and mechanical hands swiftly clean up the mess and
+then roughly grab you and deposit you in a hidden chute."
+     *     c?20 ,,, m="\
+You notice a fleck of dust fall from the sky only to be deposited in a hidden
+chute by mechanical hands."
+     west  32
+     east  34
+
+#32	Worship House Courtyard
+"You're in the courtyard of a house of worship, a lovely, many-sided
+building.  A large door to the north is invitingly open and a large gate
+stands open to the east."
+     north  33  s?33.0  m=\
+"As you pass through the door it silently swings closed."
+     north  33
+     east   31
+
+#33	House of Worship
+     south|out  m="You can't open the door."
+
+#33.0
+"You're in a magnificent seven-sided room with rows of pews in
+concentric heptagons facing the center.  A door to the south is
+tightly closed.  A small, gnarled native is standing in the center
+of the room and looking expectant."
+     ask|help   m="\
+\"Why should I help you?  I don't even know who you are\", the native states."
+     retief     m="\"I don't believe you.\""
+     show\ papers   o?papers    m="\
+\"Papers can always be forged\" he counters."
+     name|who\ are\ you  m=\
+"The man's face turns purple with effort as he answers,
+\"My name iss Igna...
+my name iss Ig...
+Arrrrgh!  I cannot lie here, my name iss ... R. Nixon Shilth!,
+To defend yoursself, soft one!\"
+So saying, the man crouches as if to leap at you..."
+     axolotyl  s=33.1  m="\
+The man fades out and in and out and then back in as a tall woman and out
+again and finally fades back in as a strange being with five eyestalks
+wearing orange, gold and green polished armor plate.
+
+\"Ah!  That musst be Ignarp'ss ssecret messsage!\" he crows, \"Many thankss,
+littermate of genetic inferiorss.\"
+
+Gleefully twitching his eyestalks the man scuttles through the south door."
+     attack\ man|attack\ shilth  s=33.2  v=12.0  m=\
+"As you battle with the man he starts to fade in and out and finally
+undergoes an amazing metamorphosis into a beautiful woman!
+
+\"Ignarp's the handle\", she says, \"Thanks for distracting Shilth
+while I regained control.  I'm afraid I foolishly let him slip
+a Groaci drug into my prune juice which left me bound by a metamorph-
+dominance spell which I couldn't break without a little distraction.
+I'd be glad to return the favor ...\""
+
+#33.1
+"You're in a magnificent seven-sided room with rows of pews in concentric
+heptagons facing the center of the room.  A door stands open to the south."
+     south|out  32
+
+#33.2
+"You're in a magnificent seven-sided room with rows of pews in concentric
+heptagons facing the center.  A door to the south is tightly closed.
+A beautiful woman is standing in the center of the room looking expectant."
+     take\ woman|kiss\ woman|fuck\ woman    m="That hardly seems appropriate.
+Who do you think you are, anyway?  James Bond?"
+     ask    v?12.0  m="
+I'd like to help you, whoever you are, but I'm not sure I should..."
+     ask    v?12.4  m="That's all I know about it, I'm afraid."
+     axolotyl  v=12.1 m=\
+"So you're Retief from the CDT?  Perhaps you'd like to hear the story
+behind the Aldebarran anger at Terrans?"
+     no|maybe|perhaps  v>12.0  v<12.4  ...  c=yes  m="\
+Well, I'll tell you anyway"
+     ask    ...  c=yes
+     yes    v?12.1 ... m="\
+Mr. Shilth, whom you've already met, is interested in acquiring the grounds
+on which the Terran Embassy stands to subdivide into condominiums for
+vacationing Groaci Peace Enforcers.  Because the land can't be bought while
+the Embassy still occupies it, Shilth is hoping to have the Terran Embassy
+forcibly removed.  Disguised as a native trader, he sold a set of \"Native
+Art Objects\" to your Ambassador Pouncetrifle."
+     yes    v?12.1 v=12.2 m="\
+Unfortunately, the objects were stolen from the Rep's Meeting Hall, the
+one truly sacred spot on Aldebarran III, which the thieves desecrated with
+obscene slogans.  Ambassador Pouncetrifle learned of all this when he
+proudly displaying them at an Embassy reception.  Naturally the Ambassador
+was imprisoned.  After much verbal footwork the Ambassador convinced the
+Rep that the whole matter was a misunderstanding.  The Rep graciously
+agreed that matters might be set to rights by the return of the objects
+and the payment of a token fine of 1,000 galactic credits.
+Shall I go on?"
+     no     v?12.2 ... c=yes  m="\
+Well, I will anyway; there's no stopping me now ..."
+     yes    v?12.2 ... m="\
+The Ambassador paid most of the fine with the 985 credits he was carrying with
+him, (having expected to make further art purchases), and was released from
+confinement to gather the remaining 15 credits and the missing objects.
+Returning to the Embassy via Park Place the Ambassador made the mistake of
+trying out his Aldebarran-English phrase book on a native he believed to be
+participating in a quaint street fair.  He has not been heard from since, but"
+     yes    v?12.2  ...  v=11.31  v-11.%8%
+     yes    v?12.2  v>11.1  ...  v=12.3  m="\
+the deadline for returning the objects is only %11% days away and Shilth's
+agents are reported to have stolen the objects again!"
+     yes    v?12.2  v?11.1  ...  v=12.3  m="\
+the deadline for returning the objects is only one day away and Shilth's
+agents are reported to have stolen the objects again!"
+     yes    v?12.2  ...  v=12.3  m="\
+the deadline for returning the objects is only %9% hours away and Shilth's
+agents are reported to have stolen the objects again!"
+     yes    v?12.3  ...  v=12.4  m="\
+If you can find the missing objects and present them to the Rep with the
+final 15 credit payment the uprising will probably be averted.
+
+The three objects are:
+	a green Zwerf
+	an alabaster Yangst
+	and a pale Xyller
+They are rumored to be hidden in the graveyard near Pont St. Michel."
+     thanks m="\"No thanks necessary, I'm still in your debt.\""
+     open\ door|leave  s=33.1  m=\
+"\"I can return the favor you've done me by helping you leave.\",
+so saying, the woman presses a hidden button and disappears."
+
+#34     West end of Pont St. Michel
+You are at the western end of a bridge that has been cleaned so often that
+it has become quite flimsy.  To the west you see a street made of gleaming
+white plasmeld.
+     w      31
+     e|cross  v>NUM_CARRY.1   m="\
+The bridge won't support you and all your baggage.
+You'll have to drop something to cross safely."
+     e      35
+
+#35.0   East end of Pont St. Michel
+You are at the eastern end of a bridge that has been cleaned so often that
+it has become quite flimsy.  To the east you see a rambling graveyard
+through a tall metal gate which is locked.
+     e      m="The gate is locked"
+     w|cross   v>NUM_CARRY.1   m="\
+The bridge won't support you and all your baggage.
+You'll have to drop something to cross safely."
+     w      34
+     unlock t~key   m="Without a key?  Don't be silly!"
+     unlock s=35.1  o-key  m="\
+You fight with the rusty lock which finally turns and then freezes up.
+The gate creaks open."
+
+#35.1   East end of Pont St. Michel
+You are at the eastern end of a bridge that has been cleaned so often that
+it has become quite flimsy.  To the east you see a rambling graveyard
+through a tall metal gate which is standing open.
+     e      36
+     w      v>NUM_CARRY.1   m="\
+The bridge won't support you and all your baggage.
+You'll have to drop something to cross safely."
+     w      34
+     take\ key|lock   m="\
+The lock seems permanently stuck, and your key is in it."
+
+#36  You're in a graveyard.
+You're in a graveyard.
+     n      39
+     s|e    36
+     w      38
+     nw     40
+     dig    m="You dig down to some bones which turn to ash."
+
+#36.0
+     dig    c?50 s=36.1  o+zwerf  m="\
+You break through into an open pocket containing a green, vibrating object."
+
+#36.1
+You're in a graveyard.  There is a small hole here.
+     dig    c?50 s=36.2  o+xyller  m="\
+You break through into an open pocket containing a pale, cold object."
+
+#36.2
+You're in a graveyard.  There is a large hole here.
+     dig    c?50    m="All you find is more dirt."
+
+#37  You're in a graveyard.
+You're in a graveyard.
+     n|s    37
+     e      41
+     w      38
+     dig    s=37.1 m="You dig down to some bones which turn to ash."
+
+#37.1
+You're in a graveyard.  There is a small hole here.
+     dig    c?50    m="All you find is more dirt."
+
+#38  You're in a graveyard.
+You're in a graveyard.
+     n      38
+     s      37
+     e      39
+     w      36
+     dig    s=38.1 m="You dig down to some bones which turn to ash."
+
+#38.1
+You're in a graveyard.  There is a small hole here.
+     dig    c?50    m="All you find is more dirt."
+
+#39  You're in a graveyard.
+You're in a graveyard.
+     n      37
+     s      38
+     e      36
+     w      39
+     dig    s=39.1 m="You dig down to some bones which turn to ash."
+
+#39.1
+You're in a graveyard.  There is a small hole here.
+     dig    c?50    m="All you find is more dirt."
+
+#40  You're in a graveyard.
+You're in a graveyard.
+     n      36
+     s      38
+     e      39
+     w      40
+     dig    s=39.1 m="You dig down to some bones which turn to ash."
+
+#40.0  You're in a graveyard.
+     dig    c?50 s=40.1  o+yangst  m="\
+You break through into an open pocket containing an alabaster object."
+
+#40.1
+You're in a graveyard.  There is a small hole here.
+     dig    c?50    m="All you find is more dirt."
+
+
+#41     Crypt Entrance
+You're at the entrance to a small, stone building.  You can hear a
+shrill twittering sound from within.
+     w      37
+     in|e   42
+
+#42     Inside Crypt
+You're inside an ancient crypt of oddly familiar design.  It is dark and
+gloomy here with cobwebs hanging from every wall.  Although there are no
+religious articles visible there is a large black coffin sitting on the
+ground.  There are doorways to the east and west.
+     w      41
+     e      35
+     take\ coffin  m="Even with your Herculean strength that's not possible."
+
+#42.0
+     open\ coffin  v>9.5  v<9.20  m="\
+The lid seems to give a little ...
+but then snaps back in place."
+     open\ coffin  o~vampire  v?13.0  o+vampire  m="\
+The lid seems to give a little ...
+and then springs off as a small bat escapes from the coffin.
+You hear footsteps approach from behind you ...
+"
+     hello|*      o?vampire  v?13.0   v=13.3 m="
+The count speaks to you in a charming voice with just the sightest
+accent: \"Velcome!  It is such a pleasure to meet a fellow Terran in
+these lonely parts.  Vould you like to rest for a vhile?\""
+     no     o?vampire  v?13.3  m="\"Vell, maybe later, then ...\""
+     w      o?vampire  ,,,  m="\
+The count smiles and bows graciously as you leave."
+     e      o?vampire  ,,,  v=13.1  m="
+His face contorting with rage, the Count speaks again:
+\"So, you refuse the hospitality of the Prince of the Wallichans, do you?
+You shall bleed for this, Terry! ... um, that is ...\", and vanishes."
+
+#98     Government Center
+"You're in the Government Center subwalk station.  This is the end of the
+line going west.  It is rather dingy and appears to be little used.
+There are several signs here and doors at both ends of the platform with
+gates and small stairways leading up."
+     n|left      m="The door is chained closed."
+     s|right   97  m="The gate clangs shut behind you."
+     e      30
+     w      m="End Of The Line -- get it?"
+     up     m="Which way up?  North? South? Left? Right?"
+     read\ signs m="\
+A multi-lingual sign overhead says:
+      \" <---- to Meeting Hall ---<       >--- to The Rep ----> \"
+The door at the north end of the station bears another sign that reads:
+      \" Meeting Hall exit closed \"
+"
+
+#97     The Rep's House
+"You're in the foyer of The Rep's house.  There is a stairway going down
+and a large, open door at the north end of the hall."
+     down   98  m="You sneak through the gate and into the station."
+     n      96  v=11.12
+
+#96  Rep's Reception Room
+"You are in the presence of the Rep.  \"What do YOU want?\", he growls."
+     s      97
+     *      v-11.1  ,,,
+     *      v?11.10  ,,,  m="\
+\"I haven't got all day, you know; I'm VERY busy!\""
+     *      v?11.6   ,,,  m="\
+\"If you're just going to waste my time ... \"
+(The Rep wiggles his eyebrows meaningfully)"
+     *      v?11.2   m="
+\"I think he needs a priest or a psychiatrist, like most Terries\",
+mumbles the Rep."
+     *      98  v?11.1   m="
+\"Throw the bum out\", he mutters to a LARGE native who appears beside you
+wearing `No-Noyz' sneakers and little else.  You bounce twice on the stairs
+on your way down."
+     i\ want    m="\"Who cares what YOU want, Terry?\""
+     want   m="\
+\"Want, want, want!  You Terries never talk about anything else!\""
+     talk   m="\"Talk's cheap\", he grumbles."
+     drop   m="\"Don't go dropping things on my good carpet\", growls the Rep"
+     return|give    v=11.15 ,,,
+     return\ xyller|give\ xyller  o+xyller  m="\"My Xyller!\", he exclaims."
+     return\ yangst|give\ yangst   o+yangst  m="\"My Yangst!\", he crows."
+     return\ zwerf|give\ zwerf    o+zwerf   m="\"My Zwerf!\", he coos."
+     return\ credits|give\ credits  o~xyller  m="\
+Unless you're going to return my Xyller you may as well keep the credits."
+     return\ credits|give\ credits  o~yangst  m="\
+Unless you're going to return my Yangst you may as well keep the credits."
+     return\ credits|give\ credits  o~zwerf  m="\
+Unless you're going to return my Zwerf you may as well keep the credits."
+     return\ credits|give\ credits  v<6.15 m="\
+You don't have the fifteen credits, but I can see you mean well ... perhaps,
+if you could figure out how to pass go you could get a few more credits..."
+     return\ credits|give\ credits  -2 m="\
+\"You Terries aren't so bad after all\", admits the Rep as he flicks a
+switch that cuts the power to all the androids that were leading the
+uprising, \"Why don't you stay for dinner?\".  Which, of course, you do."
+

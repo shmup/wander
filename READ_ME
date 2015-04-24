@@ -1,0 +1,35 @@
+Mon Jun 16 10:32:24 EDT 1980
+
+	Export Wander Tape
+
+To compile Wander, scan through wanddef.h for path names, (a search for
+"sys/games" should catch them), and adapt for your particular directory
+structure.  Also modify the routines "myruid()" and "myeuid()" in
+wandglb.c to return the "real" and "effective" user ids of the current
+user.  (These are compared to determine "ownership" of the world being
+wandered; if they are equal then ownership is assumed and debugging
+verbs become active; see "wander.nr" for debugging verbs.)
+If your system has the "tell()" system call, (and therefore the "ftell()"
+routine in the standard I/O library works), rename "Fwander.o" to be
+"wander.o".  If you don't have the "ftell()" routine working then
+rename "NFwander.o" to be "wander.o".
+
+Then:   cc -c -O wandglb.c
+	cc -n wander.o wandglb.o -lS
+	mv a.out wander
+
+The "*.nr" files include "mac" for their macros, so commands of the form
+"nroff misc.nr >misc.doc" will create the documentation.
+
+I want to keep track of the distribution and usage of Wander, so:
+The material on this tape is not to be distributed without explicit,
+written permission from Peter Langston.
+
+Let me know if I've overlooked anything, if something doesn't work,
+or if further explanation would be helpful.
+
+				    Peter Langston
+				    127 W. 26th St.  11th fl.
+				    New York, NY  10001
+
+(c) P. Langston, NYC NY   All rights reserved.
