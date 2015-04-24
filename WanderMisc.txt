@@ -1,0 +1,330 @@
+
+
+WANDER .MISC SYNTAX            4/80           WANDER .MISC SYNTAX
+
+
+
+SYNTAX OF THE .MISC FILE FOR WANDER
+
+
+     The  _._m_i_s_c file contains all the location‐independent infor‐
+     mation to describe a particular "world".
+
+     The file consists of a series  of  sections.   The  sections
+     are:
+
+             Introductory message
+
+             Word definitions                                     |
+
+             Pre‐actions
+
+             Post‐actions
+
+             Variables
+
+             Notes
+
+     Any  lines  in the file that begin with a colon, ":" will be
+     ignored as comments by _W_a_n_d_e_r_.
+
+
+INTRODUCTORY MESSAGE
+
+     The introductory message is printed out when wander is first
+     run.   It  is not printed out when wander files are switched
+     during a run, (possible with the "init" verb  and  the  "w=" |
+     result field).                                               |
+
+     The  introductory  message  may  be  any  number of lines in |
+     length, (but is limited to a maximum of 4096 characters, set |
+     by  BUFSIZE  in wanddef.h), and may contain blank lines, but |
+     must not contain a line beginning with a tab or space unless
+     the entire message is enclosed in quotes.  If blank space is
+     required at the beginning of a line in an unquoted introduc‐
+     tory  message use an escaped space, "\ ", to begin the line.
+     If you wish to include quote characters in the message  they
+     must also be escaped.
+
+
+WORD DEFINITIONS                                                  |
+
+     Word  definitions  usually  fall  into  two conceptual cate‐ |
+     gories, "verbs" and "objects" and will be treated  that  way |
+     here although they may be intermingled freely if the result‐ |
+     ing confusion is unimportant.  Note that since there may  be |
+     any  number  of "words" sections it is common to have a sec‐ |
+     tion with the header "words (verbs)"  and  one  with  "words |
+     (objects)".                                                  |
+
+
+
+                              ‐ 1 ‐
+
+
+
+
+
+
+WANDER .MISC SYNTAX            4/80           WANDER .MISC SYNTAX
+
+WORD (VERB) DEFINITIONS                                           |
+
+     This  section  is  used for defining verbs that have several
+     forms which should be equivalent (synonyms).  It is not nec‐
+     essary to define verbs that don’t need synonyms, although it
+     does no harm to do so.
+
+     The verb synonym section is headed by a  line  containing  a
+     horizontal tab followed by the word "words" which is option‐
+     ally followed by "verbs" or "(verbs)".
+
+     Verbs are entered one per line, followed by spaces or a  tab
+     and  a  number.   This  number is zero, (or omitted), if the
+     verb is the primary form, (i.e. the form  that  the  program
+     will  use when it prints the verb out for any reason).  Syn‐
+     onyms will be folowed by any positive integer.
+
+     Confusing?  For example, if "hit", "strike", "break",  "bat‐
+     tle"  and  "attack"  are to be synonyms, with "attack" being
+     the preferred form, the following would define them.
+
+     attack  0
+     hit     1
+     strike  2
+     break   3
+     battle  97
+
+     Note that "strike," "break," and  "battle"  could  all  have
+     been followed by "1" or by "99" and they’d all still be syn‐
+     onyms for "attack."
+
+
+WORD (OBJECT) DEFINITIONS                                         |
+
+     This section is used for defining objects that  either  have |
+     synonyms,  or  are to be placed in specific locations at the |
+     beginning of the wander, (or being  carried  by  the  person |
+     playing).                                                    |
+
+     The object definition section is headed by a line containing |
+     a horizontal tab and the word "words" optionally followed by |
+     something like "objects" or "(objects)".                     |
+
+     Objects are entered one per line, followed by spaces or tabs |
+     and up to three numbers.                                     |
+     The first number is zero if the object is the  primary  form |
+     or any positive integer if the object is a synonym.          |
+     The  second  number  is either the number of the location in |
+     which the object is to  appear,  "‐1"  indicating  that  the |
+     player  is  already carrying it, or zero to indicate that it |
+     is initially nowhere.                                        |
+     The third number is a  flag  indicating  "special  handling" |
+     when  describing  the object.  It is the sum of any combina‐ |
+     tion of the following numbers:                               |
+      1  The obj is singular even though it ends with an ’s’      |
+      2  The obj is plural even though it doesn’t end with an ’s’ |
+
+                              ‐ 2 ‐
+
+
+
+
+
+
+WANDER .MISC SYNTAX            4/80           WANDER .MISC SYNTAX
+
+      4  The obj already contains an article; so don’t supply one |
+      8  The obj is a complete description as is; so don’t use    |
+         constructions like "there is a *** here" for it.         |
+     16  This form of the obj is to be used ONLY when describing  |
+         it in a location, not when being carried, dropped, etc.  |
+     Note that 1 and 2 need only rarely be used, e.g. if you have |
+     a ’princess’ she will be described as "some princess", as in |
+     "there are some princess here",                              |
+      unless you specify a 1, but seldom do such examples seem to |
+     arise.   Note  also  that  8 usually requires 16, (i.e. 24), |
+     whereas 16 doesn’t always require 8.  If you use the 16 code |
+     be  sure  that  it is the zeroth synonym and that there is a |
+     first synonym following it that can be used for  the  carry‐ |
+     ing, dropping, etc. cases.                                   |
+
+     Any omitted number is assumed to be zero.                    |
+
+     For  example, if something called "credit card" is to appear |
+     in location 26 and is to have "card" as a synonym, the  fol‐ |
+     lowing would be appropriate:                                 |
+
+     credit\ card   0  26                                         |
+     card   1                                                     |
+
+     If the object "wallet" is to be carried by the player at the |
+     very beginning then it would be defined as:                  |
+
+     wallet   0   ‐1                                              |
+
+     If the object "sword" is going to appear through some action |
+     during  the  wander  and will change subtly when it is being |
+     carried then it could be defined as:                         |
+
+     sword   0  0  16                                             |
+     glowing sword  1                                             |
+
+     Note that the omitted numbers default to zeroes.
+
+
+PRE‐ACTIONS
+
+     Pre‐actions are global actions that are checked  before  any
+     local actions.
+
+     The order of search for matches to user commands is:
+         1) pre‐actions (from .misc)
+         2) location.state actions (from .wrld)
+         3) location base state actions (from .wrld)
+         4) post‐actions (from .misc)
+         5) built‐in actions (quit, look, shell, etc)
+
+     The  pre‐actions section is headed by a line containing spa‐
+     ces or tabs followed by the word "pre", (actually  only  the
+     "pr" is checked).
+
+     Each  action takes one line which starts with spaces or tabs
+
+                              ‐ 3 ‐
+
+
+
+
+
+
+WANDER .MISC SYNTAX            4/80           WANDER .MISC SYNTAX
+
+     and has the same format as actions in the _._w_r_l_d  file,  (see
+     ".wrld" documentation for details)
+
+     A typical use might be, in a situation where the credit card
+     defined above must be "insert"ed into machines  to  be  used
+     and you’d like not to have to check in each location whether
+     the user has the card, to include the following:
+
+          insert\ card  o~card  m="You don’t have a credit card." |
+
+     In the case that someone says "insert card"  without  having
+     one,  the  above  message will be output and no local action
+     will be invoked.  If, on the other hand, the card  is  there
+     the  "o~card"  condition  will not be met and searching will
+     continue in the local actions.
+
+
+POST‐ACTIONS
+
+     Post‐actions are used to provide default actions in the case
+     that  no  local action is provided for a particular command.
+     Their format is the same as pre‐actions  except  that  their
+     header  is a line beginning with spaces or tabs and the word
+     "post".
+
+     A typical example is to provide a way  of  determining  your
+     credit balance at any time.
+
+     balance  o~card  m="You need a credit card to do that!"
+     balance  o?card  m="Your account now stands at %6% credits."
+     (This  assumes  that variable 6 contains the number of cred‐
+     its.)
+
+
+VARIABLES
+
+     This section contains initializations of  variables  and  is
+     also  a  handy  place  to  keep information about the use of
+     variables.
+
+     The variables section is headed by a line containing tabs or
+     spaces and the word "variables".  The format for the follow‐
+     ing lines is:
+
+     variable number <SEP> initial value <SEP> comments.
+
+     For example:
+
+     0           0       number of treasures found
+     1           0       number of vampires killed
+     2           50      dollars in bank account
+     3           0       temp variable used for dice game
+     CUR_LOC     3       starting location
+     MAX_CARRY   4       maximum number of things that can be carried at once
+
+     Notice the use of the mnemonic names "CUR_LOC" and "MAX_CAR‐
+
+                              ‐ 4 ‐
+
+
+
+
+
+
+WANDER .MISC SYNTAX            4/80           WANDER .MISC SYNTAX
+
+     RY"; these are special, built‐in variables and are described
+     further in "Wander.txt".
+
+
+
+NOTES
+
+     The notes section is ignored by _W_a_n_d_e_r and is provided as  a
+     convenient spot to record such things as reminders of expan‐
+     sion plans, etc.
+
+     The notes section is headed by a  line  containing  tabs  or
+     spaces and the word "notes".
+
+     Notes  can  also  be  included anywhere in the file in lines
+     that begin with ":".
+
+
+BUGS
+
+
+
+SEE ALSO
+
+     WanderWrld.txt, Wander.txt
+
+               Copyright (c) by Peter Langston, N.Y.C.
+                         All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              ‐ 5 ‐
+
+
+
+

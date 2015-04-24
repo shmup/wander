@@ -1,0 +1,330 @@
+
+
+WANDER                         4/80                        WANDER
+
+
+
+NAME
+
+     wander ‐ Fantasy story tool
+
+
+SYNOPSIS
+
+     wwaannddeerr [ world ] [ ‐‐rr[[ssaavveeffiillee]] ] [ ‐t# ]                    |
+
+
+DESCRIPTION
+
+     _W_a_n_d_e_r  is a tool for writing non‐deterministic fantasy sto‐
+     ries.  The product is a story whose unfolding is affected by
+     decisions made by the "reader."
+
+     The  optional world argument is described below under WANDER
+     FILES.
+
+     The ‐‐rr flag allows continuation from  a  previously  "saved"
+     wander.   If  the form "‐rsavefile" is used the saved wander
+     is restored from "savefile".  "‐r" by itself refers  to  the
+     default  save  file  for  the particular wander world, (e.g.
+     "a3.save" for the world "a3").
+
+     The ‐t# flag turns on tracing of action matching; ‘#’ repre‐
+     sents a number whose value controls the amount of diagnostic
+     output produced.
+
+
+COMMANDS
+
+     Wander includes several built‐in commands.  Aside from  rec‐
+     ognizing the standard compass directions (and their abbrevi‐
+     ations), and "up" and "down",  the  following  commands  are |
+     recognized:
+
+     inventory   list objects being carried
+     take        pick up specified object
+     drop        drop specified object
+     quit        stop playing
+     save        quit & save environment for later continuation
+     restore     restore saved environment                        |
+     look        print the long description of the current location
+     init        read new .wrld & .misc files, (switch worlds)    |
+      The following debugging verbs only work if you own the files
+     ~snoop      give a condensed list of possible actions
+     ~goto m     move, magically, to location number "m"
+     ~goto m.n   move to location "m" and put it in state "n"
+     ~vars       print a list of all non‐zero variables
+     ~version    print miscellaneous parameter information
+
+     Whenever  the word "all" is encountered as the second recog‐ |
+     nized word of user input on a line it will be macro  expand‐ |
+
+                              ‐ 1 ‐
+
+
+
+
+
+
+WANDER                         4/80                        WANDER
+
+     ed.  This expansion replaces the word "all" with each object |
+     in the current location  including  objects  being  carried. |
+     E.g.  "drop  all"  may  expand to "drop keys; drop net; drop |
+     leaflet".
+
+
+WANDER FILES
+
+     The _w_o_r_l_d argument is used to specify which fantasy  "world"
+     you  wish  to explore.  Each world is described by a minimum |
+     of two files.  One file, (with the  extension  _._w_r_l_d),  con‐
+     tains all location‐specific information, (long and short de‐
+     scriptions, local action keywords, conditions and  results);
+     another  file,  (with the extension _._m_i_s_c), contains all the
+     global information, (initial message, word synonyms, initial |
+     object  locations  and  characteristics,  global action key‐
+     words, conditions and results).
+
+     These two files have identical first parts of  their  names,
+     e.g.  if  you  wish  your world to be called "oz", you would
+     name the files _o_z_._w_r_l_d  and  _o_z_._m_i_s_c  respectively  and  you
+     would  execute  "wander oz".  If no _w_o_r_l_d is given when exe‐
+     cuting _W_a_n_d_e_r_, the default _w_o_r_l_d "a3"  is  used,  (i.e.  the |
+     files are "a3.wrld" and "a3.misc").
+
+     A  third, optional file related to a particular world is the
+     _._m_o_n file.  If such a file exists, (e.g.  _o_z_._m_o_n_)_, a  record
+     of each user’s commands will be kept there.  If no such file
+     exists, but  a  file  named  "/sys/games/.../WAND/wand.mon",
+     (this  name  can be changed in "wandglb.c"), does exist then
+     the record of user’s commands will be kept there.   If  nei‐
+     ther  file  exists  or if the symbol "MONITOR" is defined as
+     "0" in wanddef.h no record will be kept.  This record is of‐
+     ten useful in two ways; it allows the author to see how oth‐
+     er users respond to his/her world and it allows  the  author
+     to type notes and suggestions as commands while running _W_a_n_‐
+     _d_e_r and later use these notes while modifying the _._w_r_l_d  and
+     _._m_i_s_c files.
+
+     When  a  user  "saves"  his/her environment it is saved in a
+     file whose name is  the  world  name  followed  by  ".save", |
+     ("a3.save"  for  the  default  world,  "a3"), in the current |
+     working directory.
+
+
+FILE PROTECTION
+
+     Typically, the author of a _W_a_n_d_e_r world will want the  _._m_i_s_c
+     and  _._w_r_l_d  files  to be unreadable by others except through
+     _W_a_n_d_e_r itself.  A simple way to do this is to generate,  for
+     each  world, a small C program that runs setuid to the owner
+     of the world and execs _W_a_n_d_e_r_.  For example, if "smith"  has
+     files  /u/smith/oz.misc  and /u/smith/oz.wrld, the following
+     program would suffice:
+
+     main()
+
+                              ‐ 2 ‐
+
+
+
+
+
+
+WANDER                         4/80                        WANDER
+
+     {
+          execl("/usr/games/wander", "oz", "/u/smith/oz", 0);
+     }
+
+     This program would be compiled; a.out moved to "oz" in  some
+     convenient  location  and  "chmod 4755 egypt" would be done.
+     At this point running "oz" would make the  user  effectively
+     "smith"  and  thereby  allow the oz files, (which would have
+     mode 0600), to be read.
+
+     It was decided that using encryption on the  files  was  too
+     weak  a  defense  against  a dedicated world‐cracker and too
+     much overhead to be worth the effort.
+
+
+VARIABLES
+
+     _W_a_n_d_e_r provides 128 variables (numbered 0 through 127) which
+     can  contain  numeric  values  of ‐32768 through 32767.  The
+     variables numbered 0 through 99 are general purpose and  may
+     be  used freely; variables 100 through 127 are set aside for
+     pre‐defined uses, (see below).  These variables  are  refer‐
+     enced  with  two  syntaxes.   Some constructions require the
+     specification of a variable number; for instance, "v=6.3" is
+     used  to  set variable 6 to the value 3.  Note that here the
+     "6" is automatically a variable number, while the "3"  is  a
+     simple  number.  "%6%" would be used to specify substitution
+     of the value contained in variable 6.  Thus, if  variable  3
+     contains 5 and variable 6 contains 2, %3% is equal to 5, and
+     %6% is equal to 2.  Moreover:
+
+     "v=7.%3%" will set variable 7 to 5
+     "v+%6%.4" will add 4 to variable 2
+     "v?%6%.%3%" will test whether variable 2 is equal to 5.
+     "m=The answer is %3%." will print out as "The answer is 5."
+
+
+     The special variables and their mnemonic names are:
+     CUR_LOC     100     current location
+     PREV_LOC    101     previous location
+     INP_W1      102     hash of first recognized word in inp comm
+     INP_W2      103     hash of second recog word from inp comm
+     INP_W3      104     hash of third recog word from inp comm
+     INP_W4      105     hash of fourth recog word from inp comm
+     INP_W5      106     hash of fifth recog word from inp comm
+     INP_WC      107     number of words in input comm
+     NUM_CARRY   108     # of things being carried
+     MAX_CARRY   109     # of thing poss. to carry at once
+     NOW_YEAR    110     year of decade (0:99)
+     NOW_MONTH   111     month of year (1:12)
+     NOW_DOM     112     day of month (1:31)
+     NOW_DOW     113     day of week (0:6)
+     NOW_HOUR    114     hour of day (0:23)
+     NOW_MIN     115     minute of hour (0:59)
+     NOW_SEC     116     second of minute (0:59)
+     NOW_ET      117     elapsed time in Wander (seconds)
+
+                              ‐ 3 ‐
+
+
+
+
+
+
+WANDER                         4/80                        WANDER
+
+     BREVITY     118     brevity of place descriptions            |
+     LOC_VIEW    119     location description override            |
+     OBJ_VIEW    120     object description override              |
+     INP_N1      121     numeric value of first number from inp comm|
+     INP_N2      122     numeric value of first number from inp comm|
+     NUM_MOVES   123     number of "moves"                        |
+     NUM_PLACES  124     number of "places" visited               |
+                 125     reserved                                 |
+                 126     reserved                                 |
+                 127     reserved                                 |
+     Note that the actual variable numbers used by these          |
+     may vary in later releases but the                           |
+     mnemonic names should not ‐‐ so use the mnemonics.           |
+
+     A common use of these is the following action:
+
+     back  v=CUR_LOC.%PREV_LOC%  m="Hmm, I think we came this way..."
+
+     Note that "%INP_W1%", "%INP_W2%", etc. are replaced  by  the
+     first,  second,  etc.  recognized input words when used in a
+     text message.  Also note that, if you are carrying 5 things,
+     "v?NUM_CARRY.5"  will  be  true while "v?%NUM_CARRY%.5" will
+     only be true if variable 5 is equal to 5.  The two variables |
+     INP_N1  and  INP_N2  are  set to the values of the first and |
+     second "numbers" input in a command by the user.  The corre‐ |
+     sponding  word  entries are set to the symbols "N1" and "N2" |
+     so that the following constructions work:                    |
+
+     "take N1 apples"  v+4.%INP_N1%  m="You now have %4% apples." |
+     "add N1 and N2"   v=22.%INP_N1% v+22.%INP_N2% m="Sum is %22%"|
+
+     The ".wrld" documentation describes the uses and  syntax  of
+     variables in greater detail.
+
+
+LOCATIONS
+
+     _W_a_n_d_e_r  is usually set up for 256 to 512 numbered locations,
+     (rooms, chambers, whatever), but this limit can  be  changed
+     by  a parameter in the "wanddef.h" file.  Again, the ".wrld"
+     documentation describes these further.
+
+
+SYNTACTIC CONVENTIONS
+
+     In reading both the .misc and .wrld files  _W_a_n_d_e_r  uses  the
+     following conventions.  In order to allow reasonable format‐
+     ting of lines the following conventions are implemented:     |
+
+     \<LF> is completely ignored,                                 |
+     \n is replaced by <LF>,                                      |
+     \b is replaced by a <BS>,                                    |
+     \t is replaced by <HT>,                                      |
+     \r is replaced by <CR>,                                      |
+     \" is replaced by " (not considered a "quote"),              |
+     \<SP> is replaced by <SP>                                    |
+
+                              ‐ 4 ‐
+
+
+
+
+
+
+WANDER                         4/80                        WANDER
+
+
+     In reading the file, each unescaped tab  is  replaced  by  a |
+     single  space,  and  quotes are stripped off.  The resulting |
+     <SP> and <LF> codes created by the escape sequence using ‘\’ |
+     are turned into non‐delimiting <SP> or <LF> codes.  In addi‐ |
+     tion, all <LF>, <HT> and <SP> codes that appear in a  quoted |
+     sequence   of  characters  are  treated  as  non‐delimiters, |
+     (‘"press red button"’ and ‘press\ red\ button’ generate  the |
+     same  result),  Otherwise,  <SP> is used as the field delim‐
+     iter, and <LF> is used as the  line  delimiter.   Throughout
+     the  doc files the field delimiter may be described as "spa‐
+     ces or tabs" indicating that one or more of these characters
+     may  be  used  to delimit fields.  In some places "<SEP>" is
+     used, meaning a separator, either spaces or tabs.
+
+
+CAVEAT
+
+     Peter found lots of time to write and play _W_a_n_d_e_r_;  however,
+     when  it  came  time  to write documentation he found he was
+     pressed for time (so what’s new?).  As a result, this  docu‐
+     mentation  is  of the bare‐bones variety and probably loaded
+     with errors.  Sorry.
+
+
+BUGS
+
+     Ho ho ho.
+
+
+SEE ALSO
+
+     WanderWrld.txt, WanderMisc.txt
+
+               Copyright (c) by Peter Langston, N.Y.C.
+                         All rights reserved.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                              ‐ 5 ‐
+
+
+
+

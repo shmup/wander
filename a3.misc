@@ -1,7 +1,7 @@
-: (c) P. Langston & N. Howard   %W%  last mod %G% -- P.S.L. games
+: (c) P. Langston & N. Howard   @(#)a3.misc	1.8 5/29/82 -- P.S.L. games
 "                        Just Imagine ...
 
-You are travelling as First Under-secretary to the Ambassador for
+You are traveling as  First Under-secretary to the Ambassador for
 the   Corps   Diplomatique  Terrestrienne,  (CDT).   Your  direct
 superior, Mr. Magnan, has managed to duck out of the  action  and
 leave   you   as  sole  assistant  to  his  superior,  Ambassador
@@ -56,9 +56,14 @@ credit\ card    0    1
 card            1
 electronic\ all-dialect\ dictionary
 dictionary      1
+book            2
 cigarette\ pack
 pack            1
 cigarettes      2
+burning\ cigarette
+cigarette       1
+butt            2
+weed            3
 drink
 beer            1
 liquor          2
@@ -89,6 +94,10 @@ count           2
      *      v=7.1     ,,,
      *      v>8.27  v?9.24   m="Tensions seem at the breaking point as" ,,,
      *      v?9.24   v=9.0  v+8.1   m="Another day passes..." ,,,
+     *      v?18.1  t?cigarette   ,,,  m="\
+The cigarette burns your fingers as it turns into ash."
+     *      v?18.1  v=18.0  o-cigarette
+     *      v>18.0  v-18.1  ,,,
      take\ xyller  o?xyller  t?yangst  ,,, m="\
 The yangst seems to twitch and roll slightly in your grip."
      take\ yangst  o?yangst  t?zwerf  ,,,  m="\
@@ -127,7 +136,7 @@ You hear the flap of wings nearby ..."
 You hear the flap of wings ..."
      *      o?vampire  v~CUR_LOC.42  v?13.1  v?9.6  o-vampire  v=13.2  m="
 At that moment, (6:00 A.S.T) the sun rises, and the
-embarassed Vampire crumbles into dust, (lucky you)."
+embarrassed Vampire crumbles into dust, (lucky you)."
      *      v?13.1  v>9.6  v<9.19  o~vampire@42  ,,,  o+vampire@42
      *      o?vampire  v?13.1  c?33  ,,,  m="\
 The Count launches himself at you, but you dodge out of the way!
@@ -259,15 +268,17 @@ written in Aldebaranese dialects."
 			--------------------
 
 "
- smoke\ cigarette t?pack  v?3.1  v=3.0  m=\
+ smoke\ cigarette  v<3.1  m="You're all out of smokes."
+ smoke\ cigarette t?pack  t?cigarette  m="\
+You've already got one burning, fiend!"
+ smoke\ cigarette t?pack  v?3.1  v=3.0  v=18.20  t+cigarette  m=\
 "That last butt always tastes so awful!"
- smoke\ cigarette t?pack  v>3.1   v-3.1   m="\
-Your head spins slightly as you light up."
- smoke\ cigarette m="You're all out of smokes."
+ smoke\ cigarette t?pack  v-3.1  v=18.20  t+cigarette m="\
+Your head spins slightly as you puff it alight."
  balance o?card  v?6.1   m="Your account holds %6% credit."
  balance o?card  m="Your account holds %6% credits."
  balance m="You need a card to find out your balance."
- count\ cigarettes   t?pack  m="You have %3%."
+ count\ cigarettes   t?pack  m="You have %3% cigarettes left."
  count\ cigarettes   m="You have no cigarettes."
  count\ tokens    t?tokens        m="You have %2%."
  count\ tokens    m="You have no tokens."
@@ -275,10 +286,10 @@ Your head spins slightly as you light up."
 I understand that theft is not uncommon on Aldebaran III."
  help|info   m="\
 I will carry out any actions that you ask me to (assuming I understand what
-you ask).  In general, you should type commands of one or two words; like
-`take card', `count cigarettes' or `quit'.  To move around type the direction
+you ask).  In general, you should type commands of one to five words; like
+`quit', `take card', or `push red button'.  To move around type the direction
 you want to go; e.g. `north', `up', etc.  The following commands are handy:
-take, inventory, drop, quit, shell.\n"
+take, inventory, drop, look, read.\n"
  read\ notes    o~notes  m="I don't see any notes here ... "
  read\ notes    v?17.6  v=17.0    ,,,   m=\
 "At this point the notes trail off into meaningless scribbles and, thinking
@@ -294,7 +305,7 @@ to the beginning of the notes ...
   20%% oxygen and 2%% other gases, (by volume).  The period of revo-
   lution of A III is 18.628 Earth Standard hours which is expressed
   in local time as 24 hours.  The axis of A III tilts less than a
-  degree with respect to the ecliptic, (47.6'), providinig virtually
+  degree with respect to the ecliptic, (47.6'), providing virtually
   no variation in season and length of daylight, (sunrise is at 6:00
   Aldebaran Standard Time, sunset at 7:00 p.m. A.S.T.).
 ... (the notes continue, but your interest wanes)
@@ -363,11 +374,11 @@ to the beginning of the notes ...
 
 NAME:    Jaime Retief
        -------------------------------------
-TITLE:  1st Under-Sec'y to the Amb. to the Aldebarran System
+TITLE: first Under-Secretary to the Ambassador to the Aldebarran System
        -------------------------------------
 CDT ID: # 5375865346a547
 
-Affiliations: C.I.B., Hero's Guild, A.S.P.C.T., Unix User's Group, Est
+Affiliations: C.I.B., Est, Hero's Guild, G.S.P.C.T., Usenix
 
 
 "
@@ -386,7 +397,7 @@ Nice try, but that's an old worn-out magic word."
 	variables
 1           0   temp variable (used for customs)
 2           0   number of tokens
-3           0   number of cigarettes
+3           0   number of cigarettes (see var 18)
 4           0   temp variable used for barkeep/map
 5           0   temp for left/right hint
 6           50  credits left
@@ -398,4 +409,5 @@ Nice try, but that's an old worn-out magic word."
 12          0   local variable; used in church
 13          0   0: initial, 3: count, 1: vampire following you, 2: dead
 17          0   the current page of notes
+18          0   How much of a burning cigarette is left (see var 3)
 MAX_CARRY   6   we can only carry 6 things at once

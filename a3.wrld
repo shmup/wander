@@ -1,4 +1,4 @@
-: (c) P. Langston & N. Howard   %W%  last mod %G% -- P.S.L. games
+: (c) P. Langston & N. Howard   @(#)a3.wrld	1.7  last mod 5/29/82 -- P.S.L. games
 #1      Aldebaran III Spaceport
 You're in the Aldebaran III spaceport.  An electrified chain link fence
 surrounds the area with gates leading west and south.
@@ -113,8 +113,8 @@ customs, would you?\" smirks the official."
 "\"Too bad those aren't Terry cigarettes, but you'll have to declare
 them anyway\", you are reminded."
      west  3  s=100.1  m=\
-"\"Welcome to Aldebaran III, I suppose\",
-intones the official as you pass through."
+"\"Welcome to Aldebaran III, I suppose\", intones the official as you pass through.
+"
      bribe  m="You haven't got anything that the official wants."
      out    m="Which way out? East or west?  (the spaceport is east)"
      no     m="\"If you really have nothing to declare you may go.\""
@@ -127,7 +127,7 @@ intones the official as you pass through."
 \"credit card -- five credits\"."
      declare\ condoms  t?condoms  v-6.1  o+condoms@3  m=\
 "The guard smiles discreetly and scribbles a \"1\" on his pad."
-     declare\ dictionary  t?dict  v-6.3 t?dict  o+dict@3  m=\
+     declare\ dictionary  t?dictionary  v-6.3 o+dictionary@3  m=\
 "\"Hmm, looks pretty valuable\", he says as he scribbles a \"3\"."
      declare\ cigarettes  v-6.1  t?cigarettes  o+cigarettes@3  m=\
 "\"Filthy habit\", the official mutters, writing a \"1\" on his pad."
@@ -137,11 +137,11 @@ intones the official as you pass through."
 #3	Paved Road Outside Door
 "You're on a broad, paved road which dead ends before a door into a wide,
 low customs building to the east with a chain link fence attached to it.
-You are right outside a large corner door with a dilapidated electic sign:
+You are right outside a large corner door with a dilapidated electric sign:
 
-	     * * * * * * * * * + * * * * *
-	      * * + *  CLUB  407  * * + *
-	     * * * * * * * + * * * * + * *
+	     * * * * * * * * * . * * * * *
+	      * * . *  CLUB  407  * * . *
+	     * * * . * * . . * * * * . * *
 
 To the north an alley winds between this building and another small building
 to the northwest."
@@ -311,6 +311,7 @@ and your card pops out."
 "A mechanical voice drones
 \"Name the place or person you seek\"."
      down  14
+     sometimes 12
 
 #13.1
 "Directly in front of you is a booth marked:
@@ -723,9 +724,9 @@ one truly sacred spot on Aldebarran III, which the thieves desecrated with
 obscene slogans.  Ambassador Pouncetrifle learned of all this when he
 proudly displaying them at an Embassy reception.  Naturally the Ambassador
 was imprisoned.  After much verbal footwork the Ambassador convinced the
-Rep that the whole matter was a misunderstanding.  The Rep graciously
-agreed that matters might be set to rights by the return of the objects
-and the payment of a token fine of 1,000 galactic credits.
+Rep that the whole matter might have been a misunderstanding.  The Rep
+graciously agreed that matters could be set to rights by the return of
+the objects and the payment of a token fine of 1,000 galactic credits.
 Shall I go on?"
      no     v?12.2 ... c=yes  m="\
 Well, I will anyway; there's no stopping me now ..."
@@ -748,13 +749,15 @@ the deadline for returning the objects is only %9% hours away and Shilth's
 agents are reported to have stolen the objects again!"
      yes    v?12.3  ...  v=12.4  m="\
 If you can find the missing objects and present them to the Rep with the
-final 15 credit payment the uprising will probably be averted.
+final 15 credit payment he may be able to help avert the uprising.
 
 The three objects are:
-	a green Zwerf
+	a pale Xyller
 	an alabaster Yangst
-	and a pale Xyller
-They are rumored to be hidden in the graveyard near Pont St. Michel."
+	and a green Zwerf
+They are rumored to be hidden in an isolated area near Pont St. Michel.
+
+That's about all I know about it."
      thanks m="\"No thanks necessary, I'm still in your debt.\""
      open\ door|leave  s=33.1  m=\
 "\"I can return the favor you've done me by helping you leave.\",
@@ -797,7 +800,6 @@ You'll have to drop something to cross safely."
 The lock seems permanently stuck, and your key is in it."
 
 #36  You're in a graveyard.
-You're in a graveyard.
      n      39
      s|e    36
      w      38
@@ -805,6 +807,7 @@ You're in a graveyard.
      dig    m="You dig down to some bones which turn to ash."
 
 #36.0
+You're in a graveyard.
      dig    c?50 s=36.1  o+zwerf  m="\
 You break through into an open pocket containing a green, vibrating object."
 
@@ -894,7 +897,7 @@ and then springs off as a small bat escapes from the coffin.
 You hear footsteps approach from behind you ...
 "
      hello|*      o?vampire  v?13.0   v=13.3 m="
-The count speaks to you in a charming voice with just the sightest
+The count speaks to you in a charming voice with just the slightest
 accent: \"Velcome!  It is such a pleasure to meet a fellow Terran in
 these lonely parts.  Vould you like to rest for a vhile?\""
      no     o?vampire  v?13.3  m="\"Vell, maybe later, then ...\""
@@ -910,28 +913,30 @@ You shall bleed for this, Terry! ... um, that is ...\", and vanishes."
 line going west.  It is rather dingy and appears to be little used.
 There are several signs here and doors at both ends of the platform with
 gates and small stairways leading up."
-     n|left      m="The door is chained closed."
-     s|right   97  m="The gate clangs shut behind you."
+     n|left 127    m="The door is chained closed but you slip through."
+     s|right   97  m="The gate clatters a few times behind you."
      e      30
      w      m="End Of The Line -- get it?"
      up     m="Which way up?  North? South? Left? Right?"
      read\ signs m="\
 A multi-lingual sign overhead says:
-      \" <---- to Meeting Hall ---<       >--- to The Rep ----> \"
+      \" <---- Meeting Hall ---<       >--- The Rep ----> \"
 The door at the north end of the station bears another sign that reads:
-      \" Meeting Hall exit closed \"
+      \" Meeting Hall Closed During Renovation \"
 "
 
 #97     The Rep's House
 "You're in the foyer of The Rep's house.  There is a stairway going down
 and a large, open door at the north end of the hall."
      down   98  m="You sneak through the gate and into the station."
-     n      96  v=11.12
+     n      96  v=11.13
 
 #96  Rep's Reception Room
-"You are in the presence of the Rep.  \"What do YOU want?\", he growls."
+"You are in the presence of the Rep."
      s      97
      *      v-11.1  ,,,
+     *      v?11.11  ,,,  m="\
+\"What do YOU want?\", he growls."
      *      v?11.10  ,,,  m="\
 \"I haven't got all day, you know; I'm VERY busy!\""
      *      v?11.6   ,,,  m="\
@@ -943,21 +948,26 @@ mumbles the Rep."
      *      98  v?11.1   m="
 \"Throw the bum out\", he mutters to a LARGE native who appears beside you
 wearing `No-Noyz' sneakers and little else.  You bounce twice on the stairs
-on your way down."
+on your way down and carom off the gate as you go through it."
      i\ want    m="\"Who cares what YOU want, Terry?\""
      want   m="\
 \"Want, want, want!  You Terries never talk about anything else!\""
      talk   m="\"Talk's cheap\", he grumbles."
      drop   m="\"Don't go dropping things on my good carpet\", growls the Rep"
+     take   m="\
+\"I'd rather you didn't take anything.\" he states matter-of-factly."
      return|give    v=11.15 ,,,
-     return\ xyller|give\ xyller  o+xyller  m="\"My Xyller!\", he exclaims."
-     return\ yangst|give\ yangst   o+yangst  m="\"My Yangst!\", he crows."
-     return\ zwerf|give\ zwerf    o+zwerf   m="\"My Zwerf!\", he coos."
-     return\ credits|give\ credits  o~xyller  m="\
+     return\ xyller|give\ xyller  t?xyller o+xyller@127  s=127.2  m="\
+\"My Xyller!\", he exclaims."
+     return\ yangst|give\ yangst  t?yangst o+yangst@127  s=127.2  m="\
+\"My Yangst!\", he crows."
+     return\ zwerf|give\ zwerf    t?zwerf  o+zwerf@127   s=127.2  m="\
+\"My Zwerf!\", he coos."
+     return\ credits|give\ credits  o~xyller@127  m="\
 Unless you're going to return my Xyller you may as well keep the credits."
-     return\ credits|give\ credits  o~yangst  m="\
+     return\ credits|give\ credits  o~yangst@127  m="\
 Unless you're going to return my Yangst you may as well keep the credits."
-     return\ credits|give\ credits  o~zwerf  m="\
+     return\ credits|give\ credits  o~zwerf@127  m="\
 Unless you're going to return my Zwerf you may as well keep the credits."
      return\ credits|give\ credits  v<6.15 m="\
 You don't have the fifteen credits, but I can see you mean well ... perhaps,
@@ -966,4 +976,221 @@ if you could figure out how to pass go you could get a few more credits..."
 \"You Terries aren't so bad after all\", admits the Rep as he flicks a
 switch that cuts the power to all the androids that were leading the
 uprising, \"Why don't you stay for dinner?\".  Which, of course, you do."
+
+#127	The Rep's Meeting Hall
+	s   98  m="You slip back through the chained door."
+
+#127.0
+The large, elegant room in which you find yourself radiates a feeling
+reminiscent of a courtroom on Old Earth--part stately grandeur, part
+solemn commitment to lofty ideals and part self-serving opportunism.
+The room smells of fresh paint and solvent.  Behind the dais at the far
+end of the room three well-lit alcoves in the wall seem peculiarly empty.
+	*  s=127.1 ,,,
+
+#127.1
+You're in the Rep's Meeting Hall, a large, elegant room undergoing renovation.
+
+#127.2
+The large, elegant room in which you find yourself radiates a feeling
+reminiscent of a courtroom on Old Earth--part stately grandeur, part
+solemn commitment to lofty ideals and part self-serving opportunism.
+The room smells of fresh paint and solvent.  Behind the dais at the far
+end of the room are three well-lit alcoves set into the wall.
+	*  s=127.3 ,,,
+
+#127.3
+You're in the Rep's Meeting Hall, a large, elegant room undergoing renovation.
+
+:Inside Crystal City
+#300	Rivington Street
+You are at the north end of Rivington Street. To the north is underbrush.
+	n	m="The road peters out into dense underbrush, and you turn back."
+	s	304
+	e	301
+
+#301	Casbah
+You are in a complex warren of markets, shops and houses.
+	*	305
+
+#302	LeMoko Lane
+You are at the north end of LeMoko Lane.
+	s	306
+
+#303	Tardis
+You are in a very large, modern control center for some sort of vehicle.
+	s	307
+
+#304	Corner of Maxwell and Rivington
+You are at the Corner of Maxwell and Rivington Streets.  A street runs east\
+from here, and another runs north-south.
+	n	300
+	s	316
+	e	305
+
+#305	Corner of Maxwell and Zero
+Corner of Maxwell and Zero.
+	w	304
+	e	306
+	s	318
+
+#306	Corner of Maxwell and LeMoko
+Corner of Maxwell Street and LeMoko Lane.
+	n	302
+	w	305
+	e	307
+
+#307	Corner of Maxwell and Laser
+Corner of Maxwell Street and Laser Boulevard.
+	w	306
+	e	308
+	s	319
+
+#308	Corner of Maxwell and Tribble
+Corner of Maxwell Street and Tribble Terrace.
+	w	307
+	s	320
+
+#309	Building 9
+Building 9 is closed
+	*	315
+
+#310	Red Crystal Tower
+The Red Crystal Tower is under construction
+	*	317
+
+#311	Building 11
+Building 11 Under Construction
+	*	319
+
+#312	Liabe Tower
+Liabe Tower Under Construction
+	*	320
+
+#313	Building 13
+Building 13 Under Construction
+	*	321
+
+#314	Boardwalk and Einstein
+Boardwald and Einstein Expressway
+	e	315
+	s	322
+
+#315	Corner of Einstein and Park Place
+Corner of Einstein Expressway and Park Place
+	e	316
+	w	314
+	s	329
+
+#316	Corner of Einstein and Rivington
+Corner of Einstein Expressway and Rivington Street.
+	w	315
+	e	317
+	n	314
+
+#317	Corner of Einstein and Alabaster
+Corner of Einstein Expressway and Alabaster Avenue
+	s	330
+	w	316
+	e	318
+
+#318	Corner of Einstein and Zero
+Corner of Einstein Expressway and Zero Zone
+	n	305
+	w	317
+	e	319
+	s	331
+
+#319	Corner of Einstein and Laser
+Corner of Einstein Expressway and Laser Lane
+	n	307
+	s	332
+	e	320
+	w	318
+
+#320	Corner of Einstein and Tribble
+Corner of Einstein Expressway and Tribble Terrace
+	w	319
+	e	321
+	n	308
+	s	334	m="The road curves to the east as you walk"
+
+#321	Corner of Einstein and Hoople
+Corner of Einstein Expressway and Hoople Street
+	w	320
+	s	334
+
+#322	Boardwalk and Stellar
+
+#323	Building 23
+
+#324	Museum of Robotics
+
+#325	T.P.C.
+
+#326	Building 26
+
+#327	Building 27
+
+#328	Police Headquarters
+
+#329	Stellar and Park Place
+
+#330	Stellar and Alabaster
+
+#331	Stellar and Zero
+
+#332	Stellar and Laser
+
+#333	Stellar Street
+
+#334	Crystal City Information
+
+#335	Building 35
+
+#336	Intergalactic Bank
+
+#337	Terran Embassy
+
+#338	Hyatt Alderbaran
+
+#339	Building 39
+
+#340	Boardwald and The Promenade
+
+#341	Corner of Warp and Park Place
+
+#342	Corner of Warp and Alabaster
+
+#343	Corner of Warp and Zero
+
+#344	Corner of Warp and Laser
+
+#345	Corner of Twonky and Park Place
+
+#346	Fourteen Seasons Restaurant
+
+#347	Building 47
+
+#348	Corner of Twonky and Alabaster
+
+#349	Groac Embassy
+
+#350	Corner of Twonky and Zero
+
+#351	Building 51
+
+#352	Revolution Square
+
+#353	Corner of Twonky and Hoople
+
+#354	The Promenade and Zero
+
+#355	The Promenade and Laser
+
+#356	Building 56
+
+#357	Green Crystal Tower
+
+#358	Zoo
 

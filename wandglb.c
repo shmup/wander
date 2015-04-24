@@ -6,18 +6,18 @@
 ** Copyright (c) 1978 by Peter S. Langston - New  York,  N.Y.
 */
 
-char    *whatglb    "@(#)wandglb.c	2.7  last mod 4/9/80 -- (c) psl 1978";
-char    *glb_h      H_SCCS;
+char    *whatglb =  "@(#)wandglb.c	2.11  last mod 5/29/82 -- (c) psl 1978";
+char    *glb_h   =  H_SCCS;
 
 /* the following defines are used only in wandglb.c and may be changed */
 		      /* numbers in [] are #bytes data space used for each */
 #define MAXWRDS     768    /* [6] max words incl ones mentioned in actions */
 #define MAXINDEX    768                 /* [8] max states total (all locs) */
 #define MAXPREACTS  32     /* [10+2*MAXACTWDS+6*MAXFIELDS] max pre actions */
-#define MAXPOSTACTS 128   /* [42+2*MAXACTWDS+6*MAXFIELDS] max post actions */
+#define MAXPOSTACTS 100   /* [42+2*MAXACTWDS+6*MAXFIELDS] max post actions */
 
 
-struct  indexstr    index[MAXINDEX];
+struct  ndxstr    ndx[MAXINDEX];
 
 struct  paramstr    param;
 
@@ -26,7 +26,8 @@ struct  placestr    place;
 struct  actstr  pre_acts[MAXPREACTS];
 struct  actstr  post_acts[MAXPOSTACTS];
 
-struct  wrdstr wrds[MAXWRDS] {
+// Note that the syn field must be turned into the index of the root word
+struct  wrdstr wrds[MAXWRDS] = {
 	listunused,     0,  0,  MAXWRDS, /* hopefully nothing matches this */
 	"inventory",    0,  0,  0,
 	"take",         0,  0,  0,
@@ -68,7 +69,7 @@ struct  wrdstr wrds[MAXWRDS] {
 	0,              0,  0,  0,  /* "all" must be the last defined here */
 };
 
-struct  wrdstr spvars[] {            /* special construct & their meanings */
+struct  wrdstr spvars[] = {            /* special construct & their meanings */
 	"CUR_LOC",      0,  0,  CUR_LOC,
 	"PREV_LOC",     0,  0,  PREV_LOC,
 	"INP_W1",       0,  0,  INP_W1,
@@ -97,31 +98,31 @@ struct  wrdstr spvars[] {            /* special construct & their meanings */
 	0,              0,  0,  0,
 };
 
-char *thereis[] {
+char *thereis[] = {
 	" ", "There is ",   "There is ", "There are ",
 };
 
-char *aansome[] {
+char *aansome[] = {
 	" ", "a ", "an ",  "some ",
 };
 
-char fldels[] { FIELDELIM, LINEDELIM, 0, };             /* delimits fields */
-char vardel[] { VARCHAR, 0, };                     /* terminates variables */
-char wrdels[] {                                       /* to separate words */
+char fldels[] = { FIELDELIM, LINEDELIM, 0, };             /* delimits fields */
+char vardel[] = { VARCHAR, 0, };                     /* terminates variables */
+char wrdels[] = {                                       /* to separate words */
 	' ', ' ' | 0200, ',', '.', ';', '!', '?', 0,
 };
 
-char    listunused[] "\b\b\b\b";        /* used to mark empty list entries */
+char    listunused[] = "\b\b\b\b";        /* used to mark empty list entries */
 
 char    locfile[PATHLENGTH];
 char    miscfile[PATHLENGTH];
 char    tmonfil[PATHLENGTH];
 char    monfile[PATHLENGTH];
 
-char    *stdpath    = "/sys/games/.../wand/";    /* where std. worlds live */
+char    *stdpath    = WANDPATH(/);		 /* where std. worlds live */
 char    curfile[PATHLENGTH] = "a3";                       /* default world */
 char    newfile[PATHLENGTH];                        /* temp for world name */
-char    *defmfile   = "/sys/games/.../wand/wand.mon";   /* def monfil name */
+char    *defmfile   = WANDPATH(wand.mon);		/* def monfil name */
 
 char    mfbuf[BUFSIZ];                            /* so stdio won't sbrk() */
 char    wfbuf[BUFSIZ];                                            /* ditto */
@@ -129,7 +130,7 @@ char    wfbuf[BUFSIZ];                                            /* ditto */
 int     maxwrds     = MAXWRDS;
 int     pathlength  = PATHLENGTH;
 int     maxlocs     = MAXLOCS;
-int     maxindex    = MAXINDEX;
+int     maxndx    = MAXINDEX;
 int     maxacts     = MAXACTS;
 int     maxpreacts  = MAXPREACTS;
 int     maxpostacts = MAXPOSTACTS;
@@ -153,24 +154,3 @@ int     max_carry   = 8;           /* default max objects to carry at once */
 char    inwrd[MAXACTWDS][32];                       /* current input words */
 char    locseen[MAXLOCS], locstate[MAXLOCS];
 int     var[MAXVARS];
-
-	/* SYSTEM DEPENDENT ROUTINES */
-
-int myruid()        /* return "real" user id */
-{
-	return(getuid() & 0377);
-}
-
-int myeuid()        /* return "effective" user id */
-{
-	return(getuid() >> 8 & 0377);
-}
-
-int myttyn()        /* return string identifying current tty */
-{
-	static char buf[2];
-
-	buf[0] = ttyn(2);
-	buf[1] = '\0';
-	return(buf);
-}

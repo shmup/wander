@@ -5,22 +5,25 @@
 ** Copyright (c) 1978 by Peter S. Langston - New  York,  N.Y.
 */
 
-#define H_SCCS  "@(#)wanddef.h	1.5  last mod 4/9/80 -- (c) psl 1978"
+#define H_SCCS  "@(#)wanddef.h	1.8  last mod 6/9/84 -- (c) psl 1978"
 
 /*      CAVEAT: Only those defines marked as "(MOD)" may be changed,
 **          (also check `wandglb.c' for other modifiable parameters).
 */
 
+#define GAMESPATH(X)	"/Users/psl/Games+Toys/X"
+#define	WANDPATH(X)	GAMESPATH(Wander/X)			  /* (MOD) */
+
 		      /* numbers in [] are #bytes data space used for each */
-#define MAXLOCS     512                         /* [2] max locations (MOD) */
+#define MAXLOCS     1024                        /* [2] max locations (MOD) */
 #define MAXACTS     64    /* [10+2*MAXACTWDS+6*MAXFIELDS] acts/state (MOD) */
 #define MAXFIELDS   8/* [6*(MAXACTS+MAXPREACTS+MAXPOSTACTS)] flds/act (MOD) */
-#define PATHLENGTH  64               /* [5] max path length to files (MOD) */
+#define PATHLENGTH  1024             /* [5] max path length to files (MOD) */
 
 #define MAXACTWDS   5    /* [2*(MAXACTS+MAXPREACTS+MAXPOSTACTS)] words/act */
 						   /* also words/utterance */
 #define MAXVARS     128         /* [2] number of variables, must be == 128 */
-#define BUFSIZE     1024                /* [2+6stack] size of line buffers */
+#define BUFSIZE     4096                /* [2+6stack] size of line buffers */
 #define MAXINPNUMS  2                                 /* numbers/utterance */
 
 #define FIELDELIM   ' '     /* delimit fields (MOD) */
@@ -118,11 +121,11 @@ struct  paramstr {
 	int     p_maxlocs;
 	int     p_maxwrds;
 	int     p_maxvars;
-	int     p_maxindex;
+	int     p_maxndx;
 	int     p_maxpre;
 	int     p_maxpost;
-	int     p_stbuf;
-	int     p_stbp;
+	char    *p_stbuf;
+	char    *p_stbp;
 } param;
 
 struct  placestr {
@@ -139,7 +142,7 @@ struct  placestr {
 			int     f_fld1;
 			int     f_fld2;
 		} a_field[MAXFIELDS];   /* tests & results */
-		int     a_msgfp;          /* file pointer for message text */
+		FILE    *a_msgfp;         /* file pointer for message text */
 		long    a_msgaddr;          /* result message text address */
 	} p_acts[MAXACTS];
 };
@@ -153,28 +156,28 @@ struct  placestr {
 
 struct  wrdstr {
 	char    *w_word;                        /* pointer to text of word */
-	char    w_syn;                                   /* synonym offset */
+	char    w_syn;                          /* synonym root word index */
 	char    w_flg;             /* plural? need article? descript only? */
 	int     w_loc;            /* where it is; 0=>nowhere, -1=>carrying */
 };
 
-struct  indexstr {
+struct  ndxstr {
 	int  i_loc;
         char i_state;
         long i_addr;
 };
 
-extern  struct  indexstr    index[];
+extern  struct  ndxstr    ndx[];
 extern  struct  placestr    place;
 extern  struct  actstr  pre_acts[], post_acts[];
 extern  struct  wrdstr wrds[], spvars[];
 extern  char    *thereis[], *aansome[];
 extern  char    fldels[], vardel[], wrdels[];
 extern  char    listunused[];
-extern  char    locfile[], miscfile[], tmonfil[], monfile[];
-extern  char    curfile[], newfile[], *stdpath, *defmfile;
+extern  char    locfile[], miscfile[], tmonfil[], monfile[PATHLENGTH];
+extern  char    curfile[PATHLENGTH], newfile[], *stdpath, *defmfile;
 extern  char    mfbuf[], wfbuf[];
-extern  int     maxwrds, maxactwds, pathlength, maxinpwd, maxlocs, maxindex;
+extern  int     maxwrds, maxactwds, pathlength, maxinpwd, maxlocs, maxndx;
 extern  int     maxacts, maxpreacts, maxpostacts, maxfields, maxvars;
 extern  int     ldescfreq;
 extern  char    fieldelim, linedelim;

@@ -1,0 +1,201 @@
+	Export Wander
+
+
+To compile Wander, replace the definition of WANDPATH in wanddef.h with
+the appropriate path for your system; this defines the directory where
+data files (and wander itself) will reside.
+
+Also make sure "myruid()" and "myeuid()" in ../glib.a work; (these are
+compared to determine "ownership" of the world being wandered; if they
+are equal then ownership is assumed and debugging verbs become active;
+see "wander.nr" for debugging verbs).
+
+If your system does not have the "tell()" system call, (and therefore the
+"ftell()" routine in the standard I/O library doesn't work), either put
+the line:
+OPT = -DNOFTELL
+in the Makefile and use make to create "wander" or else uncomment the line
+#define	NOFTELL
+in wandsys.c.
+
+Then do:
+    cc -c -O wandglb.c
+    cc -c -O wandsys.c
+    cc wander.o wandglb.o wandsys.o ../glib.a -lS -o wander (V6)
+	or
+    cc wander.o wandglb.o wandsys.o ../glib.a -o wander	(V7)
+
+Or:
+    Make all
+
+The "*.nr" files include "mac" for their macros, so commands of the form
+"nroff misc.nr >misc.doc" will create the documentation.
+
+Let me know if I've overlooked anything, if something doesn't work,
+or if further explanation would be helpful.
+
+
+
+	MISCELLANEOUS CHANGES
+
+Save & Restore
+	Save makes a snapshot of the game; restore reads in the saved
+snapshot and restores the game to the state it was when the snapshot
+was taken.  In order to provide reasonable speed the saved file is a
+lot bigger than I'd like; too bad.  The default name for a save file
+is the world name with the extension ".save" tagged on; e.g. for "a3"
+"a3.save" is created.  Both save and restore can take an argument which
+will be used for the file name.  Invocation of Wander with the "-r"
+flag will cause the save file to be read in.  "wander -r a3" will
+restore from "a3.save"; "wander -rfoo" will restore from "foo".
+
+All
+	Whenever the word "all" is encountered as the second recognized
+word of user input on a line it will be macro expanded.  This expansion
+replaces the word "all" with each object in the current location including
+objects being carried.  E.g. "drop all" may expand to "drop keys; drop net;
+drop leaflet".
+
+Re-start
+	The built-in command "re-start" has been renamed "init" for fairly
+arbitrary reasons.
+
+
+
+	NEW VARIABLES
+
+INP_N1 & INP_N2
+	These two variables are set to the values of the first and second
+"numbers" input in a command by the user.  The corresponding word entries
+are set to the symbols "N1" and "N2" so that the following work:
+     "take N1 apples"   v+4.%INP_N1%  m="You now have %4% apples."
+     "add N1 and N2"    v=22.%INP_N1%  v+22.%INP_N2%  m="Sum is %22%"
+
+NUM_MOVES & NUM_PLACES
+	These are the counters that the program keeps.  Combined with
+%NOW_ET% they make for interesting score algorithms.
+
+BREVITY
+	This variable allows you to control the frequency of long versus
+short descriptions.  The following values produce the specified results:
+	-1      Long description only once; the first time a loc is visited
+	0       No long descriptions; always short
+	1       All long descriptions; never short
+	2       Long descriptions every second time
+	3       Long descriptions every third time
+and so on, up to a maximum period of 127.  See "a3.misc" for simple usage.
+
+LOC_VIEW
+	This variable controls the source for the long description and is
+useful for such things as turning off a lamp...
+	0       Use the descriptions from the current location
+	1       Use the description from location 1
+	2       Use the description from location 2
+and so on.  Typically you might set up a dummy location 200 which has, as
+its short and long descriptions: "It is pitch black -- You can't see a thing."
+
+OBJ_VIEW
+	This variable controls visibility of objects in a very simple
+way; if it's zero you can see fine, if it's non-zero all objects are
+invisible.
+
+
+
+	NEW ACTION FIELDS
+
+The "Been" Fields
+	Seven new test/result field types have been added to test and/or
+manipulate the counters that show whether the user has "been" to a given
+location and how long it has "been" since the long description was given
+for that location.  For each location an 8-bit counter is kept that is
+zero until the location has been seen.  After that it is incremented each
+time a description is given and then set to 1 each time a long description
+is given.  The following fields access these counters:
+b?12.0      true if counter for loc 12 is zero, (never been there)
+b~12.0      true if counter for loc 12 is non-zero (been there)
+b<12.2      true if counter for loc 12 less that 2 (so what?)
+b>12.0      true if counter for loc 12 greater than 0
+b=12.0      set counter for loc 12 to zero
+b+12.1      add one to the counter for loc 12
+b-12.3      subtract three from counter for loc 12
+
+
+
+	CHANGES THAT AFFECT THE .misc FILE
+
+Object Flags
+	A third field has been added to the definition of words in the
+.misc file.  This field contains a flag that specifies how the word is
+to be output and essentially assumes that the word is an object, (as I
+shall assume here by calling it "object" rather than "word").  It is
+expected that this field will only rarely be needed so I haven't gone
+to great lengths to make it nice cosmetically.  The field contains a
+number that is the sum of the following options:
+	1   The object is singular even though it ends with an 's'
+	2   The object is plural even though it doesn't end with an 's'
+	4   The object already contains an article; don't supply one
+	8   The object is a complete description as is; don't use
+	    constructions like "there is a *** here" for it.
+	16  This form of the object is to be used ONLY when describing
+	    it in a location, not when being carried, dropped, etc.
+Note that 1 and 2 need only rarely be used, e.g. if you have a 'princess'
+she will be described as "some princess" unless you specify a 1, but seldom
+do such examples seem to arise.
+Note also that 8 usually requires 16, (i.e. 24),  whereas 16 doesn't always
+require 8.
+If you use the 16 code be sure that it is the zeroth synonym and that there
+is a first synonym following it that can be used for the carrying, dropping,
+etc. cases, e.g.:
+"A weeping damsel huddles before you"  0  0  24
+tear-soaked\ damsel  1
+damsel  2
+The second synonym here, (damsel), is to allow the user to say "drop damsel";
+without it the user would have to say "drop tear-soaked" or the like.
+
+Words Section
+	The words section of the .misc file can no longer be headed by
+a "verbs" or "objects" line; the line must start with the word "words".
+However it can say "words verbs" or "words (objects)" and there can be
+any number of such sections.
+
+Location Field in Word Definitions
+	To have an object start out "on-the-user", i.e. being carried,
+the location field must contain a "-1".  Previously all that was required
+was the "-".  E.g.
+Wander\ Instruction\ Guide  0  -1
+
+
+I think that's it; but these are just the changes since version 2.10 or so
+of wander.c.  The documentation should have a margin character next to
+all recent changes...
+
+
+WANDER WORLDS SUPPLIED
+
+a3      This began as a few examples for the documentation, but then I got
+	interested in it and it started growing...
+
+castle  This was the first world I put together; as a result it uses very
+	few of the new "features" and does a few things by incredibly
+	Rube Golberg-like contortions...
+
+advent  Well, I couldn't resist.  I intend to make this a parody of
+	Adventure at some point, but right now it's just the opening stuff.
+	Feel free to mess with it.
+
+library A folklore & mythology major at Harvard wrote this world to avoid
+	doing any coursework, (well, actually he was playing Empire, too).
+
+tut     It occurred to me that wander was identical to many computer
+	assisted instruction systems so I wrote this little CAI/Wander demo.
+
+
+I'm always interested in hearing about other people's wander worlds.  Writing
+the program is the easy part; creating interesting worlds that "tell a story"
+is still the hard part.
+
+
+				    Peter Langston
+
+(c) P. Langston, NYC NY   All rights reserved.
+Please don't distribute further.
