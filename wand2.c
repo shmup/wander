@@ -308,7 +308,7 @@ char	*string;
         return(cp - string);
 }
 
-in				       /* put wrd vals in w[0], w[1],  ... */
+int				       /* put wrd vals in w[0], w[1],  ... */
 wdparse(string, w, nums, flag)            /* if flag != 0 add to wrds list */
 char	*string;                 /* if flag == 0 (user inp) put #s in nums */
 int	w[], nums[];                              /* and return # of words */
@@ -847,7 +847,7 @@ fsize(FILE *fp)
 {
 	struct stat sbuf;
 
-	fstat(fp->_file, &sbuf);
+	fstat(fileno(fp), &sbuf);
 	return(sbuf.st_size);
 }
 
