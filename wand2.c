@@ -847,7 +847,7 @@ fsize(FILE *fp)
 {
 	struct stat sbuf;
 
-	fstat(fp, &sbuf);
+	fstat(fileno(fp), &sbuf);
 	return(sbuf.st_size);
 }
 
