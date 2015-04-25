@@ -28,74 +28,75 @@ struct  actstr  post_acts[MAXPOSTACTS];
 
 // Note that the syn field must be turned into the index of the root word
 struct  wrdstr wrds[MAXWRDS] = {
-	listunused,     0,  0,  MAXWRDS, /* hopefully nothing matches this */
-	"inventory",    0,  0,  0,
-	"take",         0,  0,  0,
-	"pick",         1,  0,  0,
-	"drop",         0,  0,  0,
-	"quit",         0,  0,  0,
-	"save",         0,  0,  0,
-	"restore",      0,  0,  0,
-	"look",         0,  0,  0,
-	"initialize",   0,  0,  0,
-	"north",        0,  0,  0,
-	"n",            1,  0,  0,
-	"south",        0,  0,  0,
-	"s",            1,  0,  0,
-	"east",         0,  0,  0,
-	"e",            1,  0,  0,
-	"west",         0,  0,  0,
-	"w",            1,  0,  0,
-	"up",           0,  0,  0,
-	"u",            1,  0,  0,
-	"down",         0,  0,  0,
-	"d",            1,  0,  0,
-	"northeast",    0,  0,  0,
-	"ne",           1,  0,  0,
-	"southeast",    0,  0,  0,
-	"se",           1,  0,  0,
-	"southwest",    0,  0,  0,
-	"sw",           1,  0,  0,
-	"northwest",    0,  0,  0,
-	"nw",           1,  0,  0,      /* must be the last direction verb */
-	"~snoop",       0,  0,  0,     /* this only works if you are owner */
-	"~goto",        0,  0,  0,     /* this only works if you are owner */
-	"~vars",        0,  0,  0,     /* this only works if you are owner */
-	"~version",     0,  0,  0,     /* this only works if you are owner */
-	"*",            0,  0,  0,
-	"N1",           0,  0,  0,
-	"N2",           0,  0,  0,
-	"all",          0,  0,  0,      /* used in "take all" & "drop all" */
-	0,              0,  0,  0,  /* "all" must be the last defined here */
+	listunused,	0,  0,  MAXWRDS, /* hopefully nothing matches this */
+	"drop",		0,  0,  0,
+	"inventory",	0,  0,  0,
+	"quit",		0,  0,  0,
+	"save",		0,  0,  0,
+	"take",		0,  0,  0,
+	"pick",		1,  0,  0,
+	"restore",	0,  0,  0,
+	"look",		0,  0,  0,
+	"initialize",	0,  0,  0,
+	"history",	0,  0,  0,
+	"north",	0,  0,  0,
+	"n",		1,  0,  0,
+	"south",	0,  0,  0,
+	"s",		1,  0,  0,
+	"east",		0,  0,  0,
+	"e",		1,  0,  0,
+	"west",		0,  0,  0,
+	"w",		1,  0,  0,
+	"up",		0,  0,  0,
+	"u",		1,  0,  0,
+	"down",		0,  0,  0,
+	"d",		1,  0,  0,
+	"northeast",	0,  0,  0,
+	"ne",		1,  0,  0,
+	"southeast",	0,  0,  0,
+	"se",		1,  0,  0,
+	"southwest",	0,  0,  0,
+	"sw",		1,  0,  0,
+	"northwest",	0,  0,  0,
+	"nw",		1,  0,  0,      /* must be the last direction verb */
+	"~snoop",	0,  0,  0,     /* this only works if you are owner */
+	"~goto",	0,  0,  0,     /* this only works if you are owner */
+	"~vars",	0,  0,  0,     /* this only works if you are owner */
+	"~version",	0,  0,  0,     /* this only works if you are owner */
+	"*",		0,  0,  0,
+	"N1",		0,  0,  0,
+	"N2",		0,  0,  0,
+	"all",		0,  0,  0,      /* used in "take all" & "drop all" */
+	0,		0,  0,  0,  /* "all" must be the last defined here */
 };
 
 struct  wrdstr spvars[] = {            /* special construct & their meanings */
-	"CUR_LOC",      0,  0,  CUR_LOC,
-	"PREV_LOC",     0,  0,  PREV_LOC,
-	"INP_W1",       0,  0,  INP_W1,
-	"INP_W2",       0,  0,  INP_W2,
-	"INP_W3",       0,  0,  INP_W3,
-	"INP_W4",       0,  0,  INP_W4,
-	"INP_W5",       0,  0,  INP_W5,
-	"INP_WC",       0,  0,  INP_WC,
-	"NUM_CARRY",    0,  0,  NUM_CARRY,
-	"MAX_CARRY",    0,  0,  MAX_CARRY,
-	"NOW_YEAR",     0,  0,  NOW_YEAR,
-	"NOW_MONTH",    0,  0,  NOW_MONTH,
-	"NOW_DOM",      0,  0,  NOW_DOM,
-	"NOW_DOW",      0,  0,  NOW_DOW,
-	"NOW_HOUR",     0,  0,  NOW_HOUR,
-	"NOW_MIN",      0,  0,  NOW_MIN,
-	"NOW_SEC",      0,  0,  NOW_SEC,
-	"NOW_ET",       0,  0,  NOW_ET,
-	"BREVITY",      0,  0,  BREVITY,
-	"LOC_VIEW",     0,  0,  LOC_VIEW,
-	"OBJ_VIEW",     0,  0,  OBJ_VIEW,
-	"INP_N1",       0,  0,  INP_N1,
-	"INP_N2",       0,  0,  INP_N2,
-	"NUM_MOVES",    0,  0,  NUM_MOVES,
-	"NUM_PLACES",   0,  0,  NUM_PLACES,
-	0,              0,  0,  0,
+	"CUR_LOC",	0,  0,  CUR_LOC,
+	"PREV_LOC",	0,  0,  PREV_LOC,
+	"INP_W1",	0,  0,  INP_W1,
+	"INP_W2",	0,  0,  INP_W2,
+	"INP_W3",	0,  0,  INP_W3,
+	"INP_W4",	0,  0,  INP_W4,
+	"INP_W5",	0,  0,  INP_W5,
+	"INP_WC",	0,  0,  INP_WC,
+	"NUM_CARRY",	0,  0,  NUM_CARRY,
+	"MAX_CARRY",	0,  0,  MAX_CARRY,
+	"NOW_YEAR",	0,  0,  NOW_YEAR,
+	"NOW_MONTH",	0,  0,  NOW_MONTH,
+	"NOW_DOM",	0,  0,  NOW_DOM,
+	"NOW_DOW",	0,  0,  NOW_DOW,
+	"NOW_HOUR",	0,  0,  NOW_HOUR,
+	"NOW_MIN",	0,  0,  NOW_MIN,
+	"NOW_SEC",	0,  0,  NOW_SEC,
+	"NOW_ET",	0,  0,  NOW_ET,
+	"BREVITY",	0,  0,  BREVITY,
+	"LOC_VIEW",	0,  0,  LOC_VIEW,
+	"OBJ_VIEW",	0,  0,  OBJ_VIEW,
+	"INP_N1",	0,  0,  INP_N1,
+	"INP_N2",	0,  0,  INP_N2,
+	"NUM_MOVES",	0,  0,  NUM_MOVES,
+	"NUM_PLACES",	0,  0,  NUM_PLACES,
+	0,		0,  0,  0,
 };
 
 char *thereis[] = {
@@ -120,15 +121,18 @@ char    tmonfil[PATHLENGTH];
 char    monfile[PATHLENGTH];
 
 char    *stdpath    = WANDPATH(/);		 /* where std. worlds live */
-char    curfile[PATHLENGTH] = "a3";                       /* default world */
-char    newfile[PATHLENGTH];                        /* temp for world name */
+char    curname[PATHLENGTH] = "a3";                       /* default world */
 char    *defmfile   = WANDPATH(wand.mon);		/* def monfil name */
 
 char    mfbuf[BUFSIZ];                            /* so stdio won't sbrk() */
 char    wfbuf[BUFSIZ];                                            /* ditto */
 
+char	history[HISTLEN][BUFSIZE];            /* the last HISTLEN commands */
+int	histi;				             /* index into history */
+
+
+
 int     maxwrds     = MAXWRDS;
-int     pathlength  = PATHLENGTH;
 int     maxlocs     = MAXLOCS;
 int     maxndx    = MAXINDEX;
 int     maxacts     = MAXACTS;
@@ -154,3 +158,4 @@ int     max_carry   = 8;           /* default max objects to carry at once */
 char    inwrd[MAXACTWDS][32];                       /* current input words */
 char    locseen[MAXLOCS], locstate[MAXLOCS];
 int     var[MAXVARS];
+FILE	*mfp, *wfp;

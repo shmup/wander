@@ -13,69 +13,16 @@ static	char    *whatwand = "@(#)wand1.c	1.6 2/23/85 -- (c) psl 1978";
 
 static	char    *wand_h =   H_SCCS;
 
-#define FRESTART    0                         /* flag args for get_files() */
-#define FMAINNEW    1
-#define FRESTORE    2
-#define FMAINRES    3
-
 char    ungotlin[BUFSIZE];
 int     curstate, actrace, owner;
-int     vrbquit, vrbsave, vrbrest, vrbtake, vrbdrop, vrbgoto, vrbinve;
-int     vrblook, vrbinit, vrbstar, vrbsnoop, vrbvars, vrbvers;
+int     vrbquit, vrbsave, vrbrest, vrbtake, vrbdrop, vrbinve;
+int     vrblook, vrbinit, vrbstar, vrbhist;
+int     vrbsnoop, vrbgoto, vrbvars, vrbvers;
 int     lstdirvrb;
 int     objnum1, objnum2, objall;
-FILE    *mfp    = (FILE *) NULL;
-FILE    *wfp    = (FILE *) NULL;
-FILE    *fpungot, *monfp;
-long    lbegaddr;		/* addr of begin of last getlin() line */
-long    ungotaddr;		/* addr of begin of last ungetlin() line */
-
-// routines in wand1.c
-int	main();
-void	prloc();
-char    *getcom(); 
-int	carry_out();
-int	check_act();
-void	get_loc();
-void	setup();
-struct  actstr *code_act();
-int	get_files();
-
-// routines in wand2.c
-void	restart();
-void	takeobj();
-char	*objdesc();
-char	*deparity(char *from);
-void	bytecopy();
-char	*movchars();
-int	obj_at();
-int	oneof();
-int	class();
-void	dotpair();
-void	atpair();
-int	atov();
-char	*store();
-int	length();
-int	wdparse();
-char	*msglin();
-void	quit();
-void	save();
-void	restore();
-void	monsav();
-long	getndx();
-char	*msgpara();
-char    *msgfmt();
-void	inventory();
-int	wrdadd();
-int	which();
-int	wfnd();
-void	ungetlin();
-int	getlin();
-int	getpara();
-int	atoip();
-char	*splur();
-char	*cpy(char *tp, char *fp);
-char	*cpyn(char *tp, char *fp, int n);
+FILE	*fpungot, *monfp;
+long    lbegaddr;		    /* addr of begin of last getlin() line */
+long    ungotaddr;		  /* addr of begin of last ungetlin() line */
 
 uid_t	myruid() { return(getuid()); }	// normally in glib
 uid_t	myeuid() { return(geteuid()); }	// normally in glib
@@ -105,6 +52,7 @@ char     *argv[];
 	    do {
 		cp = getcom(i);
 	    } while (*cp == '\n' || *cp == '\0');
+	    boswell(cp);		// record the history
 	    time(&t_now);
 	    tp = localtime(&t_now);
 	    var[NOW_YEAR] = tp->tm_year;
@@ -128,7 +76,7 @@ char     *argv[];
 		var[PREV_LOC] = beforeloc;
             if (i & COM_DESC)
 		var[NUM_MOVES]++;
-        }
+	}
 }
 
 void
@@ -220,12 +168,12 @@ char     *com;
 	var[INP_WC] = wdparse(com, &var[INP_W1], &var[INP_N1], 0);
 	if (var[INP_W2] == objall) {
 	    for (i = 1; i < maxwrds && wrds[i].w_word != 0; i++) {
-		if (wrds[i].w_loc == var[CUR_LOC] || wrds[i].w_loc < 0) {
+		if ((wrds[i].w_loc == var[CUR_LOC] && var[INP_W1] != vrbdrop)
+		 || (wrds[i].w_loc < 0 && var[INP_W1] != vrbtake)) {
 		    if (wrds[i].w_flg & W_DONLY)
 			i++;
-		    sprintf(junk, "%s %s",
-		     wrds[var[INP_W1]].w_word, wrds[i].w_word);
-		    printf("%s --- ", junk);
+		    sprintf(junk, "%s %s", wrds[var[INP_W1]].w_word, wrds[i].w_word);
+		    printf("%s --- ", deparity(junk));
 		    retval |= carry_out(junk);
 		}
 	    }
@@ -256,39 +204,9 @@ char     *com;
             if (retval & COM_COMPLETE)
                 return(retval);
         }
-	if (actrace > 1)
+	if (actrace > 1)				// built-in actions
 	    printf("built-in actions\n");
-	if (var[INP_W1] == vrbquit)                       /* built-in acts */
-	    quit(QUIT_QUIET);
-	if (var[INP_W1] == vrbsave) {
-	    save(movchars(com, com, fldels));
-            return(COM_DESC | COM_DONE);
-	}
-	if (var[INP_W1] == vrbrest) {
-	    restore(movchars(com, com, fldels), FRESTORE);
-            return(COM_DESC | COM_DONE);
-	}
-	if (var[INP_W1] == vrbinit) {
-	    restart(movchars(com, com, fldels));
-            return(COM_DESC | COM_DONE);
-        }
-	if (var[INP_W1] == vrbtake) {
-	    j = 0;
-	    for (i = 1; i < maxwrds && wrds[i].w_word != 0; i++) {
-		if (oneof(i, &var[INP_W2])
-		 && (wrds[i].w_loc == var[CUR_LOC] || wrds[i].w_loc < 0)) {
-		    takeobj(i);
-		    j++;
-		}
-	    }
-	    if (j == 0)
-		printf("Can't %s\n", com);
-	    return(COM_DONE);
-        }
-	if (var[INP_W1] == vrbinve) {
-            inventory();
-            return(COM_DONE);
-        }
+
 	if (var[INP_W1] == vrbdrop) {
 	    j = 0;
 	    for (i = 1; i < maxwrds && wrds[i].w_word != 0; i++) {
@@ -304,12 +222,53 @@ char     *com;
 		printf("I'd like to %s, but ...\n", com);
             return(COM_DONE);
         }
+	if (var[INP_W1] == vrbgoto && owner) {
+	    cp = movchars(com, com, fldels);
+	    var[CUR_LOC] = atoi(cp);
+	    while (*cp)
+		if (*cp++ == dotchar) {
+		    locstate[var[CUR_LOC]] = atoi(cp);
+		    break;
+		}
+	    printf("Goto loc %d which is in state %d\n", var[CUR_LOC],
+	     locstate[var[CUR_LOC]]);
+            return(COM_DESC | COM_DONE);
+	}
+	if (var[INP_W1] == vrbhist) {
+	    i = 1;
+	    if (var[INP_WC] == 2)
+		i = HISTLEN - var[INP_N1];
+	    for (; i < HISTLEN; i++) {
+		cp = history[(histi + i) % HISTLEN];
+		if (*cp)
+		    printf("%s%s", cp, i < (HISTLEN - 1)? "; " : "\n");
+	    }
+            return(COM_DONE);
+        }
+	if (var[INP_W1] == vrbinit) {
+	    restart(movchars(com, com, fldels));
+            return(COM_DESC | COM_DONE);
+        }
+	if (var[INP_W1] == vrbinve) {
+            inventory();
+            return(COM_DONE);
+        }
 	if (var[INP_W1] == vrblook) {
 	    locseen[var[CUR_LOC]] = 0;
 	    --var[NUM_PLACES];
             return(COM_DONE | COM_DESC);
         }
-	if (owner && var[INP_W1] == vrbsnoop) {
+	if (var[INP_W1] == vrbquit)
+	    quit(QUIT_QUIET);
+	if (var[INP_W1] == vrbrest) {
+	    restore(movchars(com, com, fldels), FRESTORE);
+            return(COM_DESC | COM_DONE);
+	}
+	if (var[INP_W1] == vrbsave) {
+	    save(movchars(com, com, fldels));
+            return(COM_DESC | COM_DONE);
+	}
+	if (var[INP_W1] == vrbsnoop && owner) {
 	    printf("<==== loc:%d  state:%d ====>", place.p_loc, place.p_state);
 	    printf("   %s\n", msglin(wfp, place.p_sdesc));
 	    printf("%s", msgpara(wfp, place.p_ldesc));
@@ -331,32 +290,32 @@ char     *com;
 	    }
 	    return(COM_DONE);
 	}
-	if (owner && var[INP_W1] == vrbgoto) {
-	    cp = movchars(com, com, fldels);
-	    var[CUR_LOC] = atoi(cp);
-	    while (*cp)
-		if (*cp++ == dotchar) {
-		    locstate[var[CUR_LOC]] = atoi(cp);
-		    break;
+	if (var[INP_W1] == vrbtake) {
+	    j = 0;
+	    for (i = 1; i < maxwrds && wrds[i].w_word != 0; i++) {
+		if (oneof(i, &var[INP_W2])
+		 && (wrds[i].w_loc == var[CUR_LOC] || wrds[i].w_loc < 0)) {
+		    takeobj(i);
+		    j++;
 		}
-	    printf("Goto loc %d which is in state %d\n", var[CUR_LOC],
-	     locstate[var[CUR_LOC]]);
-            return(COM_DESC | COM_DONE);
-	}
-	if (owner && var[INP_W1] == vrbvars) {
+	    }
+	    if (j == 0)
+		printf("Can't %s\n", com);
+	    return(COM_DONE);
+        }
+	if (var[INP_W1] == vrbvars && owner) {
 	    for (i = 0; i < maxvars; i++)
 		if (var[i])
 		    printf("var[%2d] = %d\n", i, var[i]);
 	    return(COM_DONE);
 	}
-	if (owner && var[INP_W1] == vrbvers) {
+	if (var[INP_W1] == vrbvers && owner) {
 	    printf("Current Wander version:\n");
 	    printf("MAXLOCS:%d\tMax # of locations possible.\n", maxlocs);
 	    printf("MAXACTS:%d\tMax # of actions per location.\n", maxacts);
 	    printf("MAXFIELDS:%d\tMax # of fields per action.\n", maxfields);
 	    printf("BUFSIZE:%d\tSize of long descriptions, etc.\n", BUFSIZE);
-	    printf("PATHLENGTH:%d\tMax length of file path names.\n",
-	     pathlength);
+	    printf("PATHLENGTH:%d\tMax length of file path names.\n", PATHLENGTH);
 	    printf("MAXWRDS:%d\tMax # of words Wander will remember.\n",
 	     maxwrds);
 	    printf("MAXINDEX:%d\tMax # of location/states, total.\n",
@@ -365,6 +324,7 @@ char     *com;
 	    printf("MAXPOSTACTS:%d\tMax # of post actions.\n", maxpostacts);
 	    return(COM_DONE);
 	}
+
 	if (retval & COM_DONE)
 	    return(retval);
 	if (retval & COM_NDOBJ) {
@@ -384,7 +344,7 @@ check_act(actp)                               /* if the action fits, do it */
 struct   actstr   *actp;
 {
         struct actstr *ap;
-	char *newfile;
+	char *newwrld;
 	int i, retval, fld1v, fld2v;
 	long addr;
         struct fieldstr *fp;
@@ -403,7 +363,7 @@ struct   actstr   *actp;
 	}
 	if (ap->a_wrd[i] != vrbstar)
             retval |= COM_RECOG;
-	newfile = 0;
+	newwrld = 0;
 	for (fp = ap->a_field; fp < &ap->a_field[maxfields]; fp++) {
 	    if (fp->f_type == 0)
 		break;
@@ -568,7 +528,7 @@ struct   actstr   *actp;
 		break;
 	    case FR_WORLD:
 		addr = ((long) fp->f_fld1 & 0177777) | (fp->f_fld2 << 16);
-		newfile = msglin(ap->a_msgfp, addr);
+		newwrld = msglin(ap->a_msgfp, addr);
 		break;
             case FR_SBIN:
                 locseen[fld1v] = fld2v;
@@ -587,8 +547,8 @@ struct   actstr   *actp;
 	    printf("\n");
 	if (ap->a_msgaddr)
 	    printf("%s\n", msglin(ap->a_msgfp, ap->a_msgaddr));
-	if (newfile != 0)
-	    restart(newfile);
+	if (newwrld != 0)
+	    restart(newwrld);
         if (ap->a_rloc < 0)
             quit(ap->a_rloc);
         if (ap->a_rloc > 0)
@@ -697,30 +657,32 @@ syntax:
 		    fprintf(stderr, "More than 1 world file?\n");
 		    goto syntax;
 		}
-		cpyn(curfile, argv[argc], sizeof(curfile) - 1);
+		cpyn(curname, argv[argc], sizeof(curname) - 1);
 	    }
         }
-	// modify the syn field of wrds to hold root word index
+	// modify the w_word and w_syn fields of wrds from wandglb.c
 	lastrw = 1;
 	for (i = 1; wrds[i].w_word; i++) {
+	    wrds[i].w_word = store(wrds[i].w_word);	// put the word in storebuf
 	    if (wrds[i].w_syn)
 		wrds[i].w_syn = lastrw;
 	    else
 		lastrw = i;
 	}
-	if (rflag == 0 && get_files(curfile, FMAINNEW) == -1)
+	if (rflag == 0 && get_files(curname, FMAINNEW) == -1)
             exit(2);
         srand(0);
         curstate = locstate[var[CUR_LOC]];
-	vrbquit = which("quit", wrds);
-	vrbsave = which("save", wrds);
-	vrbrest = which("restore", wrds);
-	vrbtake = which("take", wrds);
+	lstdirvrb = which("nw", wrds);   /* see comment on "nw" in wandglb */
 	vrbdrop = which("drop", wrds);
+	vrbhist = which("history", wrds);
+	vrbinit = which("init", wrds);
 	vrbinve = which("inventory", wrds);
 	vrblook = which("look", wrds);
-	vrbinit = which("init", wrds);
-	lstdirvrb = which("nw", wrds);   /* see comment on "nw" in wandglb */
+	vrbquit = which("quit", wrds);
+	vrbrest = which("restore", wrds);
+	vrbsave = which("save", wrds);
+	vrbtake = which("take", wrds);
 	vrbsnoop = which("~snoop", wrds);
 	vrbgoto = which("~goto", wrds);
 	vrbvars = which("~vars", wrds);
@@ -937,9 +899,9 @@ char     *name;         /* flag indicates caller & current initializations */
 	     flag == FRESTART? "init" : "restore", name);
 	    monsav();                       /* close & unlink temp monfile */
 	}
-	if (flag == FRESTORE && strcmp(name, curfile) != 0) {
+	if (flag == FRESTORE && strcmp(name, curname) != 0) {
 	    printf("Restoring from a different world, (%s instead of %s)\n",
-	     name, curfile);
+	     name, curname);
 	    flag = FRESTART;                      /* need to do more inits */
 	}
 	if (flag != FRESTORE) {
@@ -1093,7 +1055,7 @@ char     *name;         /* flag indicates caller & current initializations */
 	    for (cp = buf; *cp; cp++);
 	    addr += cp - buf;
 	}
-	cpyn(curfile, name, sizeof(curfile) - 1);
+	cpyn(curname, name, sizeof(curname) - 1);
 get_done:
 	wseek(wfp, 0l, 0);
         return(0);

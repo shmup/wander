@@ -1,4 +1,5 @@
-#include    <stdio.h>
+#include	<stdio.h>
+#include	<sys/stat.h>	// for struct stat
 /*
 **      WANDDEF.H -- Non-deterministic fantasy story tool header
 **          Global definitions
@@ -25,6 +26,7 @@
 #define MAXVARS     128         /* [2] number of variables, must be == 128 */
 #define BUFSIZE     4096                /* [2+6stack] size of line buffers */
 #define MAXINPNUMS  2                                 /* numbers/utterance */
+#define	HISTLEN     128                /* how many commands are remembered */
 
 #define FIELDELIM   ' '     /* delimit fields (MOD) */
 #define LINEDELIM   '\n'    /* delimit lines (MOD) */
@@ -79,7 +81,6 @@
 #define NUM_MOVES   123     /* number of "moves" */
 #define NUM_PLACES  124     /* number of "places" visited */
 
-
         /* field types */
 #define F_VOID      0
 #define FT_OBJ      1
@@ -116,16 +117,26 @@
 #define FR_IBIN     35
 #define FR_DBIN     36
 
+#define FRESTART    0                         /* flag args for get_files() */
+#define FMAINNEW    1
+#define FRESTORE    2
+#define FMAINRES    3
+
 struct  paramstr {
-	int     p_pathlength;
-	int     p_maxlocs;
-	int     p_maxwrds;
-	int     p_maxvars;
-	int     p_maxndx;
-	int     p_maxpre;
-	int     p_maxpost;
-	char    *p_stbuf;
-	char    *p_stbp;
+	int     p_pathlength;	// the size of buffers
+	int	p_histlen;	// how many commands we save in history
+	int	p_histi;	// where the next command goes in the history buffer
+	int     p_maxlocs;	// max number of locations
+	int     p_maxwrds;	// max number of words we can store
+	int     p_maxvars;	// max number of variables
+	int     p_maxndx;	// max number of wrld indices
+	int     p_maxpre;	// max number of pre-actions
+	int     p_maxpost;	// max number of post-actions
+	char	*p_storebuf;	// where store() was storing the words
+	int	p_sbufsiz;	// how much space is used to store() words
+	int     p_time;		// when this file was saved
+	off_t	p_msize;	// size of the .misc file
+	off_t	p_wsize;	// size of the .wrld file
 } param;
 
 struct  placestr {
@@ -175,9 +186,11 @@ extern  char    *thereis[], *aansome[];
 extern  char    fldels[], vardel[], wrdels[];
 extern  char    listunused[];
 extern  char    locfile[], miscfile[], tmonfil[], monfile[PATHLENGTH];
-extern  char    curfile[PATHLENGTH], newfile[], *stdpath, *defmfile;
+extern  char    curname[PATHLENGTH], *stdpath, *defmfile;
 extern  char    mfbuf[], wfbuf[];
-extern  int     maxwrds, maxactwds, pathlength, maxinpwd, maxlocs, maxndx;
+extern	char	history[HISTLEN][BUFSIZE];
+extern	int	histi;
+extern  int     maxwrds, maxactwds, maxinpwd, maxlocs, maxndx;
 extern  int     maxacts, maxpreacts, maxpostacts, maxfields, maxvars;
 extern  int     ldescfreq;
 extern  char    fieldelim, linedelim;
@@ -187,4 +200,53 @@ extern  int     max_carry;
 extern  char    inwrd[][32];
 extern  char    locseen[], locstate[];
 extern  int     var[];
+extern	FILE	*mfp, *wfp;
 
+// routines in wand1.c
+int	main();
+void	prloc();
+char    *getcom(); 
+int	carry_out();
+int	check_act();
+void	get_loc();
+void	setup();
+struct  actstr *code_act();
+int	get_files();
+
+// routines in wand2.c
+void	restart();
+void	takeobj();
+char	*objdesc();
+char	*deparity(char *from);
+void	bytecopy();
+char	*movchars();
+int	obj_at();
+int	oneof();
+int	class();
+void	dotpair();
+void	atpair();
+int	atov();
+char	*store();
+int	length();
+int	wdparse();
+char	*msglin();
+void	quit();
+void	save();
+void	restore();
+void	monsav();
+long	getndx();
+char	*msgpara();
+char    *msgfmt();
+void	inventory();
+int	wrdadd();
+int	which();
+int	wfnd();
+void	ungetlin();
+int	getlin();
+int	getpara();
+int	atoip();
+char	*splur();
+char	*cpy(char *tp, char *fp);
+char	*cpyn(char *tp, char *fp, int n);
+off_t	fsize(FILE *fp);
+void	boswell(char *command);

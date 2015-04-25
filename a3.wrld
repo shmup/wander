@@ -4,7 +4,7 @@ You're in the Aldebaran III spaceport.  An electrified chain link fence
 surrounds the area with gates leading west and south.
      south   2
      west    100
-     north|east|ne|nw|se|sw  m="ZZZAAAAPPPP!       OUCH!"
+     north|east|ne|nw|se|sw  m="zzzZZZAAAAPPPP!       OUCH!"
      take\ card  o?card  t+card  m="\
 Done
 Your account has 50 credits left.
@@ -117,20 +117,23 @@ them anyway\", you are reminded."
 "
      bribe  m="You haven't got anything that the official wants."
      out    m="Which way out? East or west?  (the spaceport is east)"
-     no     m="\"If you really have nothing to declare you may go.\""
+     no     m="\"If you really have nothing to declare you may leave.\""
      *      t?papers  t?notes  v?NUM_CARRY.2  ...  m=\
-"I don't believe you have anything left to declare, you may go..."
+"I don't believe you have anything left to declare, you may leave..."
      declare\ papers|declare\ notes|declare\ tokens|show\ papers     m=\
-"\"There is no duty on those\", barks the exasperated official."
+"\"There is no duty on those\", barks the exasperated official, as he
+slides them down the counter that passes through a hole in the west wall."
      declare\ card  t?card  v-6.5  o+card@3  m=\
-"\"Yes\", says the official and then mutters to himself,
+"\"Yes\", says the official sliding it down the counter and muttering to himself,
 \"credit card -- five credits\"."
      declare\ condoms  t?condoms  v-6.1  o+condoms@3  m=\
-"The guard smiles discreetly and scribbles a \"1\" on his pad."
+"The guard smiles discreetly, scribbles a \"1\" on his pad,
+and flips the package down the counter."
      declare\ dictionary  t?dictionary  v-6.3 o+dictionary@3  m=\
 "\"Hmm, looks pretty valuable\", he says as he scribbles a \"3\"."
      declare\ cigarettes  v-6.1  t?cigarettes  o+cigarettes@3  m=\
-"\"Filthy habit\", the official mutters, writing a \"1\" on his pad."
+"\"Filthy habit\", the official mutters, writing a \"1\" on his pad
+and tossing the pack down the counter."
      declare\ innocence     m="Oh sure; we're all innocent of something, eh?"
      declare  m="Declare what?  Never heard of it..."
 
