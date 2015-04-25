@@ -1,5 +1,6 @@
 #include	<stdio.h>
 #include	<sys/stat.h>	// for struct stat
+#include        <sys/types.h>
 /*
 **      WANDDEF.H -- Non-deterministic fantasy story tool header
 **          Global definitions
