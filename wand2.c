@@ -7,80 +7,27 @@
 ** Copyright (c) 1978 by Peter S. Langston - New  York,  N.Y.
 */
 
-static	char    *whatwand = "@(#)wand2.c	1.4 2/23/85 -- (c) psl 1978";
+static	char	*whatwand = "@(#)wand2.c	1.4 2/23/85 -- (c) psl 1978";
 
-static	char    *wand_h =   H_SCCS;
+static	char	*wand_h =   H_SCCS;
 
-#define FRESTART    0                         /* flag args for get_files() */
-#define FMAINNEW    1
-#define FRESTORE    2
-#define FMAINRES    3
-
-extern	char    ungotlin[BUFSIZE];
-extern	int     curstate, actrace, owner;
-extern	int     vrbquit, vrbsave, vrbrest, vrbtake, vrbdrop, vrbgoto, vrbinve;
-extern	int     vrblook, vrbinit, vrbstar, vrbsnoop, vrbvars, vrbvers;
-extern	int     lstdirvrb;
-extern	int     objnum1, objnum2, objall;
-extern	FILE    *mfp;
-extern	FILE    *wfp;
-extern	FILE    *fpungot, *monfp;
+extern	char	ungotlin[BUFSIZE];
+extern	int	curstate, actrace, owner;
+extern	int	vrbquit, vrbsave, vrbrest, vrbtake, vrbdrop, vrbgoto, vrbinve;
+extern	int	vrblook, vrbinit, vrbstar, vrbsnoop, vrbvars, vrbvers;
+extern	int	lstdirvrb;
+extern	int	objnum1, objnum2, objall;
+extern	FILE	*fpungot, *monfp;
 extern	long    lbegaddr;           /* addr of begin of last getlin() line */
 extern	long    ungotaddr;        /* addr of begin of last ungetlin() line */
 
-// routines in wand1.c
-int	main();
-void	prloc();
-char    *getcom(); 
-int	carry_out();
-int	check_act();
-void	get_loc();
-void	setup();
-struct  actstr *code_act();
-int	get_files();
-
-// routines in wand2.c
-void	restart();
-void	takeobj();
-char	*objdesc();
-char	*deparity(char *from);
-void	bytecopy();
-char	*movchars();
-int	obj_at();
-int	oneof();
-int	class();
-void	dotpair();
-void	atpair();
-int	atov();
-char	*store();
-int	length();
-int	wdparse();
-char	*msglin();
-void	quit();
-void	save();
-void	restore();
-void	monsav();
-long	getndx();
-char	*msgpara();
-char    *msgfmt();
-void	inventory();
-int	wrdadd();
-int	which();
-int	wfnd();
-void	ungetlin();
-int	getlin();
-int	getpara();
-int	atoip();
-char	*splur();
-char	*cpy(char *tp, char *fp);
-char	*cpyn(char *tp, char *fp, int n);
-
+extern	char	*ctime();
 extern	long    wtell();
 extern	FILE	*fopen(), *wopen();
 
 void
 restart(name)                       /* (init) restart from specified files */
-char    *name;
+char	*name;
 {
 	int i, numwrds;
 
@@ -91,7 +38,7 @@ char    *name;
 		wrds[i].w_word = listunused;
 	/* open new .misc & .wrld and create ndx */
 	if (get_files(name, FRESTART) == -1
-	 && get_files(curfile, FRESTART) == -1)
+	 && get_files(curname, FRESTART) == -1)
 	    exit(2);
 	for (i = maxlocs; --i >= 0; )
 	    locseen[i] = 0;
@@ -129,9 +76,9 @@ takeobj(obj)
 	return;
 }
 
-char    *
+char	*
 objdesc(pre, art, wp, post)  /* assemble an object description in buf */
-char    *pre, *art, *post;
+char	*pre, *art, *post;
 struct  wrdstr  *wp;
 {
 	char *cp, buf[1024];
@@ -174,7 +121,7 @@ deparity(char *fp)
 
 void
 bytecopy(from, to, length)
-char    *from, *to;
+char	*from, *to;
 {
 	char *fp, *tp;
 	int i;
@@ -187,9 +134,9 @@ char    *from, *to;
 	return;
 }
 
-char     *			// split off the next field
+char	*			// split off the next field
 movchars(from, to, delims)
-char     *from, *to, *delims;
+char	*from, *to, *delims;
 {
         char *dp, c;
 
@@ -223,7 +170,7 @@ obj_at(obj, loc)
 
 int
 oneof(wrd, w)       /* return 1 if "wrd" is = one of w[0] ... w[MAXACTWDS] */
-int     w[];
+int	w[];
 {
 	int i;
 
@@ -255,7 +202,7 @@ struct  wrdstr  *wp;                                        /* 3 => plural */
 
 void
 dotpair(type, string, fp)
-char     *string;
+char	*string;
 struct   fieldstr     *fp;
 {
         char *cp;
@@ -277,7 +224,7 @@ struct   fieldstr     *fp;
 
 void
 atpair(type, string, fp)
-char     *string;
+char	*string;
 struct   fieldstr     *fp;
 {
         char *cp;
@@ -307,7 +254,7 @@ struct   fieldstr     *fp;
 
 int
 atov(string)                    /* return coded form of number or variable */
-char   *string;
+char	*string;
 {
 	int i;
 
@@ -322,30 +269,30 @@ char   *string;
 	return(wrdadd(string, 0, 0, 0));                   /* hashed value */
 }
 
-char    *storebuf   = 0;
-char    *storebp    = 0;
-int     storenleft  = 0;
+char	*storebuf   = 0;
+char	*storebp    = 0;
+int	storenleft  = 0;
 
-char     *
-store(string)
-char     *string;
+char	*
+store(string)		// copy string into storebuf and return a pointer to it
+char	*string;
 {
         char *cp;
 	extern char *sbrk();
 
 	if (storebp == 0) {
-	    if ((storebp = storebuf = sbrk(storenleft = 512)) == (char *) -1) {
-		perror("Initial sbrk(512) failed");
+	    if ((storebp = storebuf = sbrk(storenleft = 4096)) == (char *) -1) {
+		perror("Initial sbrk(4096) failed");
 		exit(3);
 	    }
 	}
 	storenleft -= length(string);
 	if (storenleft < 0) {
-	    if (sbrk(512) == (char *) -1) {
-		perror("sbrk(512) failed");
+	    if (sbrk(4096) == (char *) -1) {
+		perror("sbrk(4096) failed");
 		exit(3);
 	    }
-	    storenleft += 512;
+	    storenleft += 4096;
         }
 	storebp = cpy(cp = storebp, string) + 1;
         return(cp);
@@ -353,7 +300,7 @@ char     *string;
 
 int
 length(string)
-char     *string;
+char	*string;
 {
         char *cp;
 
@@ -361,10 +308,10 @@ char     *string;
         return(cp - string);
 }
 
-int					       /* put wrd vals in w[0] ... */
+int				       /* put wrd vals in w[0], w[1],  ... */
 wdparse(string, w, nums, flag)            /* if flag != 0 add to wrds list */
-char    *string;                 /* if flag == 0 (user inp) put #s in nums */
-int     w[], nums[];                              /* and return # of words */
+char	*string;                 /* if flag == 0 (user inp) put #s in nums */
+int	w[], nums[];                              /* and return # of words */
 {
         char *bp;
 	char wdbuf[128];
@@ -401,7 +348,7 @@ int     w[], nums[];                              /* and return # of words */
 	return(numactwds);
 }
 
-char     *
+char	*
 msglin(fp, addr)
 FILE    *fp;
 long    addr;
@@ -437,35 +384,39 @@ quit(int n)
 
 void
 save(file)
-char    *file;
+char	*file;
 {
-	char *cp;
-	int fh;
+	char *cp, newname[PATHLENGTH];
+	int fh, sbufsize;
 
 	if (*file == '\0') {
-	    for (cp = file = curfile; *cp; )
+	    for (cp = file = curname; *cp; )
 		if (*cp++ == '/')
 		    file = cp;
-	    sprintf(newfile, "%s.save", file);
-	    file = newfile;
+	    sprintf(newname, "%s.save", file);
+	    file = newname;
 	}
 	if ((fh = open(file, 1)) < 0 && (fh = creat(file, 0600)) < 0) {
 	    printf("Can't open \"%s\", sorry\n", file);
             return;
         }
-	printf("Saving the current environment under the name \"%s\" ...",
-	 file);
-	param.p_pathlength = pathlength;
+	printf("Saving the current environment under the name \"%s\" ...", file);
+	param.p_pathlength = PATHLENGTH;
+	param.p_histlen = HISTLEN;
+	param.p_histi = histi;
 	param.p_maxlocs = maxlocs;
 	param.p_maxwrds = maxwrds;
 	param.p_maxvars = maxvars;
 	param.p_maxndx = maxndx;
 	param.p_maxpre = maxpreacts;
 	param.p_maxpost = maxpostacts;
-	param.p_stbuf = storebuf;
-	param.p_stbp = storebp;
+	param.p_storebuf = storebuf;
+	param.p_sbufsiz = storebp - storebuf;
+	param.p_time = time(0);
+	param.p_msize = fsize(mfp);
+	param.p_wsize = fsize(wfp);
 	write(fh, &param, sizeof (struct paramstr));
-	write(fh, curfile, pathlength);
+	write(fh, curname, PATHLENGTH);
 	write(fh, locseen, sizeof(locseen[0]) * maxlocs);
 	write(fh, locstate, sizeof(locstate[0]) * maxlocs);
 	write(fh, var, sizeof(var[0]) * maxvars);
@@ -473,56 +424,66 @@ char    *file;
 	write(fh, ndx, sizeof(struct ndxstr) * maxndx);
 	write(fh, pre_acts, sizeof(struct actstr) * maxpreacts);
 	write(fh, post_acts, sizeof(struct actstr) * maxpostacts);
-	write(fh, storebuf, param.p_stbp - param.p_stbuf);
+	write(fh, history, HISTLEN * PATHLENGTH);
+	write(fh, storebuf, param.p_sbufsiz);
 	close(fh);
 	printf("\n");
 	return;
 }
 
 void
-restore(file, flag)
-char    *file;
+restore(char *file, int flag)
 {
-	char *cp;
-	int diff, i, fh;
+	char *cp, newname[PATHLENGTH];
+	int then, diff, i, fh;
 	extern char *sbrk();
 
 	if (*file == '\0') {
-	    for (cp = file = curfile; *cp; )
+	    for (cp = file = curname; *cp; )
 		if (*cp++ == '/')
 		    file = cp;
-	    sprintf(newfile, "%s.save", file);
-	    file = newfile;
+	    sprintf(newname, "%s.save", file);
+	    file = newname;
 	}
+	printf("Restoring from the file \"%s\" ", file);
 	if ((fh = open(file, 0)) < 0) {
 	    printf("Can't open \"%s\", sorry\n", file);
             exit(1);
         }
-	printf("Restoring from the file \"%s\" ", file);
-	read(fh, &param, sizeof (struct paramstr));
-	read(fh, newfile, pathlength);
+	i = read(fh, &param, sizeof (struct paramstr));
+	printf("saved %s", ctime(&param.p_time));
+	i = read(fh, newname, PATHLENGTH);
 	printf(".");
-	if (get_files(newfile, flag) == -1)
+	if (get_files(newname, flag) == -1)
             exit(2);
 	printf(".");
 	if (storebuf == 0) {                        /* no sbrk() space yet */
-	    if ((storebuf = storebp = sbrk(512)) == (char *) -1) {
-		printf("Initial sbrk(512) failed\n");
+	    if ((storebuf = storebp = sbrk(4096)) == (char *) -1) {
+		printf("Initial sbrk(4096) failed\n");
 		exit(1);
 	    }
-	    storenleft = 512;
+	    storenleft = 4096;
 	}
-	if (param.p_pathlength != pathlength
+	if (param.p_pathlength != PATHLENGTH
+	 || param.p_histlen != HISTLEN
 	 || param.p_maxlocs != maxlocs
 	 || param.p_maxwrds != maxwrds
 	 || param.p_maxvars != maxvars
 	 || param.p_maxpre != maxpreacts
 	 || param.p_maxpost != maxpostacts
-	 || param.p_maxndx != maxndx
-	 || param.p_stbuf != storebuf) {
+	 || param.p_maxndx != maxndx) {
 	    printf("\n`%s' saved from another version of Wander.\n", file);
 	    exit(1);
 	}
+	if (param.p_msize != fsize(mfp)) {
+	    printf("\n`%s' saved with a different %s.misc file.\n", file, newname);
+	    exit(1);
+	}
+	if (param.p_wsize != fsize(wfp)) {
+	    printf("\n`%s' saved with a different %s.wrld file.\n", file, newname);
+	    exit(1);
+	}
+	histi = param.p_histi;
 	read(fh, locseen, sizeof(locseen[0]) * maxlocs);
 	read(fh, locstate, sizeof(locstate[0]) * maxlocs);
 	read(fh, var, sizeof(var[0]) * maxvars);
@@ -530,21 +491,30 @@ char    *file;
 	read(fh, ndx, sizeof(struct ndxstr) * maxndx);
 	read(fh, pre_acts, sizeof(struct actstr) * maxpreacts);
 	read(fh, post_acts, sizeof(struct actstr) * maxpostacts);
+	read(fh, history, HISTLEN * PATHLENGTH);
 	printf(".");
-	diff = param.p_stbp - (storebp + storenleft);
-	storenleft = -diff;
-	if (diff > 0) {                  /* need more space than available */
-	    i = (diff + 077) & ~077;             /* round up to mult of 64 */
+	// to read the saved storebuf we can dump everything we have stored
+	storenleft += storebp - storebuf;	// reclaim the space
+	storebp = storebuf;			// now it's empty
+	storenleft -= param.p_sbufsiz;		// will there be any left?
+	if (storenleft < 0) {			// we'll need more
+	    diff = -storenleft;			// need at least this much
+	    i = (diff + 07777) & ~07777;	// round up to a mult of 4k
 	    if (sbrk(i) == (char *) -1) {
 		printf("sbrk(%d) failed.\n", i);
 		exit(1);
 	    }
-	    storenleft += i;
+	    storenleft += i;			// suold be positive now
 	}
-	storebp = param.p_stbp;
-	read(fh, storebuf, param.p_stbp - param.p_stbuf);
+	read(fh, storebuf, param.p_sbufsiz);
+	storebp = storebuf + param.p_sbufsiz;
 	close(fh);
+	// now we need to readjust all the w_word pointers to the new storebuf offset
+	diff = storebuf - param.p_storebuf;
+	for (i = 1; wrds[i].w_word && i <= maxwrds; i++)
+	    wrds[i].w_word += diff;
 	printf("\n");
+	boswell("restore");
         place.p_loc = -1;
         inventory();
 	return;
@@ -586,7 +556,7 @@ getndx(loc, state)
         return(-1l);
 }
 
-char     *
+char	*
 msgpara(fp, addr)
 FILE    *fp;
 long    addr;
@@ -598,13 +568,13 @@ long    addr;
 	return(msgfmt(string));
 }
 
-char     *
+char	*
 msgfmt(string)
-char    *string;
+char	*string;
 {
 /****/int xp;
 	char *sp, *bp, c;
-	char junk[64];
+	char junk[512];
         int i;
 	static char buf[BUFSIZE];
 
@@ -664,7 +634,7 @@ inventory()
 
 int
 wrdadd(word, syn, iloc, flg)             /* return index of the root word, */
-char    *word;                                   /* adding it if necessary */
+char	*word;                                   /* adding it if necessary */
 {
 	char *wrd;
 	int i, limit;
@@ -691,7 +661,7 @@ char    *word;                                   /* adding it if necessary */
 
 int
 which(word, wrds)  /* find root (description) text for existing word */
-char    *word;
+char	*word;
 struct  wrdstr  *wrds;
 {
         int i;
@@ -872,3 +842,18 @@ cpyn(char *tp, char *fp, int n)
 	return(tp);
 }
 
+off_t
+fsize(FILE *fp)
+{
+	struct stat sbuf;
+
+	fstat(fileno(fp), &sbuf);
+	return(sbuf.st_size);
+}
+
+void
+boswell(char *command)
+{
+	cpyn(history[histi], command, BUFSIZ);
+	histi = (histi + 1) % HISTLEN;
+}

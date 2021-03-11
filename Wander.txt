@@ -48,6 +48,7 @@ COMMANDS
      save        quit & save environment for later continuation
      restore     restore saved environment                        |
      look        print the long description of the current location
+     history     print the last N commands                        |
      init        read new .wrld & .misc files, (switch worlds)    |
       The following debugging verbs only work if you own the files
      ~snoop      give a condensed list of possible actions
@@ -57,7 +58,6 @@ COMMANDS
      ~version    print miscellaneous parameter information
 
      Whenever  the word "all" is encountered as the second recog‐ |
-     nized word of user input on a line it will be macro  expand‐ |
 
                               ‐ 1 ‐
 
@@ -68,6 +68,7 @@ COMMANDS
 
 WANDER                         4/80                        WANDER
 
+     nized word of user input on a line it will be macro  expand‐ |
      ed.  This expansion replaces the word "all" with each object |
      in the current location  including  objects  being  carried. |
      E.g.  "drop  all"  may  expand to "drop keys; drop net; drop |
@@ -123,7 +124,6 @@ FILE PROTECTION
      files  /u/smith/oz.misc  and /u/smith/oz.wrld, the following
      program would suffice:
 
-     main()
 
                               ‐ 2 ‐
 
@@ -134,6 +134,7 @@ FILE PROTECTION
 
 WANDER                         4/80                        WANDER
 
+     main()
      {
           execl("/usr/games/wander", "oz", "/u/smith/oz", 0);
      }
@@ -189,7 +190,6 @@ VARIABLES
      NOW_HOUR    114     hour of day (0:23)
      NOW_MIN     115     minute of hour (0:59)
      NOW_SEC     116     second of minute (0:59)
-     NOW_ET      117     elapsed time in Wander (seconds)
 
                               ‐ 3 ‐
 
@@ -200,6 +200,7 @@ VARIABLES
 
 WANDER                         4/80                        WANDER
 
+     NOW_ET      117     elapsed time in Wander (seconds)
      BREVITY     118     brevity of place descriptions            |
      LOC_VIEW    119     location description override            |
      OBJ_VIEW    120     object description override              |
@@ -255,7 +256,6 @@ SYNTACTIC CONVENTIONS
      \t is replaced by <HT>,                                      |
      \r is replaced by <CR>,                                      |
      \" is replaced by " (not considered a "quote"),              |
-     \<SP> is replaced by <SP>                                    |
 
                               ‐ 4 ‐
 
@@ -266,6 +266,7 @@ SYNTACTIC CONVENTIONS
 
 WANDER                         4/80                        WANDER
 
+     \<SP> is replaced by <SP>                                    |
 
      In reading the file, each unescaped tab  is  replaced  by  a |
      single  space,  and  quotes are stripped off.  The resulting |
@@ -302,7 +303,6 @@ SEE ALSO
 
                Copyright (c) by Peter Langston, N.Y.C.
                          All rights reserved.
-
 
 
 

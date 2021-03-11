@@ -1,0 +1,188 @@
+.TH WANDER "1" "April 2015" "Wander" "User Commands"
+
+.SH NAME
+Wander \- Fantasy story tool
+
+.SH SYNOPSIS
+Wander [ world ] [ \-r[savefile] ] [ \-t# ]
+
+.SH DESCRIPTION
+\fBWander\fR is a tool for writing non\-deterministic fantasy "stories". The product is a story whose unfolding is affected by decisions made by the "reader".
+.P
+The optional world argument is described below under "WANDER FILES".
+.P
+The \-r flag allows continuation from a previously "saved" wander. If the form "\-rsavefile" is used the saved wander is restored from "savefile". "\-r" by itself refers to the default save file for the particular wander world, (e.g. "a3.save" for the world "a3"). The \-t# flag turns on tracing of action matching; '#' represents a number whose value controls the amount of diagnostic output produced.
+
+.SH COMMANDS
+Wander includes several built\-in commands. Aside from recognizing the standard compass directions (and their abbreviations), and "up" and "down", the following commands are recognized:
+.P
+\fBinventory\fR     list objects being carried
+.br
+\fBtake\fR          pick up specified object
+.br
+\fBdrop\fR          drop specified object
+.br
+\fBquit\fR          stop playing
+.br
+\fBsave\fR          quit & save environment for later continuation
+.br
+\fBrestore\fR       restore saved environment
+.br
+\fBlook\fR          print the long description of the current location
+.br
+\fBinit\fR          read new .wrld & .misc files, (switch worlds)
+.P
+The following debugging verbs only work if you own the files
+.P
+\fB~snoop\fR        give a condensed list of possible actions
+.br
+\fB~goto m\fR       move, magically, to location number "m"
+.br
+\fB~goto m.n\fR     move to location "m" and put it in state "n"
+.br
+\fB~vars\fR         print a list of all non\-zero variables
+.br
+\fB~version\fR      print miscellaneous parameter information
+.P
+Whenever the word "all" is encountered as the second recognized word of user input on a line it will be macro expanded. This expansion replaces the word "all" with each object in the current location including objects being carried. E.g. "drop all" may expand to "drop keys; drop net; drop leaflet".
+
+.SH WANDER FILES
+The world argument is used to specify which fantasy "world" you wish to explore. Each world is described by a minimum of two files. One file, (with the extension contains all location\-specific information, (long and short descriptions, local action keywords, conditions and results); another file, (with the extension contains all the global information, (initial message, word synonyms, initial object locations and characteristics, global action keywords, conditions and results).
+.P
+These two files have identical first parts of their names, e.g. if you wish your world to be called "oz", you would name the files oz.wrld and oz.misc respectively and you would execute "wander oz". If no world is given when executing Wander, the default world "a3" is used, (i.e. the files are "a3.wrld" and "a3.misc").
+.P
+A third, optional file related to a particular world is the file. If such a file exists, (e.g. oz.mon), a record of each user's commands will be kept there. If no such file exists, but a file named "/sys/games/.../wand/wand.mon", (this name can be changed in "wandglb.c"), does exist then the record of user's commands will be kept there. If neither file exists or if the symbol "MONITOR" is defined as "0" in wanddef.h no record will be kept. This record is often useful in two ways; it allows the author to see how other users respond to his/her world and it allows the author to type notes and suggestions as commands while running Wander and later use these notes while modifying the and files.
+.P
+When a user "saves" his/her environment it is saved in a file whose name is the world name followed by ".save", ("a3.save" for the default world, "a3"), in the current working directory.
+
+.SH FILE PROTECTION
+Typically, the author of a Wander world will want the and files to be unreadable by others except through Wander itself. A simple way to do this is to generate, for each world, a small C program that runs setuid to the owner of the world and execs Wander. For example, if "smith" has files /u/smith/oz.misc and /u/smith/oz.wrld, the following program would suffice:
+.P
+main()
+.br
+{
+.br
+ execl("/usr/games/wander", "oz", "/u/smith/oz", 0);
+.br
+}
+.P
+This program would be compiled; a.out moved to "oz" in some convenient location and "chmod 4755 egypt" would be done. At this point running "oz" would make the user effectively "smith" and thereby allow the oz files, (which would have mode 0600), to be read.
+.P
+It was decided that using encryption on the files was too weak a defense against a dedicated world\-cracker and too much overhead to be worth the effort.
+
+.SH VARIABLES
+Wander provides 128 variables (numbered 0 through 127) which can contain numeric values of \-32768 through 32767. The variables numbered 0 through 99 are general purpose and may be used freely; variables 100 through 127 are set aside for pre\-defined uses, (see below). These variables are referenced with two syntaxes. Some constructions require the specification of a variable number; for instance, "v=6.3" is used to set variable 6 to the value 3. Note that here the "6" is automatically a variable number, while the "3" is a simple number. "%6%" would be used to specify substitution of the value contained in variable 6. Thus, if variable 3 contains 5 and variable 6 contains 2, %3% is equal to 5, and %6% is equal to 2. Moreover:
+.P
+"v=7.%3%" will set variable 7 to 5
+.br
+"v+%6%.4" will add 4 to variable 2
+.br
+"v?%6%.%3%" will test whether variable 2 is equal to 5.
+.br
+"m=The answer is %3%." will print out as "The answer is 5."
+.P
+The special variables and their mnemonic names are:
+
+CUR_LOC         100     current location
+.br
+PREV_LOC        101     previous location
+.br
+INP_W1          102     hash of first recognized word in inp comm
+.br
+INP_W2          103     hash of second recog word from inp comm
+.br
+INP_W3          104     hash of third recog word from inp comm
+.br
+INP_W4          105     hash of fourth recog word from inp comm
+.br
+INP_W5          106     hash of fifth recog word from inp comm
+.br
+INP_WC          107     number of words in input comm
+.br
+NUM_CARRY       108     # of things being carried
+.br
+MAX_CARRY       109     # of thing poss. to carry at once
+.br
+NOW_YEAR        110     year of decade (0:99)
+.br
+NOW_MONTH       111     month of year (1:12)
+.br
+NOW_DOM         112     day of month (1:31)
+.br
+NOW_DOW         113     day of week (0:6)
+.br
+NOW_HOUR        114     hour of day (0:23)
+.br
+NOW_MIN         115     minute of hour (0:59)
+.br
+NOW_SEC         116     second of minute (0:59)
+.br
+NOW_ET          117     elapsed time in Wander (seconds)
+.br
+BREVITY         118     brevity of place descriptions
+.br
+LOC_VIEW        119     location description override
+.br
+OBJ_VIEW        120     object description override
+.br
+INP_N1          121     numeric value of first number from inp comm
+.br
+INP_N2          122     numeric value of first number from inp comm
+.br
+NUM_MOVES       123     number of "moves"
+.br
+NUM_PLACES      124     number of "places" visited
+.br
+                125     reserved
+.br
+                126     reserved
+.br
+                127     reserved
+.P
+Note that the actual variable numbers used by these may vary in later releases but the mnemonic names should not \-\- so use the mnemonics.
+.P
+A common use of these is the following action:
+.P
+back v=CUR_LOC.%PREV_LOC% m="Hmm, I think we came this way..."
+.P
+Note that "%INP_W1%", "%INP_W2%", etc. are replaced by the first, second, etc. recognized input words when used in a text message. Also note that, if you are carrying 5 things, "v?NUM_CARRY.5" will be true while "v?%NUM_CARRY%.5" will only be true if variable 5 is equal to 5. The two variables INP_N1 and INP_N2 are set to the values of the first and second "numbers" input in a command by the user. The corresponding word entries are set to the symbols "N1" and "N2" so that the following constructions work:
+.P
+"take N1 apples" v+4.%INP_N1% m="You now have %4% apples."
+.br
+"add N1 and N2" v=22.%INP_N1% v+22.%INP_N2% m="Sum is %22%"
+.P
+The ".wrld" documentation describes the uses and syntax of variables in greater detail.
+
+.SH LOCATIONS
+
+Wander is usually set up for 256 to 512 numbered locations, (rooms, chambers, whatever), but this limit can be changed by a parameter in the "wanddef.h" file. Again, the ".wrld" documentation describes these further.
+
+.SH SYNTACTIC CONVENTIONS
+In reading both the .misc and .wrld files Wander uses the following conventions. In order to allow reasonable formatting of lines the following conventions are implemented:
+.P
+\*(EC<LF> is completely ignored
+.br
+\*(ECn is replaced by <LF>
+.br
+\*(ECb is replaced by a <BS>
+.br
+\*(ECt is replaced by <HT>
+.br
+\*(ECr is replaced by <CR>
+.br
+\*(EC" is replaced by " (not considered a "quote")
+.br
+\*(EC<SP> is replaced by <SP>
+.P
+In reading the file, each unescaped tab is replaced by a single space, and quotes are stripped off. The resulting <SP> and <LF> codes created by the escape sequence using '\' are turned into non\-delimiting <SP> or <LF> codes. In addition, all <LF>, <HT> and <SP> codes that appear in a quoted sequence of characters are treated as non\-delimiters, ('"press red button"' and 'press\ red\ button' generate the same result), Otherwise, <SP> is used as the field delimiter, and <LF> is used as the line delimiter. Throughout the doc files the field delimiter may be described as "spaces or tabs" indicating that one or more of these characters may be used to delimit fields. In some places "<SEP>" is used, meaning a separator, either spaces or tabs.
+
+.SH CAVEAT
+Peter found lots of time to write and play Wander; however, when it came time to write documentation he found he was pressed for time (so what's new?). As a result, this documentation is of the bare\-bones variety and probably loaded with errors. Sorry.
+
+.SH BUGS
+Ho ho ho.
+
+.SH AUTHOR
+Copyright (c) by Peter Langston, N.Y.C.
+.P
+All rights reserved.
