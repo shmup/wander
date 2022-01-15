@@ -22,7 +22,7 @@ export: $(EXPORT)
 
 wander: Wander
 Wander: $(DOT_OS)
-	cc $(DOT_OS) -o $@
+	$(CC) $(DOT_OS) -o $@
 
 wand1.o: wand1.c wanddef.h
 
