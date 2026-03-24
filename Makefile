@@ -6,6 +6,7 @@ CASTLE	= castle.misc castle.wrld
 LIBRARY	= library.misc library.wrld
 TUT	= tut.misc tut.wrld
 EXPORT	= Makefile $(DOCS) wanddef.h $(DOT_CS) $(A3) $(CASTLE) $(LIBRARY) $(TUT)
+CFLAGS	= -fcommon
 
 default: wander
 
